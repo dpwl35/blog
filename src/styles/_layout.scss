@@ -5,8 +5,6 @@
 .nav {
   @include mixin.layout-width;
 
-  top: 100px;
-  height: 100px;
   padding: 1rem;
   color: var(--color-text);
 }
