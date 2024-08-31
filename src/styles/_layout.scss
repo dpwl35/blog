@@ -1,10 +1,77 @@
 @use 'variables' as *;
 @use 'mixin' as mixin;
 
+.wrap {
+  padding: 1.5rem;
+}
+
 /* header */
-.nav {
+.header {
+  @include mixin.layout-width;
+  @include mixin.flex-layout(row, nowrap);
+  @include mixin.flex-alignment(space-between, normal, normal);
+
+  margin-bottom: 2.5rem;
+  color: var(--color-text);
+
+  &-nav {
+    @include mixin.flex-layout(row, nowrap);
+    @include mixin.flex-alignment(center, center, normal);
+
+    gap: 1rem;
+    font-size: 12px;
+  }
+}
+
+h1 {
+  font-size: 20px;
+}
+
+.main {
   @include mixin.layout-width;
 
+  width: 100%;
+  height: fit-content;
+  min-height: 100vh;
+}
+
+.category {
+  @include mixin.layout-width;
+
+  margin-bottom: 1.5rem;
+
+  &-area {
+    @include mixin.flex-layout(row, nowrap);
+
+    gap: 1rem;
+  }
+
+  &-item {
+    @include mixin.flex-layout(row, nowrap);
+    @include mixin.flex-alignment(center, center, normal);
+
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+
+    &.active {
+      background-color: rgb(214 219 220);
+    }
+  }
+}
+
+.post {
+  position: relative;
   padding: 1rem;
-  color: var(--color-text);
+  background-color: rgba(var(--background-color), 0.5);
+  border: 1px solid rgba(var(--border-color), 0.3);
+  border-radius: var(--border-radius);
+}
+
+footer {
+  @include mixin.layout-width;
+  @include mixin.flex-layout(row, nowrap);
+  @include mixin.flex-alignment(center, center, normal);
+
+  margin-top: 20px;
+  font-size: 12px;
 }

@@ -1,2 +1,18 @@
 @use 'variables' as *;
 @use 'mixin' as mixin;
+
+button {
+  padding: 0;
+  background: none;
+  border: none;
+}
+
+.theme {
+  @include mixin.flex-layout(row, nowrap);
+  @include mixin.flex-alignment(center, center, normal);
+
+  padding: 0.5rem;
+  background-color: rgba(var(--background-color), 0.5);
+  border: 1px solid rgba(var(--border-color), 0.3);
+  border-radius: 8px;
+}
