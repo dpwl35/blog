@@ -1,5 +1,5 @@
-import Image from "next/image";
-import "../styles/style.scss";
+import Image from 'next/image';
+import '../styles/style.scss';
 
 export default function Home() {
   return (
@@ -12,7 +12,7 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            By{"j35"}
+            By{'j35'}
             <Image
               src="/images/favicon.svg"
               alt="blog Logo"

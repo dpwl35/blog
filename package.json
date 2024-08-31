@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:css": "stylelint '**/*.scss'",
+    "format": "prettier --write '**/*.scss'",
+    "lint:fix": "npm run lint:css -- --fix && npm run format"
   },
   "dependencies": {
     "next": "14.2.7",
@@ -14,12 +17,22 @@
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@types/mdast": "^4.0.4",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.2.7",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "prettier": "^3.3.3",
     "sass": "^1.77.8",
+    "stylelint": "^16.9.0",
+    "stylelint-config-property-sort-order-smacss": "^10.0.0",
+    "stylelint-config-standard": "^36.0.1",
+    "stylelint-config-standard-scss": "^13.1.0",
+    "stylelint-order": "^6.0.4",
+    "stylelint-scss": "^6.5.1",
     "typescript": "^5"
   }
 }

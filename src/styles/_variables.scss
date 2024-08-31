@@ -1,0 +1,12 @@
+:root {
+  --text-color: #000;
+  --border-radius: 12px;
+}
+
+html[data-theme='light'] {
+  --color-text: #000;
+}
+
+html[data-theme='dark'] {
+  --color-text: #fff;
+}

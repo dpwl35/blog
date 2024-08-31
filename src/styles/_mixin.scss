@@ -1,0 +1,10 @@
+@mixin layout-width {
+  width: 100%;
+  max-width: 1024px;
+  margin: 0 auto;
+}
+
+@mixin flex-layout($direction: row, $wrap: nowrap) {
+  display: flex;
+  flex-flow: $direction $wrap;
+}
