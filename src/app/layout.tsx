@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import '../styles/style.scss';
@@ -19,11 +20,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-theme="light">
+    <html lang='en' data-theme='light'>
       <body className={inter.className}>
-        <div className="wrap">
+        <div className='wrap'>
           <Header />
-          <main className="main">{children}</main>
+          <div className='category'>
+            <ul className='category-area'>
+              <li className='category-item active'>
+                <Link href='/'>*</Link>
+              </li>
+              <li className='category-item'>
+                <Link href='til'>TIL</Link>
+              </li>
+              <li className='category-item'>
+                <Link href='archive'>Archive</Link>
+              </li>
+            </ul>
+          </div>
+          <main className='main'>{children}</main>
           <Footer />
         </div>
       </body>

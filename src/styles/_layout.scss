@@ -51,6 +51,7 @@ h1 {
     @include mixin.flex-alignment(center, center, normal);
 
     padding: 0.5rem 1rem;
+    font-size: 14px;
     border-radius: 8px;
 
     &.active {
