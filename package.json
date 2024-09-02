@@ -29,6 +29,7 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "prettier": "^3.3.3",
+    "prettier-plugin-organize-attributes": "^1.0.0",
     "sass": "^1.77.8",
     "stylelint": "^16.9.0",
     "stylelint-config-property-sort-order-smacss": "^10.0.0",
