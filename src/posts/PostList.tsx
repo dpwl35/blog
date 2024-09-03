@@ -7,10 +7,11 @@ export default function PostList({ category, mdxFiles }: PostListProps) {
   return (
     <section className={category}>
       <div>현재 카테고리는 {category} 입니다</div>
-      <div>현재 파일목록은:</div>
-      <ul>
+      <ul className='post'>
         {mdxFiles.map((file) => (
-          <li key={file}>{file.replace('.mdx', '')}</li>
+          <li className='post-list' key={file}>
+            {file.replace('.mdx', '')}
+          </li>
         ))}
       </ul>
     </section>
