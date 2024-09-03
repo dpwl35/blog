@@ -33,6 +33,14 @@ h1 {
   width: 100%;
   height: fit-content;
   min-height: 100vh;
+
+  &-content-area {
+    position: relative;
+    padding: 1rem;
+    background-color: rgba(var(--background-color), 0.5);
+    border: 1px solid rgba(var(--border-color), 0.3);
+    border-radius: var(--border-radius);
+  }
 }
 
 .category {
@@ -61,11 +69,23 @@ h1 {
 }
 
 .post {
-  position: relative;
-  padding: 1rem;
-  background-color: rgba(var(--background-color), 0.5);
-  border: 1px solid rgba(var(--border-color), 0.3);
-  border-radius: var(--border-radius);
+  width: 100%;
+
+  &-label {
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #d6dbdc;
+    font-size: 12px;
+  }
+
+  &-item {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #d6dbdc;
+
+    &:last-of-type {
+      border-bottom: none;
+    }
+  }
 }
 
 footer {
