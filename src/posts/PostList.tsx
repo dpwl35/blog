@@ -1,6 +1,8 @@
+import Link from 'next/link';
+
 type PostListProps = {
   category: string;
-  mdxFiles: string[]; // mdxFiles 속성 추가
+  mdxFiles: string[];
 };
 
 export default function PostList({ category, mdxFiles }: PostListProps) {
@@ -10,7 +12,9 @@ export default function PostList({ category, mdxFiles }: PostListProps) {
       <ul className='post-list'>
         {mdxFiles.map((file) => (
           <li className='post-item' key={file}>
-            {file.replace('.mdx', '')}
+            <Link href={`/${category}/${file.replace('.mdx', '')}`}>
+              {file.replace('.mdx', '')}
+            </Link>
           </li>
         ))}
       </ul>
