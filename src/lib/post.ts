@@ -1,3 +1,5 @@
+import { serialize } from 'next-mdx-remote/serialize';
+import { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import fs from 'fs';
 import path from 'path';
 
@@ -16,7 +18,6 @@ function getMdxFileNamesInDirectory(directoryPath: string, baseDir: string): str
       result = result.concat(getMdxFileNamesInDirectory(itemPath, baseDir));
     } else if (path.extname(item) === '.mdx') {
       // 파일 확장자를 체크하여 .mdx 파일만 추가
-      // .mdx 파일의 경로를 baseDir을 기준으로 상대경로로 변환하여 추가
       const relativePath = path.relative(baseDir, itemPath);
       result.push(relativePath.replace(/\\/g, '/')); // 윈도우 경로 구분자를 슬래시로 변환
     }
@@ -26,16 +27,40 @@ function getMdxFileNamesInDirectory(directoryPath: string, baseDir: string): str
 }
 
 // .mdx 및 .md 파일의 내용 읽기
-export function getMdxFileContent(category: string, slug: string): string | null {
+export async function getMdxFileContent(
+  category: string,
+  slug: string,
+): Promise<MDXRemoteSerializeResult | null> {
   const mdxFilePath = path.join(process.cwd(), 'src', 'posts', category, `${slug}.mdx`);
   const mdFilePath = path.join(process.cwd(), 'src', 'posts', category, `${slug}.md`);
 
-  if (fs.existsSync(mdxFilePath)) {
-    return fs.readFileSync(mdxFilePath, 'utf8');
-  } else if (fs.existsSync(mdFilePath)) {
-    return fs.readFileSync(mdFilePath, 'utf8');
-  } else {
+  // 경로를 콘솔에 출력
+  console.log(`Category: ${category}, Slug: ${slug}`);
+  console.log(`Constructed MDX Path: ${mdxFilePath}`);
+  console.log(`Constructed MD Path: ${mdFilePath}`);
+
+  let fileContent: string | null = null;
+  try {
+    if (fs.existsSync(mdxFilePath)) {
+      fileContent = await fs.promises.readFile(mdxFilePath, 'utf8');
+    } else if (fs.existsSync(mdFilePath)) {
+      fileContent = await fs.promises.readFile(mdFilePath, 'utf8');
+    }
+  } catch (error) {
     console.error(`File not found: ${mdxFilePath} or ${mdFilePath}`);
+    return null;
+  }
+
+  if (fileContent === null) {
+    return null; // fileContent가 null인 경우 null 반환
+  }
+
+  // MDX 콘텐츠를 HTML로 변환
+  try {
+    const mdxSource = await serialize(fileContent);
+    return mdxSource;
+  } catch (error) {
+    console.error('Error serializing MDX content:', error);
     return null;
   }
 }
