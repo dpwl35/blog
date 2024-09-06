@@ -11,7 +11,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'j-35.blog',
-  description: 'j-35.blog',
+  description: '개인 블로그 Next.js 블로그 기록용 블로그',
 };
 
 export default function RootLayout({

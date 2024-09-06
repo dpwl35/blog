@@ -1,22 +1,42 @@
+import { Metadata } from 'next';
 import { getMdxFileContent } from '@/lib/post';
-import { GetServerSideProps } from 'next';
+import PostContent from '@/components/PostContent';
+import { notFound } from 'next/navigation';
 
-export default function PostPage({ params }: { params: { category: string; slug: string } }) {
+interface PostPageProps {
+  params: {
+    category: string;
+    slug: string;
+  };
+}
+
+export async function generateMetadata({ params }: PostPageProps): Promise<Metadata> {
   const { category, slug } = params;
+  const { content, metadata } = await getMdxFileContent(category, slug);
 
-  console.log(`Loading content for category: ${category}, slug: ${slug}`);
+  const title = metadata.title || '기본 제목';
+  const description = metadata.description || '기본 설명';
 
-  const content = getMdxFileContent(category, slug);
+  return {
+    title,
+    description,
+  };
+}
+
+export default async function PostPage({ params }: { params: { category: string; slug: string } }) {
+  const { category, slug } = params;
+  const { content, metadata } = await getMdxFileContent(category, slug);
 
   if (!content) {
-    console.error(`Content not found for category: ${category}, slug: ${slug}`);
-    return <div>404 - Not Found</div>;
+    notFound();
   }
 
   return (
-    <article>
-      {/* MDX 콘텐츠를 HTML로 변환하여 렌더링 */}
-      <div dangerouslySetInnerHTML={{ __html: content }} />
-    </article>
+    <>
+      <article>
+        <div>{metadata.date}</div>
+        <PostContent content={content} />
+      </article>
+    </>
   );
 }

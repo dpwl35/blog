@@ -27,19 +27,20 @@ function getMdxFileNamesInDirectory(directoryPath: string, baseDir: string): str
 }
 
 // .mdx 및 .md 파일의 내용 읽기
+interface Metadata {
+  title?: string;
+  description?: string;
+  date?: string;
+}
 export async function getMdxFileContent(
   category: string,
   slug: string,
-): Promise<MDXRemoteSerializeResult | null> {
+): Promise<{ content: MDXRemoteSerializeResult | null; metadata: Metadata }> {
   const mdxFilePath = path.join(process.cwd(), 'src', 'posts', category, `${slug}.mdx`);
   const mdFilePath = path.join(process.cwd(), 'src', 'posts', category, `${slug}.md`);
-
-  // 경로를 콘솔에 출력
-  console.log(`Category: ${category}, Slug: ${slug}`);
-  console.log(`Constructed MDX Path: ${mdxFilePath}`);
-  console.log(`Constructed MD Path: ${mdFilePath}`);
-
   let fileContent: string | null = null;
+  let metadata: Metadata = {};
+
   try {
     if (fs.existsSync(mdxFilePath)) {
       fileContent = await fs.promises.readFile(mdxFilePath, 'utf8');
@@ -48,20 +49,32 @@ export async function getMdxFileContent(
     }
   } catch (error) {
     console.error(`File not found: ${mdxFilePath} or ${mdFilePath}`);
-    return null;
+    return { content: null, metadata: {} };
   }
 
   if (fileContent === null) {
-    return null; // fileContent가 null인 경우 null 반환
+    return { content: null, metadata: {} };
   }
 
-  // MDX 콘텐츠를 HTML로 변환
   try {
+    // 메타데이터 추출
+    const metadataMatch = fileContent.match(/export\s+const\s+metadata\s*=\s*{([^}]*)}/);
+    if (metadataMatch) {
+      const metadataString = metadataMatch[1];
+      metadata = Object.fromEntries(
+        metadataString.split(',').map((pair) => {
+          const [key, value] = pair.split(':').map((s) => s.trim().replace(/(^"|"$)/g, ''));
+          return [key, value];
+        }),
+      ) as Metadata;
+    }
+
+    // MDX 콘텐츠를 HTML로 변환
     const mdxSource = await serialize(fileContent);
-    return mdxSource;
+    return { content: mdxSource, metadata };
   } catch (error) {
     console.error('Error serializing MDX content:', error);
-    return null;
+    return { content: null, metadata: {} };
   }
 }
 
