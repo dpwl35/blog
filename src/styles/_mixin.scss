@@ -1,3 +1,24 @@
+// breakpoint
+$breakpoint-small: 576px; // mobile
+$breakpoint-medium: 768px; // tablet
+$breakpoint-large: 1200px; // 큰 데스크탑
+
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == small {
+    @media (max-width: #{$breakpoint-small}) {
+      @content;
+    }
+  } @else if $breakpoint == medium {
+    @media (min-width: #{$breakpoint-small + 1}) and (max-width: #{$breakpoint-medium}) {
+      @content;
+    }
+  } @else if $breakpoint == large {
+    @media (min-width: #{$breakpoint-large + 1}) {
+      @content;
+    }
+  }
+}
+
 @mixin layout-width {
   width: 100%;
   max-width: 800px;
