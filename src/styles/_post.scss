@@ -1,0 +1,19 @@
+.post {
+  width: 100%;
+
+  &-label {
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #d6dbdc;
+    font-size: 12px;
+  }
+
+  &-item {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #d6dbdc;
+
+    &:last-of-type {
+      border-bottom: none;
+    }
+  }
+}
