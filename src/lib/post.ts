@@ -32,12 +32,14 @@ interface Metadata {
   description?: string;
   date?: string;
 }
+
 export async function getMdxFileContent(
   category: string,
   slug: string,
 ): Promise<{ content: MDXRemoteSerializeResult | null; metadata: Metadata }> {
   const mdxFilePath = path.join(process.cwd(), 'src', 'posts', category, `${slug}.mdx`);
   const mdFilePath = path.join(process.cwd(), 'src', 'posts', category, `${slug}.md`);
+
   let fileContent: string | null = null;
   let metadata: Metadata = {};
 
@@ -58,38 +60,41 @@ export async function getMdxFileContent(
 
   try {
     // 메타데이터 추출
-    const metadataMatch = fileContent.match(/export\s+const\s+metadata\s*=\s*{([^}]*)}/);
+    const metadataMatch = fileContent.match(/export\s+const\s+metadata\s*=\s*({[^}]*})/);
     if (metadataMatch) {
       const metadataString = metadataMatch[1];
-      metadata = Object.fromEntries(
-        metadataString.split(',').map((pair) => {
-          const [key, value] = pair.split(':').map((s) => s.trim().replace(/(^"|"$)/g, ''));
-          return [key, value];
-        }),
-      ) as Metadata;
+      metadata = JSON.parse(metadataString) as Metadata;
     }
 
     // MDX 콘텐츠를 HTML로 변환
     const mdxSource = await serialize(fileContent);
     return { content: mdxSource, metadata };
   } catch (error) {
-    console.error('Error serializing MDX content:', error);
+    console.error('Error processing MDX content:', error);
     return { content: null, metadata: {} };
   }
 }
 
-// 특정 카테고리의 모든 .mdx 파일 목록을 가져옴
-export function getMdxFiles(category: string): string[] {
+// 특정 카테고리의 모든 .mdx 파일 목록과 메타데이터를 가져옴
+export async function getMdxFilesWithMetadata(
+  category: string,
+): Promise<{ slug: string; metadata: Metadata }[]> {
   const directoryPath = path.join(process.cwd(), 'src', 'posts', category);
-  console.log(`디렉토리 경로: ${directoryPath}`);
 
   if (!fs.existsSync(directoryPath)) {
     console.log('디렉토리가 존재하지 않습니다.');
     return [];
   }
 
-  // .mdx 파일의 파일 이름만 찾기
-  const mdxFiles = getMdxFileNamesInDirectory(directoryPath, directoryPath);
-  console.log('읽어온 MDX 파일 이름 목록:', mdxFiles);
-  return mdxFiles;
+  const fileNames = getMdxFileNamesInDirectory(directoryPath, directoryPath);
+
+  const filesWithMetadata = await Promise.all(
+    fileNames.map(async (fileName) => {
+      const slug = fileName.replace(/\.mdx$/, '');
+      const { metadata } = await getMdxFileContent(category, slug);
+      return { slug, metadata };
+    }),
+  );
+
+  return filesWithMetadata;
 }

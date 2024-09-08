@@ -1,19 +1,28 @@
 import Link from 'next/link';
 
+interface Metadata {
+  title?: string;
+  description?: string;
+  date?: string;
+}
+
 type PostListProps = {
   category: string;
-  mdxFiles: string[];
+  filesWithMetadata: {
+    slug: string;
+    metadata: Metadata;
+  }[];
 };
 
-export default function PostList({ category, mdxFiles }: PostListProps) {
+export default function PostList({ category, filesWithMetadata }: PostListProps) {
   return (
     <section className={`post ${category}`}>
       <div className='post-label'>{category}</div>
       <ul className='post-list'>
-        {mdxFiles.map((file) => (
-          <li className='post-item' key={file}>
-            <Link className='post-item_link' href={`/${category}/${file.replace('.mdx', '')}`}>
-              {file.replace('.mdx', '')}
+        {filesWithMetadata.map(({ slug, metadata }) => (
+          <li className='post-item' key={slug}>
+            <Link className='post-item_link' href={`/${category}/${slug}`}>
+              {metadata.title || slug.replace('.mdx', '')}
             </Link>
           </li>
         ))}
