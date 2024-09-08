@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { getMdxFileContent } from '@/lib/post';
-import PostContent from '@/components/PostContent';
+import PostContent from '@/app/components/PostContent';
 import { notFound } from 'next/navigation';
 
 interface PostPageProps {

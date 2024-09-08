@@ -12,7 +12,7 @@ export default function PostList({ category, mdxFiles }: PostListProps) {
       <ul className='post-list'>
         {mdxFiles.map((file) => (
           <li className='post-item' key={file}>
-            <Link href={`/${category}/${file.replace('.mdx', '')}`}>
+            <Link className='post-item_link' href={`/${category}/${file.replace('.mdx', '')}`}>
               {file.replace('.mdx', '')}
             </Link>
           </li>

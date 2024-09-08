@@ -19,6 +19,10 @@
     &:last-of-type {
       border-bottom: none;
     }
+
+    &_link {
+      color: var(--color-gray-900);
+    }
   }
 
   &-header {
@@ -26,10 +30,6 @@
     padding-bottom: var(--spacing-xxlarge);
     margin-bottom: var(--spacing-xxlarge);
     border-bottom: 1px dotted var(--color-gray-500);
-  }
-
-  &-body {
-    width: 100%;
   }
 
   &-title {
@@ -45,6 +45,10 @@
     font-size: 12px;
     gap: var(--spacing-xsmall);
   }
+}
+
+.post-body {
+  width: 100%;
 
   h1 {
     font: var(--heading-1-bold);
