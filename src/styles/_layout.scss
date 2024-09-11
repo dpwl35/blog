@@ -37,6 +37,7 @@ body {
   &-content-area {
     position: relative;
     padding: 1rem;
+    font-size: 14px;
     background-color: rgba(var(--background-color), 0.5);
     border: 1px solid rgba(var(--border-color), 0.3);
     border-radius: var(--border-radius);
