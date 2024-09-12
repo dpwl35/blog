@@ -35,7 +35,9 @@ export default async function PostPage({ params }: { params: { category: string;
     <>
       <article className='post'>
         <div className='post-header'>
-          <div className='post-title'>{metadata.title}</div>
+          <div className='post-title'>
+            <h2 className='post-title_text'>{metadata.title}</h2>
+          </div>
           <div className='post-info'>
             <span className='post-category'>{category}</span>
             <span>|</span>

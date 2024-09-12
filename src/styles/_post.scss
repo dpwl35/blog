@@ -35,7 +35,11 @@
   &-title {
     margin-bottom: var(--spacing-xsmall);
     font: var(--heading-2-bold);
-    line-height: 2rem;
+
+    &_text {
+      font: var(--heading-2-bold);
+      line-height: 2rem;
+    }
   }
 
   &-info {

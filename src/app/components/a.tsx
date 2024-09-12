@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { ReactNode, AnchorHTMLAttributes } from 'react';
 
 interface AProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
@@ -7,23 +6,20 @@ interface AProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   href: string;
 }
 
-export function A({ children, className = 'dddd', href, ...props }: AProps) {
-  if (href[0] === '#') {
+export function A({ children, className = 'post-link', href, ...props }: AProps) {
+  if (href.startsWith('#')) {
     // 앵커 링크의 경우
     return (
-      <a className={`link ${className}`} href={href} {...props}>
-        {children}
+      <a className={`${className}`} href={href} {...props}>
+        {children}{' '}
       </a>
     );
-  } else {
-    // 외부 링크의 경우
+  } else if (href.startsWith('/') || href.startsWith('http')) {
+    // 내부 링크 및 외부 링크 처리
     return (
-      <Link href={href} passHref>
-        {/* Link 내부의 <a> 태그에 className 적용 */}
-        <a className={`link ${className}`} target='_blank' rel='noopener noreferrer' {...props}>
-          {children}
-        </a>
-      </Link>
+      <a href={href} className={`${className}`} {...props} target='_blank'>
+        {children}{' '}
+      </a>
     );
   }
 }
