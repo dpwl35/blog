@@ -27,7 +27,7 @@
 
   &-header {
     width: 100%;
-    margin-bottom: var(--spacing-xxlarge);
+    margin-bottom: var(--spacing-xxxlarge);
     padding-bottom: var(--spacing-xxlarge);
     border-bottom: 1px dotted var(--color-gray-500);
   }
@@ -53,6 +53,7 @@
 
 .post-body {
   width: 100%;
+  font: var(--body-4-regular);
 
   h1 {
     font: var(--heading-1-bold);
@@ -60,11 +61,13 @@
 
   h2 {
     margin-bottom: var(--spacing-xsmall);
-    font: var(--heading-2-bold);
+    font: var(--heading-1-bold);
   }
 
   h3 {
+    margin-top: var(--spacing-xxxlarge);
     margin-bottom: var(--spacing-xsmall);
+    font: var(--body-1-bold);
   }
 
   hr {
@@ -76,16 +79,14 @@
   }
 
   p {
-    margin-bottom: 1.25rem;
-    font: var(--body-3-regular);
+    margin-bottom: var(--spacing-medium);
   }
 
   a {
     color: var(--color-orange-500);
-    font: var(--body-3-regular);
   }
 
-  b {
-    font: var(--body-3-bold);
+  pre {
+    margin-bottom: var(--spacing-medium);
   }
 }
