@@ -2,6 +2,7 @@ import { serialize } from 'next-mdx-remote/serialize';
 import { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import fs from 'fs';
 import path from 'path';
+import rehypePrettyCode from 'rehype-pretty-code';
 
 // 모든 .mdx 파일을 찾는 재귀 함수
 function getMdxFileNamesInDirectory(directoryPath: string, baseDir: string): string[] {
@@ -66,8 +67,21 @@ export async function getMdxFileContent(
       metadata = JSON.parse(metadataString) as Metadata;
     }
 
-    // MDX 콘텐츠를 HTML로 변환
-    const mdxSource = await serialize(fileContent);
+    // MDX 콘텐츠를 HTML로 변환하면서 rehypePrettyCode 적용
+    const mdxSource = await serialize(fileContent, {
+      mdxOptions: {
+        rehypePlugins: [
+          [
+            rehypePrettyCode,
+            {
+              theme: 'one-dark-pro',
+              keepBackground: true,
+            },
+          ],
+        ],
+      },
+    });
+
     return { content: mdxSource, metadata };
   } catch (error) {
     console.error('Error processing MDX content:', error);
