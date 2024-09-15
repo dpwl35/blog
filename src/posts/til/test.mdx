@@ -18,8 +18,7 @@ Next.js를 이용해서 블로그를 만들기로 했습니다.
 ### 레퍼런스 & 기술 스택
 <blockquote>
 - https://rauchg.com/
-- https://d5br5.dev/blog/nextjs_blog/setup
-
+- https://d5br5.dev/blog/nextjs_blog/setup  
 d5br5님이 작성해주신 글이 많은 도움이 되었습니다. 
 </blockquote>
 
@@ -50,15 +49,33 @@ Vercel은 Next.js의 개발사이기도 하며, Next.js와의 강력한 통합�
     posts: favicon등, 이미지 asset 저장
   src/
     app
-    lib
-    components
+    lib 
+    components : custom component
     layouts: Header, Footer, Main 등
-    posts: 게시글 mdx 파일 저장
+    posts: mdx 게시글 
+    style : scss
 ```
 
- 카테고리는 TIL과 Archive로 나눴습니다.
+ 게시글 카테고리는 TIL과 Archive로 나눴습니다.
  TIL : 기록 공간 
  Archive : 작업물 공간 
+
+
+### 기능 개발
+
+#### 1. 블로그 디자인과 scss구조
+블로그 디자인을 해야할까 고민하다가 Next.js를 처음 시작했을 때 나오는 메인 페이지 스타일을 살리기로 했습니다. 블로그의 경우 css가 복잡하지 않기 때문에 scss 7-1 패턴 구조에 사용하는 폴더 명을 블로그 규모에 맞게 수정해서 사용합니다.
+```
+  _base.scss : reset  / Typography 
+  _components : components
+  _layout : blog layput
+  _mixin :  Sass Mixins
+  _post : post style (pages)
+  _variables : Sass Variables
+```
+
+  
+#### 2. mdx 파일 parsing
 
 ```js showLineNumbers
 let 멍멍이 :[string, boolean];
@@ -70,3 +87,9 @@ function 함수(...x :[string, number] ){
   console.log(x)
 }
 ```
+
+#### 3. 상세페이지
+
+
+
+### 마무리

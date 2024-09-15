@@ -21,22 +21,22 @@ dd {
 
 ul,
 ol {
-  padding: 0;
   margin: 0;
+  padding: 0;
   list-style: none;
 }
 
 * {
   box-sizing: border-box;
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
 
 html,
 body {
-  height: 100%;
-  max-width: 100vw;
   overflow-x: hidden;
+  max-width: 100vw;
+  height: 100%;
 }
 
 html {

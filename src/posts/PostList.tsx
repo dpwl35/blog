@@ -16,7 +16,7 @@ type PostListProps = {
 
 export default function PostList({ category, filesWithMetadata }: PostListProps) {
   return (
-    <section className={`post ${category}`}>
+    <section className={`${category}`}>
       <div className='post-label'>{category}</div>
       <ul className='post-list'>
         {filesWithMetadata.map(({ slug, metadata }) => (

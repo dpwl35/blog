@@ -21,7 +21,7 @@ $breakpoint-large: 1200px; // 큰 데스크탑
 
 @mixin layout-width {
   width: 100%;
-  max-width: 800px;
+  max-width: 720px;
   margin: 0 auto;
 }
 
@@ -37,6 +37,6 @@ $breakpoint-large: 1200px; // 큰 데스크탑
 
 @mixin box-style {
   position: relative;
-  padding: 1rem;
   margin: 0;
+  padding: 1rem;
 }
