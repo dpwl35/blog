@@ -3,6 +3,7 @@ import { P as p } from '@/app/components/p';
 import { H1 as h1 } from '@/app/components/h1';
 import { H2 as h2 } from '@/app/components/h2';
 import { H3 as h3 } from '@/app/components/h3';
+import { H4 as h4 } from '@/app/components/h4';
 
 export function useMDXComponents(components: { [component: string]: React.ComponentType }) {
   return {
@@ -11,6 +12,7 @@ export function useMDXComponents(components: { [component: string]: React.Compon
     h1,
     h2,
     h3,
+    h4,
     p,
   };
 }
