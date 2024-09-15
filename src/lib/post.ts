@@ -74,8 +74,9 @@ export async function getMdxFileContent(
           [
             rehypePrettyCode,
             {
-              theme: 'one-dark-pro',
-              keepBackground: true,
+              theme: 'github-light',
+              keepBackground: true, // 배경 유지 옵션
+              showLineNumbers: true, // 줄 번호 표시 활성화
             },
           ],
         ],

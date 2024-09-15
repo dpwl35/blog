@@ -86,7 +86,45 @@
     color: var(--color-orange-500);
   }
 
+  // code block 설정
   pre {
     margin-bottom: var(--spacing-medium);
+    padding: var(--spacing-medium) 0;
+    background: rgb(255 255 255 / 0.4);
+    border-radius: 8px;
+  }
+
+  [data-rehype-pretty-code-figure] code {
+    counter-reset: line;
+  }
+
+  [data-rehype-pretty-code-figure] [data-line]::before {
+    counter-increment: line;
+  }
+
+  [data-line-numbers] > [data-line]::before {
+    display: inline-block;
+    width: 1rem;
+    margin-right: 1rem;
+    text-align: right;
+    content: counter(line);
+    color: gray;
+  }
+
+  [data-line-numbers-max-digits='2'] > [data-line]::before {
+    width: 1rem;
+  }
+
+  [data-line-numbers-max-digits='3'] > [data-line]::before {
+    width: 2rem;
+  }
+
+  // figure:not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+  //   border: 1px solid red;
+  // }
+
+  :where(pre > code > span):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+    padding-right: 1rem;
+    padding-left: 1.1rem;
   }
 }
