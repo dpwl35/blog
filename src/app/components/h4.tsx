@@ -10,9 +10,9 @@ export function H4({ children, className = 'default-class' }: H4Props) {
   const safeId = id.replace(/\s+/g, '-').toLowerCase();
 
   return (
-    <h3 id={safeId} className={className}>
+    <h4 id={safeId} className={className}>
       {' '}
       {children}
-    </h3>
+    </h4>
   );
 }
