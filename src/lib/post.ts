@@ -90,7 +90,7 @@ export async function getMdxFileContent(
   }
 }
 
-// 특정 카테고리의 모든 .mdx 파일 목록과 메타데이터를 가져옴
+// mdx 파일 조회
 export async function getMdxFilesWithMetadata(
   category: string,
 ): Promise<{ slug: string; metadata: Metadata }[]> {

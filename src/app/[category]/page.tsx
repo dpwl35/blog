@@ -9,7 +9,7 @@ type Props = {
 export const dynamicParams = false;
 
 function getCategoryList() {
-  return ['til', 'archive'];
+  return ['note', 'archive'];
 }
 
 export function generateStaticParams() {

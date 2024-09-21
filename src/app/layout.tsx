@@ -30,7 +30,7 @@ export default function RootLayout({
                 <Link href='/'>*</Link>
               </li>
               <li className='category-item'>
-                <Link href='/til'>TIL</Link>
+                <Link href='/note'>Note</Link>
               </li>
               <li className='category-item'>
                 <Link href='/archive'>Archive</Link>
