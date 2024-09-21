@@ -3,6 +3,20 @@ import { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import fs from 'fs';
 import path from 'path';
 import rehypePrettyCode from 'rehype-pretty-code';
+import matter from 'gray-matter';
+import { getHighlighter } from 'shiki';
+
+let highlighter: any;
+
+async function getShikiHighlighter() {
+  if (!highlighter) {
+    highlighter = await getHighlighter({
+      themes: ['github-light'],
+      langs: ['javascript', 'typescript', 'html', 'css'],
+    });
+  }
+  return highlighter;
+}
 
 // 모든 .mdx 파일을 찾는 재귀 함수
 function getMdxFileNamesInDirectory(directoryPath: string, baseDir: string): string[] {
@@ -27,13 +41,25 @@ function getMdxFileNamesInDirectory(directoryPath: string, baseDir: string): str
   return result;
 }
 
-// .mdx 및 .md 파일의 내용 읽기
+// 메타데이터 인터페이스 정의
 interface Metadata {
   title?: string;
   description?: string;
   date?: string;
 }
 
+// 메타데이터 추출 함수
+function extractMetadata(fileContent: string): Metadata {
+  try {
+    const { data } = matter(fileContent);
+    return data as Metadata;
+  } catch (error) {
+    console.error('Error extracting metadata:', error);
+    return {};
+  }
+}
+
+// MDX 파일을 읽고 변환하는 함수
 export async function getMdxFileContent(
   category: string,
   slug: string,
@@ -42,8 +68,8 @@ export async function getMdxFileContent(
   const mdFilePath = path.join(process.cwd(), 'src', 'posts', category, `${slug}.md`);
 
   let fileContent: string | null = null;
-  let metadata: Metadata = {};
 
+  // 1. 파일 읽기
   try {
     if (fs.existsSync(mdxFilePath)) {
       fileContent = await fs.promises.readFile(mdxFilePath, 'utf8');
@@ -55,39 +81,31 @@ export async function getMdxFileContent(
     return { content: null, metadata: {} };
   }
 
-  if (fileContent === null) {
+  if (!fileContent) {
     return { content: null, metadata: {} };
   }
 
-  try {
-    // 메타데이터 추출
-    const metadataMatch = fileContent.match(/export\s+const\s+metadata\s*=\s*({[^}]*})/);
-    if (metadataMatch) {
-      const metadataString = metadataMatch[1];
-      metadata = JSON.parse(metadataString) as Metadata;
-    }
+  // 2. gray-matter로 메타데이터와 콘텐츠 분리
+  const { content } = matter(fileContent);
+  const metadata = extractMetadata(fileContent);
 
-    // MDX 콘텐츠를 HTML로 변환하면서 rehypePrettyCode 적용
-    const mdxSource = await serialize(fileContent, {
-      mdxOptions: {
-        rehypePlugins: [
-          [
-            rehypePrettyCode,
-            {
-              theme: 'github-light',
-              keepBackground: true, // 배경 유지 옵션
-              showLineNumbers: true, // 줄 번호 표시 활성화
-            },
-          ],
+  // 3. MDX 콘텐츠를 HTML로 변환
+  const mdxSource = await serialize(content, {
+    mdxOptions: {
+      rehypePlugins: [
+        [
+          rehypePrettyCode,
+          {
+            highlighter: await getShikiHighlighter(), // 하이라이터 인스턴스 사용
+            keepBackground: true,
+            showLineNumbers: true,
+          },
         ],
-      },
-    });
+      ],
+    },
+  });
 
-    return { content: mdxSource, metadata };
-  } catch (error) {
-    console.error('Error processing MDX content:', error);
-    return { content: null, metadata: {} };
-  }
+  return { content: mdxSource, metadata };
 }
 
 // mdx 파일 조회

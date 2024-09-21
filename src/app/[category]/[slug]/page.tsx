@@ -12,7 +12,8 @@ interface PostPageProps {
 
 export async function generateMetadata({ params }: PostPageProps): Promise<Metadata> {
   const { category, slug } = params;
-  const { content, metadata } = await getMdxFileContent(category, slug);
+
+  const { metadata } = await getMdxFileContent(category, slug);
 
   const title = metadata.title || '기본 제목';
   const description = metadata.description || '기본 설명';
@@ -23,8 +24,9 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
   };
 }
 
-export default async function PostPage({ params }: { params: { category: string; slug: string } }) {
+export default async function PostPage({ params }: PostPageProps) {
   const { category, slug } = params;
+
   const { content, metadata } = await getMdxFileContent(category, slug);
 
   if (!content) {
