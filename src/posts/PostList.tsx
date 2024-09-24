@@ -2,8 +2,6 @@ import Link from 'next/link';
 
 interface Metadata {
   title?: string;
-  description?: string;
-  date?: string;
 }
 
 type PostListProps = {

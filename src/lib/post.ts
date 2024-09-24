@@ -43,6 +43,20 @@ function getMdxFileNamesInDirectory(directoryPath: string, baseDir: string): str
   return result;
 }
 
+// MDX 파일의 메타데이터를 가져오는 함수
+export async function getMdxFileMetadata(category: string, slug: string): Promise<Metadata> {
+  const mdxFilePath = path.join(process.cwd(), 'src', 'posts', category, `${slug}.mdx`);
+
+  if (!fs.existsSync(mdxFilePath)) {
+    return {};
+  }
+
+  const fileContent = await fs.promises.readFile(mdxFilePath, 'utf8');
+  const { data: metadata } = matter(fileContent);
+
+  return metadata;
+}
+
 // MDX 파일을 읽고 변환하는 함수
 export async function getMdxFileContent(
   category: string,
@@ -55,7 +69,7 @@ export async function getMdxFileContent(
   }
 
   const fileContent = await fs.promises.readFile(mdxFilePath, 'utf8');
-  const { content, data: metadata } = matter(fileContent);
+  const { content } = matter(fileContent); // 메타데이터는 가져오지 않음
 
   const mdxSource = await serialize(content, {
     mdxOptions: {
@@ -72,7 +86,7 @@ export async function getMdxFileContent(
     },
   });
 
-  return { content: mdxSource, metadata };
+  return { content: mdxSource, metadata: await getMdxFileMetadata(category, slug) }; // 메타데이터는 따로 가져옴
 }
 
 // mdx 파일 조회
@@ -91,7 +105,7 @@ export async function getMdxFilesWithMetadata(
   const filesWithMetadata = await Promise.all(
     fileNames.map(async (fileName) => {
       const slug = fileName.replace(/\.mdx$/, '');
-      const { metadata } = await getMdxFileContent(category, slug);
+      const metadata = await getMdxFileMetadata(category, slug); // 메타데이터만 가져옴
       return { slug, metadata };
     }),
   );

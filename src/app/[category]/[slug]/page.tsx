@@ -25,7 +25,7 @@ export default async function PostPage({ params }: { params: { category: string;
         </div>
       </div>
       <div className='post-body'>
-        <PostContent content={content} />
+        <PostContent content={content} /> {/* 콘텐츠를 서버 사이드에서 렌더링 */}
       </div>
     </article>
   );
