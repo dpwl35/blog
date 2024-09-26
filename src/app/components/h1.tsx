@@ -7,7 +7,6 @@ interface H1Props {
 
 export function H1({ children, className = 'post-h1' }: H1Props) {
   // 기본값 설정
-  // ReactNode를 문자열로 변환
   const id = typeof children === 'string' ? children : '';
 
   // 공백과 특수문자를 안전하게 변환 (필요 시)
@@ -15,9 +14,7 @@ export function H1({ children, className = 'post-h1' }: H1Props) {
 
   return (
     <h1 id={safeId} className={className}>
-      {' '}
-      {/* className 적용 */}
-      {children}
+      {children} {/* className 적용 */}
     </h1>
   );
 }

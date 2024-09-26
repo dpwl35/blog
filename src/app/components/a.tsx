@@ -1,4 +1,5 @@
 import { ReactNode, AnchorHTMLAttributes } from 'react';
+import React from 'react';
 
 interface AProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   children: ReactNode;
@@ -17,9 +18,22 @@ export function A({ children, className = 'post-link', href, ...props }: AProps)
   } else if (href.startsWith('/') || href.startsWith('http')) {
     // 내부 링크 및 외부 링크 처리
     return (
-      <a href={href} className={`${className}`} {...props} target='_blank'>
+      <a
+        href={href}
+        className={`${className}`}
+        {...props}
+        target='_blank'
+        rel='noopener noreferrer'
+      >
         {children}{' '}
       </a>
+    );
+  } else {
+    // 기본 반환값 처리
+    return (
+      <span className={`${className}`} {...props}>
+        {children}{' '}
+      </span>
     );
   }
 }
