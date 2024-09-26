@@ -24,6 +24,7 @@
     "rehype-pretty-code": "^0.14.0"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.25.1",
     "@types/mdast": "^4.0.4",
     "@types/node": "^20",
     "@types/react": "^18",
