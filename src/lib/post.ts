@@ -44,8 +44,12 @@ function getMdxFileNamesInDirectory(directoryPath: string, baseDir: string): str
 }
 
 // MDX 파일의 메타데이터를 가져오는 함수
-export async function getMdxFileMetadata(category: string, slug: string): Promise<Metadata> {
-  const mdxFilePath = path.join(process.cwd(), 'src', 'posts', category, `${slug}.mdx`);
+export async function getMdxFileMetadata(
+  category: string,
+  year: string,
+  slug: string,
+): Promise<Metadata> {
+  const mdxFilePath = path.join(process.cwd(), 'src', 'posts', category, year, `${slug}.mdx`);
 
   if (!fs.existsSync(mdxFilePath)) {
     return {};
@@ -60,16 +64,17 @@ export async function getMdxFileMetadata(category: string, slug: string): Promis
 // MDX 파일을 읽고 변환하는 함수
 export async function getMdxFileContent(
   category: string,
+  year: string,
   slug: string,
-): Promise<{ content: MDXRemoteSerializeResult | null; metadata: Metadata }> {
-  const mdxFilePath = path.join(process.cwd(), 'src', 'posts', category, `${slug}.mdx`);
+): Promise<{ content: any; metadata: Metadata }> {
+  const filePath = path.join(process.cwd(), 'src', 'posts', category, year, `${slug}.mdx`);
 
-  if (!fs.existsSync(mdxFilePath)) {
+  if (!fs.existsSync(filePath)) {
     return { content: null, metadata: {} };
   }
 
-  const fileContent = await fs.promises.readFile(mdxFilePath, 'utf8');
-  const { content } = matter(fileContent); // 메타데이터는 가져오지 않음
+  const fileContent = await fs.promises.readFile(filePath, 'utf8');
+  const { content, data: metadata } = matter(fileContent); // 메타데이터와 내용 분리
 
   const mdxSource = await serialize(content, {
     mdxOptions: {
@@ -77,7 +82,7 @@ export async function getMdxFileContent(
         [
           rehypePrettyCode,
           {
-            highlighter: await getShikiHighlighter(),
+            theme: 'github-light',
             keepBackground: true,
             showLineNumbers: true,
           },
@@ -86,29 +91,40 @@ export async function getMdxFileContent(
     },
   });
 
-  return { content: mdxSource, metadata: await getMdxFileMetadata(category, slug) }; // 메타데이터는 따로 가져옴
+  return { content: mdxSource, metadata }; // MDX 콘텐츠와 메타데이터 반환
 }
-
-// mdx 파일 조회
+// 특정 카테고리의 모든 연도 폴더에서 mdx 파일 조회
 export async function getMdxFilesWithMetadata(
   category: string,
-): Promise<{ slug: string; metadata: Metadata }[]> {
-  const directoryPath = path.join(process.cwd(), 'src', 'posts', category);
+): Promise<{ slug: string; year: string; metadata: Metadata }[]> {
+  const categoryPath = path.join(process.cwd(), 'src', 'posts', category);
 
-  if (!fs.existsSync(directoryPath)) {
+  if (!fs.existsSync(categoryPath)) {
     console.log('디렉토리가 존재하지 않습니다.');
     return [];
   }
 
-  const fileNames = getMdxFileNamesInDirectory(directoryPath, directoryPath);
+  // 연도 폴더를 탐색
+  const years = fs.readdirSync(categoryPath).filter((year) => {
+    return fs.statSync(path.join(categoryPath, year)).isDirectory(); // 연도 폴더만 선택
+  });
 
-  const filesWithMetadata = await Promise.all(
-    fileNames.map(async (fileName) => {
-      const slug = fileName.replace(/\.mdx$/, '');
-      const metadata = await getMdxFileMetadata(category, slug); // 메타데이터만 가져옴
-      return { slug, metadata };
-    }),
-  );
+  let filesWithMetadata: { slug: string; year: string; metadata: Metadata }[] = [];
+
+  for (const year of years) {
+    const yearPath = path.join(categoryPath, year);
+    const fileNames = getMdxFileNamesInDirectory(yearPath, yearPath);
+
+    const files = await Promise.all(
+      fileNames.map(async (fileName) => {
+        const slug = fileName.replace(/\.mdx$/, '');
+        const metadata = await getMdxFileMetadata(category, year, slug); // 메타데이터 가져오기
+        return { slug, year, metadata };
+      }),
+    );
+
+    filesWithMetadata = filesWithMetadata.concat(files); // 모든 연도 파일 합치기
+  }
 
   return filesWithMetadata;
 }

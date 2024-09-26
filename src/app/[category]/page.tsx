@@ -25,8 +25,15 @@ export default async function CategoryPage({ params }: Props) {
     notFound();
   }
 
-  // 카테고리에 따른 .mdx 파일 목록과 메타데이터 가져오기
   const filesWithMetadata = await getMdxFilesWithMetadata(category);
 
-  return <PostList category={category} filesWithMetadata={filesWithMetadata} />;
+  if (category === 'note') {
+    return <PostList category={category} filesWithMetadata={filesWithMetadata} />;
+  }
+
+  if (category === 'archive') {
+    return <div>....</div>;
+  }
+
+  return null;
 }
