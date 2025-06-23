@@ -1,0 +1,46 @@
+---
+title: "Next.js 블로그 만들기"
+publishedAt: "2024-04-08"
+summary: "dddd"
+---
+
+### Next.js
+
+소소한 기록용
+
+#### 1. 렌더링
+
+<b>SSR : </b> Next.js 에서 제공하는 가장 기본적인 사전 렌더링. 브라우저의 요청이
+있을 때 서버에서 HTML을 완성해서 브라우저로 전달.
+<b>SSG : </b> 정적 서비스에서 많이 사용하는 사전 렌더링 기법. 데이터가 변경될 여지가
+적다. HTML은 빌드 시점에 완성된다.
+<b>ISR : </b> SSG의 단점을 보완하는 사전 렌더링 기법. ex) 게시글의 조회수 빌드 시점은
+SSG와 같다.
+<b>PPR : </b> 부분 사전 렌더링. Next.js 14버전에서 등장했다. 빌드 시점에 미리 만들어지는
+정적인 영역. Shell(정적인 영역), HOles(동적인 영영)
+<br />
+#### 2. 라우팅
+<b>Dynamic Routes : </b> 동적으로 경로를 지정하는 방식.
+<b>App Router : </b> 리액트 서버 컴포넌트를 적극적으로 활용하는 라우터.
+<b>Route Groups : </b> 경로들을 묶어서 관리하는 기법. 괄호로 폴더명을 지으면 그 아래에
+있는 다른 폴더들, 다른 경로들이 하나의 레이아웃을 공유하는 구조.
+<br />
+#### 3. 데이터 페칭
+<b>Route Handlers : </b> 어디서든 api를 정의할 수 있다.
+<b>Server Actions : </b> 'use server' 라는 문장이 있는 스코프의 로직은 서버에서 동작한다.
+컴포넌트 안도 가능하다.
+<br />
+Front Matter : 상단에 3개의 하이픈으로 구분된 영역에 작성되는 값. 이후 메타데이터로
+활용. remark : 라이브러리. html 플러그인을 집어 넣어서 마크다운을 HTML로 변환.
+
+## Next.js 블로그입니다.
+
+---
+
+### 기술 스택
+
+[![My Skills](https://skillicons.dev/icons?i=nextjs,sass,css,ts,vercel)](https://skillicons.dev)
+
+### 주요 기능
+
+-

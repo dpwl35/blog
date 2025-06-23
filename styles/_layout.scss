@@ -7,7 +7,9 @@ body {
 }
 
 .wrap {
+  @include mixin.flex-layout(column, nowrap);
   padding: 1.5rem;
+  height: 100vh;
 }
 
 /* header */
@@ -33,7 +35,7 @@ body {
 
   width: 100%;
   height: fit-content;
-  min-height: 100vh;
+  flex: 1;
   margin-bottom: 200px;
 
   &-content-area {
@@ -78,4 +80,12 @@ footer {
 
   margin-top: 20px;
   font-size: 12px;
+
+  ul {
+    @include mixin.flex-layout(row, nowrap);
+
+    li a {
+      @include mixin.flex-layout(row, nowrap);
+    }
+  }
 }

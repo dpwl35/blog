@@ -25,6 +25,11 @@
     &_link {
       color: var(--color-gray-900);
     }
+
+    &_date {
+      color: var(--color-gray-700);
+      font-size: 12px;
+    }
   }
 
   &-header {
