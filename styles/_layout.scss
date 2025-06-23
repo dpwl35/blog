@@ -1,0 +1,81 @@
+@use "variables" as *;
+@use "mixin" as mixin;
+
+body {
+  font: var(--body-3-regular);
+  font-display: swap;
+}
+
+.wrap {
+  padding: 1.5rem;
+}
+
+/* header */
+.header {
+  @include mixin.layout-width;
+  @include mixin.flex-layout(row, nowrap);
+  @include mixin.flex-alignment(space-between, normal, normal);
+
+  margin-bottom: 2.5rem;
+  color: var(--color-text);
+
+  &-nav {
+    @include mixin.flex-layout(row, nowrap);
+    @include mixin.flex-alignment(center, center, normal);
+
+    gap: 1rem;
+    font-size: 12px;
+  }
+}
+
+.main {
+  @include mixin.layout-width;
+
+  width: 100%;
+  height: fit-content;
+  min-height: 100vh;
+  margin-bottom: 200px;
+
+  &-content-area {
+    position: relative;
+    padding: 1rem;
+    font-size: 14px;
+    background-color: rgba(var(--background-color), 0.5);
+    border: 1px solid rgba(var(--border-color), 0.3);
+    border-radius: var(--border-radius);
+  }
+}
+
+.category {
+  @include mixin.layout-width;
+
+  margin-bottom: 1.5rem;
+
+  &-area {
+    @include mixin.flex-layout(row, nowrap);
+
+    gap: 1rem;
+  }
+
+  &-item {
+    @include mixin.flex-layout(row, nowrap);
+    @include mixin.flex-alignment(center, center, normal);
+
+    padding: 0.5rem 1rem;
+    font-size: 14px;
+    border-radius: 8px;
+
+    &.active {
+      background-color: rgb(214 219 220);
+    }
+  }
+}
+
+footer {
+  @include mixin.layout-width;
+  @include mixin.flex-layout(row, nowrap);
+  @include mixin.flex-alignment(center, center, normal);
+
+  margin-top: 20px;
+  font-size: 12px;
+}
