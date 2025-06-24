@@ -9,7 +9,7 @@ body {
 .wrap {
   @include mixin.flex-layout(column, nowrap);
   padding: 1.5rem;
-  height: 100vh;
+  min-height: 100%;
 }
 
 /* header */
@@ -36,7 +36,7 @@ body {
   width: 100%;
   height: fit-content;
   flex: 1;
-  margin-bottom: 200px;
+  // margin-bottom: 200px;
 
   &-content-area {
     position: relative;
@@ -68,7 +68,9 @@ body {
     border-radius: 8px;
 
     &.active {
-      background-color: rgb(214 219 220);
+      // background-color: rgb(214 219 220);
+      background-color: rgba(var(--background-color), 0.5);
+      border: 1px solid rgba(var(--border-color), 0.3);
     }
   }
 }
