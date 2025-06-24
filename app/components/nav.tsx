@@ -4,6 +4,9 @@ const navItems = {
   "/blog": {
     name: "Note",
   },
+  "/archive": {
+    name: "archive",
+  },
 };
 
 export function Navbar() {

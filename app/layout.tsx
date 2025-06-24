@@ -44,10 +44,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="en"
-      className={cx("text-black bg-white dark:text-white dark:bg-black")}
-    >
+    <html lang="en" data-theme="light">
       <body>
         <div className="wrap">
           <Header />
