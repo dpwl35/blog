@@ -5,12 +5,12 @@ summary: "dddd"
 ---
 
 
-### Next.js 블로그 템플릿 수정하기
-Next.js 블로그 템플릿을 받아서 필요한 부분을 수정하고 기능을 추가했다.
+### Next.js 블로그 템플릿, 내 입맛대로 뜯어고치기
+기존 Next.js 블로그 템플릿을 내 블로그 스타일에 맞게 수정하고 필요한 기능들을 추가했다. 
 <br />
 <br />
 
-#### a 태그 생성시 정규식 수정하기 
+#### 한글이 잘리는 정규식 수정하기 
 ```javascript
 function slugify(str: string) {
   return str
@@ -27,9 +27,9 @@ Heading 태그 안의 텍스트가 **영문일 땐** `a` 태그의 `href`가 정
 <br />
 <br />
 
-#### 목차 만들기
-기존에는 Heading 태그 안에 a태그가 만들어지고 있어서 Heading 태그 안에 만들어지는 a태그를 지우고 따로 목차를 만들기로 했다.
-utils.ts 에서 MDX의 문자열(content)을 분석하고 있기 때문에 utils.ts에 getHeadingsFromContent() 함수를 추가해 목차 데이터를 만들고 Toc 컴포넌트로 보내준다. 
+#### 목차 자동 생성하기
+기존에는 MDX의 Heading 태그 안에 `<a>` 태그가 자동으로 생성되어 앵커 기능을 처리하고 있었다. heading태그 안에 a태그를 자동으로 생성할 필요는 없기 때문에 이 부분을 제거해주고 `utils.ts`에 `getHeadingsFromContent()` 함수를 만들어 `getBlogPosts()` 함수 내에서 heading 정보를 함께 반환하도록 처리했다. 이제 페이지 렌더링 시 `post.headings`를 `<Toc />`에 넘겨주면  
+본문 구조에 맞는 목차가 자동으로 생성된다.
 <br />
 <br />
 
