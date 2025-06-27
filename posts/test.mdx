@@ -1,6 +1,6 @@
 ---
 title: "Next.js 블로그 만들기"
-publishedAt: "2024-04-08"
+publishedAt: "2025-06-27"
 summary: "dddd"
 ---
 
@@ -24,6 +24,12 @@ function slugify(str: string) {
 ```
 Heading 태그 안의 텍스트가 **영문일 땐** `a` 태그의 `href`가 정상적으로 생성되는데, **한글일 땐 잘리는 현상**이 발생했다.  문제를 찾아보니, mdx.tsx에서 `slug` 생성 시 사용한 **정규식이 한글을 제외**하고 있었던 게 원인이었다. 정규식을 수정해서 **한글도 포함**되도록 처리했고, 현재는 정상적으로 동작한다.
 
+<br />
+<br />
+
+#### 목차 만들기
+기존에는 Heading 태그 안에 a태그가 만들어지고 있어서 Heading 태그 안에 만들어지는 a태그를 지우고 따로 목차를 만들기로 했다.
+utils.ts 에서 MDX의 문자열(content)을 분석하고 있기 때문에 utils.ts에 getHeadingsFromContent() 함수를 추가해 목차 데이터를 만들고 Toc 컴포넌트로 보내준다. 
 <br />
 <br />
 

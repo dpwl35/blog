@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { CustomMDX } from "app/components/mdx";
 import { formatDate, getBlogPosts } from "app/blog/utils";
 import { baseUrl } from "app/sitemap";
+import { Toc } from "app/components/toc";
 
 export async function generateStaticParams() {
   let posts = getBlogPosts();
@@ -82,6 +83,8 @@ export default function Blog({ params }) {
           }),
         }}
       />
+
+      <Toc headings={post.headings} />
 
       <div className="post-header">
         <h2 className="post-title">{post.metadata.title}</h2>

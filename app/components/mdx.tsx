@@ -53,18 +53,6 @@ function Code({ children, ...props }) {
   return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />;
 }
 
-// function slugify(str) {
-//   return str
-//     .toString()
-//     .toLowerCase()
-//     .trim() // Remove whitespace from both ends of a string
-//     .replace(/\s+/g, "-") // Replace spaces with -
-//     .replace(/&/g, "-and-") // Replace & with 'and'
-//     .replace(/[^\w가-힣\-]+/g, "")
-//     .replace(/\-\-+/g, "-") // Remove all non-word characters except for -
-//     .replace(/^-+|-+$/g, ""); // Replace multiple - with single -
-// }
-
 function slugify(str: string) {
   return str
     .toString()
@@ -78,8 +66,6 @@ function slugify(str: string) {
 function createHeading(level) {
   const Heading = ({ children }) => {
     let slug = slugify(children);
-
-    console.log(`Heading${level} slug:`, slug);
 
     return React.createElement(
       `h${level}`,
