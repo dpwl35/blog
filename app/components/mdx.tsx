@@ -58,8 +58,9 @@ function slugify(str: string) {
     .toString()
     .toLowerCase()
     .trim() // 앞뒤 공백 제거
+    .replace(/\./g, "")
+    .replace(/\s+/g, "-")
     .replace(/&/g, "-and-") // & → -and-
-    .replace(/[^\w가-힣\s\-]+/g, "") // 특수문자 제거 (공백과 하이픈, 한글 허용)
     .replace(/\s{2,}/g, " "); // 두 칸 이상 공백 → 한 칸
 }
 
