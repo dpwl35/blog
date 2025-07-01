@@ -1,4 +1,3 @@
-import "./global.css";
 import "@styles/style.scss";
 import type { Metadata } from "next";
 import { Header } from "./components/header";
