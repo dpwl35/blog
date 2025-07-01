@@ -1,4 +1,6 @@
 :root {
+  --color-text: #000;
+  --background: #fafafa;
   --text-color: #000;
   --border-radius: 12px;
   --background-color: 238, 240, 241;
@@ -74,11 +76,10 @@
 
 html[data-theme="light"] {
   --color-text: #000;
-  --background-color: 238, 240, 241;
-  --border-color: 172, 175, 176;
-  --border-radius: 12px;
+  --background: #fafafa;
 }
 
 html[data-theme="dark"] {
   --color-text: #fff;
+  --background: #1a1a1a;
 }
