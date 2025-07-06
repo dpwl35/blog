@@ -2,6 +2,7 @@
 @use "mixin" as mixin;
 
 .post {
+  position: relative;
   width: 100%;
   padding-top: var(--spacing-large);
   padding-bottom: var(--spacing-xxxlarge);
@@ -41,7 +42,7 @@
 
   &-title {
     margin-bottom: var(--spacing-xsmall);
-    font: var(--heading-2-bold);
+    font: var(--post-heading-1);
 
     &_text {
       font: var(--heading-2-bold);
@@ -51,6 +52,7 @@
 
   &-info {
     @include mixin.flex-layout(row, nowrap);
+    @include mixin.flex-alignment(space-between, center);
 
     color: var(--color-gray-700);
     font-size: 12px;
@@ -63,24 +65,25 @@
   font: var(--body-4-regular);
 
   h1 {
-    font: var(--heading-1-bold);
+    font: var(--post-heading-1);
   }
 
   h2 {
-    margin-bottom: var(--spacing-xsmall);
-    font: var(--heading-1-bold);
+    margin-top: var(--spacing-xxxlarge);
+    margin-bottom: var(--spacing-medium);
+    font: var(--post-heading-2);
   }
 
   h3 {
     margin-top: var(--spacing-xxxlarge);
     margin-bottom: var(--spacing-medium);
-    font: var(--heading-2-bold);
+    font: var(--post-heading-3);
   }
 
   h4 {
     margin-top: var(--spacing-medium);
     margin-bottom: var(--spacing-medium);
-    font: var(--body-1-bold);
+    font: var(--post-heading-4);
   }
 
   hr {
@@ -164,5 +167,40 @@
     ) {
     padding-right: 1rem;
     padding-left: 1.1rem;
+  }
+}
+
+.toc {
+  position: absolute;
+  left: 100%;
+  height: calc(100% + 150px);
+
+  &-container {
+    position: sticky;
+    top: 100px;
+    width: 200px;
+    padding: var(--spacing-medium);
+    margin-left: var(--spacing-xxxlarge);
+    margin-bottom: var(--spacing-xxxlarge);
+    background-color: rgba(var(--background-color), 0.5);
+    border: 1px solid rgba(var(--border-color), 0.3);
+  }
+
+  &-list {
+    margin-bottom: var(--spacing-xsmall);
+  }
+
+  &-link {
+    color: var(--color-gray-700);
+    font: var(--body-4-regular);
+    display: block;
+  }
+
+  a[data-depth="3"] {
+    text-indent: var(--spacing-small);
+  }
+
+  a[data-depth="4"] {
+    display: none;
   }
 }

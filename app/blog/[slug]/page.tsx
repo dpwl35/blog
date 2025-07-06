@@ -54,7 +54,7 @@ export function generateMetadata({ params }) {
 
 export default function Blog({ params }) {
   let post = getBlogPosts().find((post) => post.slug === params.slug);
-
+  const count = 100;
   if (!post) {
     notFound();
   }
@@ -87,11 +87,12 @@ export default function Blog({ params }) {
       <Toc headings={post.headings} />
 
       <div className="post-header">
-        <h2 className="post-title">{post.metadata.title}</h2>
+        <h1 className="post-title">{post.metadata.title}</h1>
         <div className="post-info">
-          <p className="text-sm text-neutral-600 dark:text-neutral-400">
+          <p className="post-info_date">
             {formatDate(post.metadata.publishedAt)}
           </p>
+          <div className="post-info_views"> {100} views</div>
         </div>
       </div>
 

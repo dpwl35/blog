@@ -30,12 +30,8 @@ $breakpoint-large: 1200px; // 큰 데스크탑
   flex-flow: $direction $wrap;
 }
 
-@mixin flex-alignment(
-  $justify: flex-start,
-  $align: stretch,
-  $content: stretch
-) {
-  place-content: $content $justify;
+@mixin flex-alignment($justify: flex-start, $align: normal, $content: normal) {
+  justify-content: $justify;
   align-items: $align;
 }
 

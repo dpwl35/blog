@@ -11,13 +11,10 @@ type TocProps = {
 export function Toc({ headings }: TocProps) {
   return (
     <nav className="toc">
-      <ul>
+      <ul className="toc-container">
         {headings.map(({ depth, text, id }) => (
-          <li key={id} style={{ marginLeft: (depth - 2) * 16 }}>
-            <a
-              href={`#${id}`}
-              className="text-sm text-blue-600 hover:underline"
-            >
+          <li key={id} className="toc-list">
+            <a href={`#${id}`} className="toc-link" data-depth={depth}>
               {text}
             </a>
           </li>

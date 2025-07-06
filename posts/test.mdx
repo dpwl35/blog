@@ -5,12 +5,12 @@ summary: "Next.js 블로그 만들기 Next.js 블로그 템플릿 수정하기"
 ---
 
 
-### Next.js 블로그 템플릿, 내 입맛대로 뜯어고치기
+## Next.js 블로그 템플릿, 내 입맛대로 뜯어고치기
 기존 Next.js 블로그 템플릿을 내 블로그 스타일에 맞게 수정하고 필요한 기능들을 추가했다. 
 <br />
 <br />
 
-#### 한글이 잘리는 정규식 수정하기 
+### 한글이 잘리는 정규식 수정하기 
 ```javascript
 function slugify(str: string) {
   return str
@@ -27,7 +27,7 @@ Heading 태그 안의 텍스트가 **영문일 땐** `a` 태그의 `href`가 정
 <br />
 <br />
 
-#### 목차 자동 생성하기
+### 목차 자동 생성하기
 기존에는 MDX의 Heading 태그 안에 `<a>` 태그가 자동으로 생성되어 앵커 기능을 처리하고 있었다. heading태그 안에 a태그를 자동으로 생성할 필요는 없기 때문에 이 부분을 제거해주고 `utils.ts`에 `getHeadingsFromContent()` 함수를 만들어 `getBlogPosts()` 함수 내에서 heading 정보를 함께 반환하도록 처리했다. 이제 페이지 렌더링 시 `post.headings`를 `<Toc />`에 넘겨주면 본문 구조에 맞는 목차가 자동으로 생성된다.
 <br />
 <br />
