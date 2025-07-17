@@ -84,6 +84,14 @@ footer {
 
   margin-top: 20px;
   font-size: 12px;
+  gap: 10px;
+
+  svg {
+    position: relative;
+    top: 4px;
+    width: 10px;
+    margin-right: 4px;
+  }
 
   ul {
     @include mixin.flex-layout(row, nowrap);
