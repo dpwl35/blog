@@ -184,6 +184,7 @@
     margin-bottom: var(--spacing-xxxlarge);
     background-color: rgba(var(--background-color), 0.5);
     border: 1px solid rgba(var(--border-color), 0.3);
+    transition: all 0.2s;
   }
 
   &-list {
@@ -192,8 +193,11 @@
 
   &-link {
     color: var(--color-gray-700);
-    font: var(--body-4-regular);
+    font-size: 12px;
     display: block;
+    &:hover {
+      color: var(--color-orange-500);
+    }
   }
 
   a[data-depth="3"] {
@@ -202,5 +206,17 @@
 
   a[data-depth="4"] {
     display: none;
+  }
+
+  @media (width < 1300px) {
+    position: relative;
+    left: unset;
+
+    &-container {
+      position: relative;
+      margin-left: 0;
+      top: unset;
+      width: 100%;
+    }
   }
 }

@@ -11,16 +11,16 @@ import { themeEffect } from "@utils/themeEffect";
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "Next.js Portfolio Starter",
-    template: "%s | Next.js Portfolio Starter",
+    default: "dpwl.35.blog",
+    template: "%s | dpwl.35.blog",
   },
-  description: "This is my portfolio.",
+  description: "소소한 기록용 블로그 입니다.",
   openGraph: {
-    title: "My Portfolio",
-    description: "This is my portfolio.",
-    url: baseUrl,
-    siteName: "My Portfolio",
-    locale: "en_US",
+    title: "dpwl.35.blog",
+    description: "소소한 기록용 블로그",
+    url: "https://dpwl35.com",
+    siteName: "dpwl.35.blog",
+    locale: "ko_KR",
     type: "website",
   },
   robots: {
@@ -44,7 +44,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="ko">
       <head>
         <script
           dangerouslySetInnerHTML={{
