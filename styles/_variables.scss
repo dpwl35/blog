@@ -62,10 +62,8 @@
   --body-4-bold: var(--weight-700) var(--body-4);
   --body-4-regular: var(--weight-400) var(--body-4);
 
-  --post-heading-1: var(--weight-600) 2.488rem / 1.2 var(--family);
-  --post-heading-2: var(--weight-600) 2.074rem / 1.2 var(--family);
-  --post-heading-3: var(--weight-600) 1.728rem / 1.2 var(--family);
-  --post-heading-4: var(--weight-600) 1.44rem / 1.2 var(--family);
+  --post-heading: var(--weight-600) 1.44rem / 1.2 var(--family);
+  --pose-body: var(--weight-400) 1rem / 1.75 var(--family);
 }
 
 @media (width <= 500px) {
@@ -77,10 +75,7 @@
     --body-3: 14px / 1.4286 var(--family);
     --body-4: 13px / 1.5385 var(--family);
 
-    --post-heading-1: var(--weight-600) 1.802rem / 1.2 var(--family);
-    --post-heading-2: var(--weight-600) 1.602rem / 1.2 var(--family);
-    --post-heading-3: var(--weight-600) 1.424rem / 1.2 var(--family);
-    --post-heading-4: var(--weight-600) 1.266rem / 1.2 var(--family);
+    --post-heading: var(--weight-600) 1.266rem / 1.2 var(--family);
   }
 }
 

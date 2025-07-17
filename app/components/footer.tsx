@@ -23,7 +23,7 @@ export default function Footer() {
           <a
             rel="noopener noreferrer"
             target="_blank"
-            href="https://github.com/vercel/next.js"
+            href="https://github.com/dpwl35/blog"
           >
             <ArrowIcon />
             <p className="ml-2 h-7">github</p>
