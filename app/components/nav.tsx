@@ -13,8 +13,8 @@ export function Navbar() {
   return (
     <div className="category">
       <nav className="category-area" id="nav">
-        <Link className="category-item active" href="/">
-          *
+        <Link className="category-item" href="/">
+          <h1>*</h1>
         </Link>
         {Object.entries(navItems).map(([path, { name }]) => {
           return (

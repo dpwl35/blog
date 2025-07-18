@@ -1,7 +1,6 @@
 import "@styles/style.scss";
 import type { Metadata } from "next";
 import { Header } from "./components/header";
-import { Navbar } from "./components/nav";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Footer from "./components/footer";
@@ -55,7 +54,6 @@ export default function RootLayout({
       <body>
         <div className="wrap">
           <Header />
-          <Navbar />
           <main className="main">
             {children}
             <Analytics />

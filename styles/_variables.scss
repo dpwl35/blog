@@ -1,11 +1,37 @@
-:root {
-  --color-text: #000;
-  --background: #fafafa;
-  --text-color: #000;
-  --border-radius: 12px;
-  --background-color: 238, 240, 241;
-  --border-color: 172, 175, 176;
+@font-face {
+  font-style: normal;
+  font-weight: 700;
+  font-family: Pretendard;
+  src: local("Pretendard"),
+    url("/font/Pretendard-Bold.subset.woff") format("woff");
+  font-display: swap;
+}
+@font-face {
+  font-style: normal;
+  font-weight: 600;
+  font-family: Pretendard;
+  src: local("Pretendard"),
+    url("/font/Pretendard-SemiBold.subset.woff") format("woff");
+  font-display: swap;
+}
+@font-face {
+  font-style: normal;
+  font-weight: 500;
+  font-family: Pretendard;
+  src: local("Pretendard"),
+    url("/font/Pretendard-Medium.subset.woff") format("woff");
+  font-display: swap;
+}
+@font-face {
+  font-style: normal;
+  font-weight: 400;
+  font-family: Pretendard;
+  src: local("Pretendard"),
+    url("/font/Pretendard-Regular.subset.woff") format("woff");
+  font-display: swap;
+}
 
+:root {
   /* color */
   --color-black: #000;
   --color-white: #fff;
@@ -32,9 +58,7 @@
   --spacing-xxxlarge: 60px;
 
   /* font */
-  --family: "pretendard", -apple-system, blinkmacsystemfont, "Segoe UI", roboto,
-    "Helvetica Neue", arial, "Noto Sans", sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --family: "pretendard", sans-serif;
   --weight-400: 400;
   --weight-500: 500;
   --weight-600: 600;
@@ -80,11 +104,24 @@
 }
 
 html[data-theme="light"] {
-  --color-text: #000;
+  --text-color: var(--color-gray-900);
   --background: #fafafa;
+  --border-radius: 12px;
+  --background-color: 238, 240, 241;
+  --border-color: 172, 175, 176;
+
+  *::selection {
+    background-color: var(--color-gray-300);
+    color: var(--color-gray-800);
+  }
 }
 
 html[data-theme="dark"] {
-  --color-text: #fff;
+  --text-color: var(--color-gray-300);
   --background: #1a1a1a;
+
+  *::selection {
+    background-color: var(--color-gray-300);
+    color: var(--color-gray-800);
+  }
 }

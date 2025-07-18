@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ThemeSwitcher } from "./theme-switcher";
+import { Navbar } from "./nav";
 
 const navList = [
   { name: "Home", href: "/" },
@@ -9,9 +10,7 @@ const navList = [
 export function Header() {
   return (
     <header className="header">
-      <Link href="/">
-        <h1>Blog</h1>
-      </Link>
+      <Navbar />
       <nav className="header-nav">
         <ThemeSwitcher />
         <Link className="header-nav-link" href="/about">

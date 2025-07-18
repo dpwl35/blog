@@ -19,5 +19,11 @@ button {
 
   svg {
     width: 1rem;
+    fill: var(--text-color);
+
+    path {
+      fill: var(--text-color);
+      stroke: var(--text-color);
+    }
   }
 }

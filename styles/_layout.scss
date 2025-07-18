@@ -2,10 +2,11 @@
 @use "mixin" as mixin;
 
 body {
-  font: var(--body-3-regular);
+  font-family: "Pretendard", sans-serif;
+  font-weight: 400;
   font-display: swap;
   background-color: var(--background);
-  color: var(--color-text);
+  color: var(--text-color);
 }
 
 .wrap {
@@ -21,7 +22,7 @@ body {
   @include mixin.flex-alignment(space-between, normal, normal);
 
   margin-bottom: 2.5rem;
-  color: var(--color-text);
+  color: var(--text-color);
 
   &-nav {
     @include mixin.flex-layout(row, nowrap);
@@ -53,8 +54,6 @@ body {
 .category {
   @include mixin.layout-width;
 
-  margin-bottom: 1.5rem;
-
   &-area {
     @include mixin.flex-layout(row, nowrap);
 
@@ -74,6 +73,10 @@ body {
       background-color: rgba(var(--background-color), 0.5);
       border: 1px solid rgba(var(--border-color), 0.3);
     }
+
+    h1 {
+      font-size: 14px;
+    }
   }
 }
 
@@ -85,6 +88,7 @@ footer {
   margin-top: 20px;
   font-size: 12px;
   gap: 10px;
+  color: var(--text-color);
 
   svg {
     position: relative;
