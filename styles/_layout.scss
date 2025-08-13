@@ -20,7 +20,7 @@ body {
   @include mixin.flex-layout(row, nowrap);
   @include mixin.flex-alignment(space-between, normal, normal);
 
-  padding-top: var(--spacing-medium);
+  padding-top: 100px;
   margin-bottom: var(--spacing-medium);
   color: var(--text-color);
 

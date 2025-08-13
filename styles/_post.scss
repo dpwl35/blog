@@ -180,7 +180,6 @@
     margin: 1.75rem 0;
     padding-left: 1rem;
     font-weight: 400;
-    position: relative;
   }
 
   // code block 설정
@@ -199,7 +198,8 @@
 .toc {
   position: absolute;
   left: 100%;
-  height: calc(100% + 150px);
+  // height: calc(100% + 150px);
+  height: 100%;
 
   &-container {
     position: sticky;
