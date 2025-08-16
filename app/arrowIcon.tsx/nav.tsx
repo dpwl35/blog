@@ -1,9 +1,8 @@
 import Link from "next/link";
-import ArrowIcon from "./arrowIcon";
 
 const navItems = {
   "/blog": {
-    name: "blog",
+    name: "Note",
   },
   "/archive": {
     name: "archive",
@@ -24,14 +23,8 @@ export function Navbar() {
             </Link>
           );
         })}
-        <Link
-          className="category-item"
-          href="https://dpwl35.github.io/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <span>Notes</span>
-          <ArrowIcon />
+        <Link className="category-item" href="/">
+          Notes
         </Link>
       </nav>
     </div>

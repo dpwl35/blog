@@ -77,6 +77,13 @@ body {
     h1 {
       font-size: 14px;
     }
+
+    .icon-arrow {
+      position: relative;
+      width: 10px;
+      margin-left: 4px;
+      top: 1px;
+    }
   }
 }
 
@@ -93,9 +100,9 @@ footer {
 
   svg {
     position: relative;
-    top: 4px;
-    width: 10px;
-    margin-right: 4px;
+    top: 1px;
+    width: 8px;
+    margin-left: 4px;
   }
 
   ul {
