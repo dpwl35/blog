@@ -6,6 +6,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import Footer from "./components/footer";
 import { baseUrl } from "./sitemap";
 import { themeEffect } from "@utils/themeEffect";
+import MainWrapper from "./components/main-wrapper";
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
@@ -54,11 +55,11 @@ export default function RootLayout({
       <body>
         <div className="wrap">
           <Header />
-          <main className="main">
+          <MainWrapper>
             {children}
             <Analytics />
             <SpeedInsights />
-          </main>
+          </MainWrapper>
           <Footer />
         </div>
       </body>

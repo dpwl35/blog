@@ -12,6 +12,7 @@ body {
 .wrap {
   @include mixin.flex-layout(column, nowrap);
   height: 100%;
+  position: relative;
 }
 
 /* header */
@@ -48,6 +49,14 @@ body {
     background-color: rgba(var(--background-color), 0.5);
     border: 1px solid rgba(var(--border-color), 0.3);
     border-radius: var(--border-radius);
+  }
+
+  &-archive {
+    .post-section {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
   }
 }
 

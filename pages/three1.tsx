@@ -1,3 +1,3 @@
 export default function Three1() {
-  return <section className="post-section">Three1 페이지</section>;
+  return <section className="modal">Three1 페fff이지</section>;
 }

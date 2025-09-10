@@ -27,3 +27,12 @@ button {
     }
   }
 }
+
+.button-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: #eee;
+  padding: var(--spacing-large);
+  z-index: 10;
+}
