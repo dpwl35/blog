@@ -1,3 +1,3 @@
-export default function Three1() {
-  return <section className="modal">Three1 페fff이지</section>;
+export default function Three1({ className }: { className?: string }) {
+  return <div className={className}>Three1 페이지</div>;
 }

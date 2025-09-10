@@ -39,7 +39,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
         <button className="button-close" onClick={handleClose}>
           X
         </button>
-        <Post />
+        <Post className="modal" />
       </div>
     );
   } catch (err) {

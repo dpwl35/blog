@@ -33,6 +33,8 @@ button {
   top: 1rem;
   right: 1rem;
   background-color: #eee;
-  padding: var(--spacing-large);
+  padding: var(--spacing-medium);
   z-index: 10;
+  cursor: pointer;
+  border-radius: var(--spacing-xsmall);
 }
