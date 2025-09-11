@@ -5,8 +5,9 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Footer from "./components/footer";
 import { baseUrl } from "./sitemap";
-import { themeEffect } from "@utils/themeEffect";
+//import { themeEffect } from "@utils/themeEffect";
 import MainWrapper from "./components/main-wrapper";
+import { cookies } from "next/headers";
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
@@ -43,14 +44,17 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const cookieStore = cookies();
+  const theme = cookieStore.get("theme")?.value || "light";
+
   return (
-    <html lang="ko">
+    <html lang="ko" data-theme={theme}>
       <head>
-        <script
+        {/* <script
           dangerouslySetInnerHTML={{
             __html: `(${themeEffect.toString()})()`,
           }}
-        />
+        /> */}
       </head>
       <body>
         <div className="wrap">
