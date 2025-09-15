@@ -1,3 +1,3 @@
 export default function Room({ className }: { className?: string }) {
-  return <div className={className}>ddd 페이지</div>;
+  return <div className={className}> 페이지</div>;
 }
