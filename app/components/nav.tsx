@@ -8,9 +8,6 @@ const navItems = {
   "/archive": {
     name: "archive",
   },
-  "/test": {
-    name: "test",
-  },
 };
 
 export function Navbar() {

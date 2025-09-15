@@ -25,7 +25,7 @@ export default function Modal({ children }: { children: React.ReactNode }) {
         duration: 0.6,
         ease: "power3.in",
         onComplete: () => {
-          router.push("/test");
+          router.push("/archive");
         },
       });
     }

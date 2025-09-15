@@ -7,7 +7,7 @@ export default function ArchiveLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const pageDir = path.join(process.cwd(), "test2");
+  const pageDir = path.join(process.cwd(), "lab");
   const files = fs
     .readdirSync(pageDir)
     .filter((f) => f.endsWith(".tsx"))
