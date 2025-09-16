@@ -37,22 +37,23 @@ const Light = () => {
 
 export default function Room({ className }: { className?: string }) {
   return (
-    <Canvas camera={{ position: [20, 0, 0], fov: 50 }}>
+    <Canvas camera={{ position: [20, 20, 20], fov: 40 }}>
       <color attach="background" args={["#ffffff"]} />
       <Light />
       <Scene />
-      {/* <OrbitControls
+      <OrbitControls
         makeDefault
         target={[-0.5, 2, 0]}
         enablePan={false}
-        minAzimuthAngle={-Math.PI / 2}
-        maxAzimuthAngle={Math.PI / 3}
         minPolarAngle={Math.PI / -1}
         maxPolarAngle={Math.PI / 3}
         maxDistance={15}
         minDistance={2}
-      /> */}
-      <OrbitControls makeDefault target={[-0.5, 2, 0]} />
+      />
+      {/* <OrbitControls makeDefault target={[-0.5, 2, 0]} /> */}
     </Canvas>
   );
 }
+
+/* minAzimuthAngle={-Math.PI / 2}
+        maxAzimuthAngle={Math.PI / 3} */

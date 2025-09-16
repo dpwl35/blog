@@ -41,7 +41,11 @@ body {
   height: fit-content;
   flex: 1;
   // margin-bottom: 200px;
-
+  &-content {
+    canvas {
+      height: 500px;
+    }
+  }
   &-content-area {
     position: relative;
     padding: 1rem;
