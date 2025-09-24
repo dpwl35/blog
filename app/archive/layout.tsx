@@ -8,15 +8,17 @@ export default function ArchiveLayout({
   children: React.ReactNode;
 }) {
   const pageDir = path.join(process.cwd(), "lab");
-  const files = fs
-    .readdirSync(pageDir)
-    .filter((f) => f.endsWith(".tsx"))
-    .map((file) => file.replace(/\.tsx$/, ""));
+
+  // lab/ 내부의 폴더들만 가져오기
+  const dirs = fs
+    .readdirSync(pageDir, { withFileTypes: true })
+    .filter((dirent) => dirent.isDirectory())
+    .map((dirent) => dirent.name);
 
   return (
     <section className="post-section">
       <ul className="post-list">
-        {files.map((slug) => (
+        {dirs.map((slug) => (
           <li key={slug} className="post-item">
             <Link href={`/archive/${slug}`} className="post-item_link">
               {slug}
