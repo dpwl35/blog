@@ -10,7 +10,7 @@ import {
   Html,
 } from "@react-three/drei";
 import { Suspense, useEffect, useRef, useState } from "react";
-
+import { Loader } from "@react-three/drei";
 import smokeVertexShader from "./shaders/vertex.glsl";
 import smokeFragmentShader from "./shaders/fragment.glsl";
 
@@ -184,26 +184,29 @@ export default function Room({ className }: { className?: string }) {
   const [isNight, setIsNight] = useState(true);
 
   return (
-    <Canvas
-      shadows={{ type: THREE.PCFSoftShadowMap }}
-      camera={{ position: [20, 20, 20], fov: 20 }}
-      gl={{
-        antialias: true, // 안티엘리어싱 활성화 (기본값)
-        powerPreference: "high-performance", // GPU 사용 최적화
-      }}
-      onCreated={({ gl }) => {
-        gl.shadowMap.enabled = true;
-        gl.shadowMap.type = THREE.PCFSoftShadowMap;
-      }}
-    >
-      <color attach="background" args={[isNight ? "#000000" : "#ffffff"]} />
+    <>
+      <Canvas
+        shadows={{ type: THREE.PCFSoftShadowMap }}
+        camera={{ position: [20, 20, 20], fov: 20 }}
+        gl={{
+          antialias: true, // 안티엘리어싱 활성화 (기본값)
+          powerPreference: "high-performance", // GPU 사용 최적화
+        }}
+        onCreated={({ gl }) => {
+          gl.shadowMap.enabled = true;
+          gl.shadowMap.type = THREE.PCFSoftShadowMap;
+        }}
+      >
+        <color attach="background" args={[isNight ? "#000000" : "#ffffff"]} />
 
-      {!isNight && <Environment preset="city" />}
+        {!isNight && <Environment preset="city" />}
 
-      <Light isNight={isNight} />
-      <Scene />
-      <Smoke />
-      {/* <OrbitControls
+        <Light isNight={isNight} />
+        <Suspense fallback={null}>
+          <Scene />
+        </Suspense>
+        <Smoke />
+        {/* <OrbitControls
         makeDefault
         target={[-0.5, 2, 0]}
         enablePan={false}
@@ -212,26 +215,28 @@ export default function Room({ className }: { className?: string }) {
         maxDistance={15}
         minDistance={2}
       /> */}
-      <OrbitControls makeDefault target={[-0.5, 2, 0]} />
+        <OrbitControls makeDefault target={[-0.5, 2, 0]} />
 
-      {/* Canvas 안에서 버튼 추가 */}
-      <Html position={[-2, 8, 0]}>
-        <button
-          onClick={() => setIsNight((prev) => !prev)}
-          style={{
-            padding: "8px 12px",
-            background: "#333",
-            color: "#fff",
-            border: "none",
-            borderRadius: "6px",
-            cursor: "pointer",
-            whiteSpace: "nowrap",
-          }}
-        >
-          {isNight ? "☀️ 낮으로" : "🌙 밤으로"}
-        </button>
-      </Html>
-    </Canvas>
+        {/* Canvas 안에서 버튼 추가 */}
+        <Html position={[-2, 8, 0]}>
+          <button
+            onClick={() => setIsNight((prev) => !prev)}
+            style={{
+              padding: "8px 12px",
+              background: "#333",
+              color: "#fff",
+              border: "none",
+              borderRadius: "6px",
+              cursor: "pointer",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {isNight ? "☀️ 낮으로" : "🌙 밤으로"}
+          </button>
+        </Html>
+      </Canvas>
+      <Loader />
+    </>
   );
 }
 
