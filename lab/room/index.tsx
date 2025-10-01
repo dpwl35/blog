@@ -14,6 +14,12 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import smokeVertexShader from "./shaders/vertex.glsl";
 import smokeFragmentShader from "./shaders/fragment.glsl";
 
+export const metadata = {
+  title: "Room",
+  description:
+    "r3f(React Three Fiber)를 활용해 GLB 모델 로드 후 낮/밤 조명 전환 구현",
+};
+
 const glassMaterial = new THREE.MeshPhysicalMaterial({
   transmission: 0.5,
   opacity: 1,
