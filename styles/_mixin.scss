@@ -3,7 +3,7 @@ $breakpoint-small: 576px; // mobile
 $breakpoint-medium: 768px; // tablet
 $breakpoint-large: 1200px; // 큰 데스크탑
 
-@mixin respond-to($breakpoint) {
+@mixin media($breakpoint) {
   @if $breakpoint == small {
     @media (max-width: #{$breakpoint-small}) {
       @content;

@@ -55,26 +55,41 @@ function RoundedImage(props) {
   return <Image alt={props.alt} className="rounded-lg" {...props} />;
 }
 
-function Code({ children, ...props }) {
-  let codeHTML = highlight(children);
-  return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />;
+function Code({ children, className, ...props }) {
+  // 인라인 코드 처리
+  if (!className) {
+    return <code {...props}>{children}</code>;
+  }
+
+  // 코드 블록 처리
+  const codeHTML = highlight(children);
+  return (
+    <code
+      className={className}
+      dangerouslySetInnerHTML={{ __html: codeHTML }}
+      {...props}
+    />
+  );
+}
+
+function Pre(props) {
+  return <pre className="post-code">{props.children}</pre>;
 }
 
 function slugify(str: string) {
   return str
     .toString()
     .toLowerCase()
-    .trim() // 앞뒤 공백 제거
+    .trim()
     .replace(/\./g, "")
     .replace(/\s+/g, "-")
-    .replace(/&/g, "-and-") // & → -and-
-    .replace(/\s{2,}/g, " "); // 두 칸 이상 공백 → 한 칸
+    .replace(/&/g, "-and-")
+    .replace(/[^\w\-]/g, "");
 }
 
 function createHeading(level) {
   const Heading = ({ children }) => {
     const slug = slugify(children);
-
     return React.createElement(`h${level}`, { id: slug }, children);
   };
 
@@ -92,6 +107,7 @@ let components = {
   Image: RoundedImage,
   a: CustomLink,
   code: Code,
+  pre: Pre,
   Table,
 };
 

@@ -182,17 +182,20 @@
     font-weight: 400;
   }
 
-  // code block 설정
-  pre {
-    line-height: 1rem;
-    margin-bottom: var(--spacing-large);
-  }
-
   mark {
     background-color: var(--color-gray-300);
     padding: 0 var(--spacing-xsmall);
     border-radius: 4px;
   }
+}
+
+// code block 설정
+.post-code {
+  background-color: var(--color-gray-50);
+  padding: var(--spacing-large);
+  line-height: 0.9;
+  margin-bottom: var(--spacing-large);
+  border-radius: var(--spacing-small);
 }
 
 .toc {

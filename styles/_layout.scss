@@ -13,6 +13,10 @@ body {
   @include mixin.flex-layout(column, nowrap);
   height: 100%;
   position: relative;
+
+  @include mixin.media(medium) {
+    padding: var(--spacing-xlarge);
+  }
 }
 
 /* header */
