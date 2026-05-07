@@ -4,7 +4,6 @@ import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import {
   OrbitControls,
-  useHelper,
   useGLTF,
   Environment,
   Html,
@@ -14,11 +13,7 @@ import { Loader } from "@react-three/drei";
 import smokeVertexShader from "./shaders/vertex.glsl";
 import smokeFragmentShader from "./shaders/fragment.glsl";
 
-export const metadata = {
-  title: "Room",
-  description:
-    "r3f(React Three Fiber)를 활용해 GLB 모델 로드 후 낮/밤 조명 전환 구현",
-};
+export { metadata } from "./metadata";
 
 const glassMaterial = new THREE.MeshPhysicalMaterial({
   transmission: 0.5,
@@ -111,13 +106,6 @@ const Scene = () => {
 useGLTF.preload("/models/room.glb");
 
 const Light = ({ isNight }: { isNight: boolean }) => {
-  const directionalLightRef = useRef<THREE.DirectionalLight>(null);
-  useHelper(directionalLightRef, THREE.DirectionalLightHelper, 2, "red");
-  const pointLightRef = useRef<THREE.PointLight>(null);
-  useHelper(pointLightRef, THREE.PointLightHelper, 0.5, "blue");
-  const spotLightRef = useRef<THREE.SpotLight>(null);
-  useHelper(spotLightRef, THREE.SpotLightHelper, "red");
-
   return (
     <>
       {isNight ? (
@@ -202,7 +190,24 @@ export default function Room({ className }: { className?: string }) {
         {!isNight && <Environment preset="city" />}
 
         <Light isNight={isNight} />
-        <Suspense fallback={null}>
+        <Suspense
+          fallback={
+            <Html center>
+              <div
+                style={{
+                  padding: "10px 14px",
+                  borderRadius: 10,
+                  background: "rgba(0, 0, 0, 0.45)",
+                  color: "#fff",
+                  fontSize: 13,
+                  pointerEvents: "none",
+                }}
+              >
+                loading room...
+              </div>
+            </Html>
+          }
+        >
           <Scene />
         </Suspense>
         <Smoke />

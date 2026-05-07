@@ -7,7 +7,11 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
-  const mod = await import(`../../../lab/${params.slug}`);
+  const mod =
+    params.slug === "room"
+      ? await import("../../../lab/room/metadata")
+      : await import(`../../../lab/${params.slug}`);
+
   return mod.metadata ?? { title: "Archive", description: "기본 설명" };
 }
 
@@ -21,6 +25,20 @@ export default async function Page({ params }: { params: { slug: string } }) {
   if (slug === "room") {
     const Post = dynamic(() => import(`../../../lab/room/index`), {
       ssr: false,
+      loading: () => (
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: 14,
+          }}
+        >
+          loading...
+        </div>
+      ),
     });
     return (
       <Modal>

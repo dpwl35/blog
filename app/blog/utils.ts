@@ -86,8 +86,16 @@ function getMDXData(dir) {
 }
 
 // "posts" 폴더 기준으로
-export function getBlogPosts() {
-  return getMDXData(path.join(process.cwd(), "posts"));
+type BlogPost = ReturnType<typeof getMDXData>[number];
+
+let blogPostsCache: BlogPost[] | null = null;
+
+export function getBlogPosts(): BlogPost[] {
+  // Vercel 환경에서 서버가 여러번 호출될 때, 매 요청마다 fs sync/MDX 파싱이 반복되면 느려질 수 있어 캐싱합니다.
+  if (blogPostsCache) return blogPostsCache;
+
+  blogPostsCache = getMDXData(path.join(process.cwd(), "posts"));
+  return blogPostsCache;
 }
 
 // 날짜 포맷팅
