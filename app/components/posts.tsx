@@ -16,9 +16,8 @@ export function BlogPosts() {
           return 1;
         })
         .map((post) => (
-          <li className="post-item">
+          <li key={post.slug} className="post-item">
             <Link
-              key={post.slug}
               className="post-item_link"
               href={`/blog/${post.slug}`}
             >

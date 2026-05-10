@@ -54,7 +54,7 @@ export function generateMetadata({ params }) {
 
 export default function Blog({ params }) {
   let post = getBlogPosts().find((post) => post.slug === params.slug);
-  const count = 100;
+ // const count = 100;
   if (!post) {
     notFound();
   }
@@ -92,7 +92,7 @@ export default function Blog({ params }) {
           <p className="post-info_date">
             {formatDate(post.metadata.publishedAt)}
           </p>
-          <div className="post-info_views"> {100} views</div>
+          {/* <div className="post-info_views"> {100} views</div> */}
         </div>
       </div>
 

@@ -2,11 +2,6 @@ import Link from "next/link";
 import { ThemeSwitcher } from "./theme-switcher";
 import { Navbar } from "./nav";
 
-const navList = [
-  { name: "Home", href: "/" },
-  { name: "Post", href: "/Post" },
-];
-
 export function Header() {
   return (
     <header className="header">
