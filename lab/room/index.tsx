@@ -7,9 +7,10 @@ import {
   useGLTF,
   Environment,
   Html,
+  useHelper,
+  Loader
 } from "@react-three/drei";
-import { Suspense, useEffect, useRef, useState } from "react";
-import { Loader } from "@react-three/drei";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import smokeVertexShader from "./shaders/vertex.glsl";
 import smokeFragmentShader from "./shaders/fragment.glsl";
 
@@ -34,16 +35,16 @@ const waxMaterial = new THREE.MeshPhysicalMaterial({
 });
 
 const Smoke = () => {
-  const meshRef = useRef<THREE.Mesh>(null);
-  const textureLoader = new THREE.TextureLoader();
-
   // 퍼린 노이즈 텍스처 (public/shaders/perlin.png 필요)
-  const perlinTexture = textureLoader.load("/shaders/perlin.png");
-  perlinTexture.wrapS = THREE.RepeatWrapping;
-  perlinTexture.wrapT = THREE.RepeatWrapping;
+  const perlinTexture = useMemo(() => {
+    const texture = new THREE.TextureLoader().load("/shaders/perlin.png");
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    return texture;
+  }, []);
 
   // ShaderMaterial
-  const smokeMaterial = new THREE.ShaderMaterial({
+  const smokeMaterial = useMemo(() => new THREE.ShaderMaterial({
     vertexShader: smokeVertexShader,
     fragmentShader: smokeFragmentShader,
     uniforms: {
@@ -53,12 +54,15 @@ const Smoke = () => {
     side: THREE.DoubleSide,
     transparent: true,
     depthWrite: false,
-  });
+  }), [perlinTexture]);
 
   // 지오메트리
-  const smokeGeometry = new THREE.PlaneGeometry(1, 1, 16, 64);
-  smokeGeometry.translate(0, 0.5, 0);
-  smokeGeometry.scale(0.33, 1, 0.33);
+  const smokeGeometry = useMemo(() => {
+    const geo = new THREE.PlaneGeometry(1, 1, 16, 64);
+    geo.translate(0, 0.5, 0);
+    geo.scale(0.33, 1, 0.33);
+    return geo;
+  }, []);
 
   // uTime 업데이트
   useFrame(({ clock }) => {
@@ -67,7 +71,6 @@ const Smoke = () => {
 
   return (
     <mesh
-      ref={meshRef}
       geometry={smokeGeometry}
       material={smokeMaterial}
       position={[-1.8, 3, -2.1]}
@@ -75,7 +78,7 @@ const Smoke = () => {
   );
 };
 
-const Scene = () => {
+const Scene =  ({ isNight }: { isNight: boolean }) => {
   const { scene } = useGLTF("/models/room.glb");
 
   useEffect(() => {
@@ -94,23 +97,32 @@ const Scene = () => {
           child.material = waxMaterial;
         }
 
-        // if (name.includes("floor")) {
-        //   child.receiveShadow = true;
-        // }
+        if (name.includes("lamp1") || name.includes("cylinder002")) {
+          child.material = child.material.clone();
+          child.material.emissive = new THREE.Color("#ffffff");
+          child.material.emissiveIntensity = isNight ? 2 : 0;
+        }
+
+        if (name.includes("floor")) {
+          child.receiveShadow = true;
+        }
       }
     });
-  }, [scene]);
+  }, [scene, isNight]);
 
   return <primitive object={scene} />;
 };
 useGLTF.preload("/models/room.glb");
 
 const Light = ({ isNight }: { isNight: boolean }) => {
+  // const pointLightRef = useRef<any>(null);
+  // useHelper(pointLightRef, THREE.PointLightHelper, 0.5);
+
   return (
     <>
       {isNight ? (
         <>
-          <ambientLight intensity={0.2} color={0x222244} />
+          <ambientLight intensity={1} color={0x222244} />
           <directionalLight
             // ref={directionalLightRef}
             position={[3, 10, -5]}
@@ -119,38 +131,38 @@ const Light = ({ isNight }: { isNight: boolean }) => {
             castShadow
           />
           <pointLight
-            // ref={pointLightRef}
-            position={[-2.9, 3.5, -2.2]}
+            //ref={pointLightRef}
+            position={[-2.9, 3.5, -2.1]}
             intensity={10}
-            distance={50}
-            decay={10}
+            distance={15}
+            decay={1}
             castShadow
             color={"#ffffff"}
+            shadow-bias={-0.005} 
             shadow-mapSize-width={1024}
             shadow-mapSize-height={1024}
           />
           <pointLight
-            // ref={pointLightRef}
+           //ref={pointLightRef}
             position={[-2.1, 5, 0.1]}
             intensity={30}
             distance={7}
             decay={2}
             castShadow
             color={"#ffffff"}
+            shadow-bias={-0.005} 
             shadow-mapSize-width={1024}
             shadow-mapSize-height={1024}
           />
-          {/* <spotLight
-            ref={spotLightRef}
-            position={[-2.3, 5.5, 0.1]} // 스탠드 위치
-            angle={0.5} // 조금 넓게
-            penumbra={0.6} // 가장자리 부드럽게
-            intensity={150} // 충분히 밝게
-            distance={8} // 책상 높이에 닿도록
-            decay={1.5} // 감쇠 완화
-            color={"#fff5cc"} // 전구 색
-            castShadow
-          /> */}
+          <spotLight
+            //ref={spotLightRef}
+            color='#ffffff' // 조명 색상
+            intensity={80} // 조명 세기
+            position={[-2.3, 5.5, 0.1]}
+            distance={5} // 조명이 영향을 미치는 거리 (기본값: 0, 무한한 거리)
+            angle={THREE.MathUtils.degToRad(30)}
+            penumbra={1} // 빛 감쇠율 (기본값: 0)
+          />
         </>
       ) : (
         <>
@@ -189,6 +201,7 @@ export default function Room({ className }: { className?: string }) {
 
         {!isNight && <Environment preset="city" />}
 
+
         <Light isNight={isNight} />
         <Suspense
           fallback={
@@ -208,7 +221,7 @@ export default function Room({ className }: { className?: string }) {
             </Html>
           }
         >
-          <Scene />
+          <Scene isNight={isNight} />
         </Suspense>
         <Smoke />
         {/* <OrbitControls
@@ -223,7 +236,7 @@ export default function Room({ className }: { className?: string }) {
         <OrbitControls makeDefault target={[-0.5, 2, 0]} />
 
         {/* Canvas 안에서 버튼 추가 */}
-        <Html position={[-2, 8, 0]}>
+        {/* <Html position={[0, 8, 0]}>
           <button
             onClick={() => setIsNight((prev) => !prev)}
             style={{
@@ -238,8 +251,27 @@ export default function Room({ className }: { className?: string }) {
           >
             {isNight ? "☀️ 낮으로" : "🌙 밤으로"}
           </button>
-        </Html>
+        </Html> */}
       </Canvas>
+      <button
+        onClick={() => setIsNight((prev) => !prev)}
+        style={{
+          position: "absolute",
+          top: "10%",
+          left: "50%",
+          transform: "translateX(-50%)",
+          padding: "8px 12px",
+          background: "#333",
+          color: "#fff",
+          border: "none",
+          borderRadius: "6px",
+          cursor: "pointer",
+          whiteSpace: "nowrap",
+          zIndex: 10,
+        }}
+      >
+      {isNight ? "☀️ 낮으로" : "🌙 밤으로"}
+      </button>
       <Loader />
     </>
   );
