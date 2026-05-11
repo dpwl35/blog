@@ -1,4 +1,4 @@
-import { getBlogPosts } from 'app/blog/utils'
+import { getBlogPosts } from 'app/(main)/blog/utils'
 
 export const baseUrl = 'https://dpwl35.com'
 

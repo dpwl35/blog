@@ -9,7 +9,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const mod =
     params.slug === "room"
-      ? await import("../../../lab/room/metadata")
+      ? await import("../../../../lab/room/metadata")
       : await import(`../../../lab/${params.slug}`);
 
   return mod.metadata ?? { title: "Archive", description: "기본 설명" };
@@ -19,11 +19,11 @@ export default async function Page({ params }: { params: { slug: string } }) {
   const slug = params.slug;
 
   // [1] Modal은 클라이언트 전용
-  const Modal = dynamic(() => import("../../components/modal"), { ssr: false });
+  const Modal = dynamic(() => import("../../../components/modal"), { ssr: false });
 
   // [2] R3F 페이지일 경우 dynamic import + ssr:false
   if (slug === "room") {
-    const Post = dynamic(() => import(`../../../lab/room/index`), {
+    const Post = dynamic(() => import(`../../../../lab/room/index`), {
       ssr: false,
       loading: () => (
         <div

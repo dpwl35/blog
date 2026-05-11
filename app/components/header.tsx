@@ -8,9 +8,9 @@ export function Header() {
       <Navbar />
       <nav className="header-nav">
         <ThemeSwitcher />
-        <Link className="header-nav-link" href="/about">
+        {/* <Link className="header-nav-link" href="/about">
           about
-        </Link>
+        </Link> */}
       </nav>
     </header>
   );

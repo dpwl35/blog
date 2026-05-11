@@ -1,13 +1,9 @@
 import "@styles/style.scss";
 import type { Metadata } from "next";
-import { Header } from "./components/header";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import Footer from "./components/footer";
 import { baseUrl } from "./sitemap";
 import Script from "next/script";
 import { themeEffect } from "@utils/themeEffect";
-import MainWrapper from "./components/main-wrapper";
+
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
@@ -55,17 +51,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body>
-        <div className="wrap">
-          <Header />
-          <MainWrapper>
-            {children}
-            <Analytics />
-            <SpeedInsights />
-          </MainWrapper>
-          <Footer />
-        </div>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
