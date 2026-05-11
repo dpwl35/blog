@@ -84,7 +84,7 @@ function slugify(str: string) {
     .replace(/\./g, "")
     .replace(/\s+/g, "-")
     .replace(/&/g, "-and-")
-    .replace(/[^\w\-]/g, "");
+    .replace(/[^\w가-힣\-]/g, "");
 }
 
 function createHeading(level) {
