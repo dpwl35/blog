@@ -4,7 +4,7 @@ export default function LabLayout({
     children: React.ReactNode;
   }) {
     return (
-      <html lang="ko">
+      <html lang="ko" data-theme="light">
         <body>{children}</body>
       </html>
     );
