@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import Link from "next/link";
+import Image from "next/image";
 
 export default async function ArchiveLayout({
   children,
@@ -18,9 +19,13 @@ export default async function ArchiveLayout({
     dirs.map(async (slug) => {
       try {
         const mod = await import(`../../../lab/${slug}/metadata`);
-        return { slug, title: mod.metadata?.title ?? slug };
+        return {
+          slug,
+          title: mod.metadata?.title ?? slug,
+          image: mod.metadata?.image ?? null,
+        };
       } catch {
-        return { slug, title: slug };
+        return { slug, title: slug, image: null };
       }
     }),
   );
@@ -28,7 +33,7 @@ export default async function ArchiveLayout({
   return (
     <section className="post-section">
       <ul className="post-list">
-        {items.map(({ slug, title }) => (
+        {items.map(({ slug, title, image }) => (
           <li key={slug} className="post-item gallery">
             <Link
               href={`/lab/${slug}`}
@@ -36,7 +41,10 @@ export default async function ArchiveLayout({
               target="_blank"
               rel="noopener noreferrer"
             >
-              {title}
+              {image && (
+                <img src={image} alt={title} className="post-item_thumbnail" />
+              )}
+              <p className="post-item_title">{title}</p>
             </Link>
           </li>
         ))}

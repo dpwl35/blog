@@ -4,8 +4,7 @@
 .post {
   position: relative;
   width: 100%;
-  padding-top: var(--spacing-large);
-  padding-bottom: var(--spacing-xxxlarge);
+  padding: var(--spacing-large) 0 var(--spacing-xxxlarge);
   border-bottom: 1px solid rgba(var(--border-color), 0.3);
 
   &-label {
@@ -15,8 +14,8 @@
   }
 
   &-item {
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
+    position: relative;
+    padding: var(--spacing-medium) 0 var(--spacing-medium);
     border-bottom: 1px solid #d6dbdc;
 
     &:last-of-type {
@@ -30,6 +29,16 @@
     &_date {
       color: var(--color-gray-700);
       font-size: 12px;
+    }
+
+    &_title {
+      position: absolute;
+      right: var(--spacing-medium);
+      bottom: var(--spacing-medium);
+    }
+
+    &_thumbnail {
+      width: 100%;
     }
   }
 
@@ -60,6 +69,10 @@
     gap: var(--spacing-xsmall);
   }
 }
+
+// .gallery.post-item {
+//   background-color: rgba(var(--background-color), 0.5);
+// }
 
 .post-body {
   width: 100%;
