@@ -2,31 +2,41 @@ import fs from "fs";
 import path from "path";
 import Link from "next/link";
 
-export default function ArchiveLayout({
+export default async function ArchiveLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const pageDir = path.join(process.cwd(), "lab");
 
-  // lab/ 내부의 폴더들만 가져오기
   const dirs = fs
     .readdirSync(pageDir, { withFileTypes: true })
     .filter((dirent) => dirent.isDirectory())
     .map((dirent) => dirent.name);
 
+  const items = await Promise.all(
+    dirs.map(async (slug) => {
+      try {
+        const mod = await import(`../../../lab/${slug}/metadata`);
+        return { slug, title: mod.metadata?.title ?? slug };
+      } catch {
+        return { slug, title: slug };
+      }
+    }),
+  );
+
   return (
     <section className="post-section">
       <ul className="post-list">
-        {dirs.map((slug) => (
-          <li key={slug} className="post-item">
+        {items.map(({ slug, title }) => (
+          <li key={slug} className="post-item gallery">
             <Link
               href={`/lab/${slug}`}
               className="post-item_link"
               target="_blank"
               rel="noopener noreferrer"
             >
-              {slug}
+              {title}
             </Link>
           </li>
         ))}

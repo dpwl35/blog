@@ -8,7 +8,7 @@ import {
   Environment,
   Html,
   useHelper,
-  Loader
+  Loader,
 } from "@react-three/drei";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import smokeVertexShader from "./shaders/vertex.glsl";
@@ -44,17 +44,21 @@ const Smoke = () => {
   }, []);
 
   // ShaderMaterial
-  const smokeMaterial = useMemo(() => new THREE.ShaderMaterial({
-    vertexShader: smokeVertexShader,
-    fragmentShader: smokeFragmentShader,
-    uniforms: {
-      uTime: new THREE.Uniform(0),
-      uPerlinTexture: new THREE.Uniform(perlinTexture),
-    },
-    side: THREE.DoubleSide,
-    transparent: true,
-    depthWrite: false,
-  }), [perlinTexture]);
+  const smokeMaterial = useMemo(
+    () =>
+      new THREE.ShaderMaterial({
+        vertexShader: smokeVertexShader,
+        fragmentShader: smokeFragmentShader,
+        uniforms: {
+          uTime: new THREE.Uniform(0),
+          uPerlinTexture: new THREE.Uniform(perlinTexture),
+        },
+        side: THREE.DoubleSide,
+        transparent: true,
+        depthWrite: false,
+      }),
+    [perlinTexture],
+  );
 
   // 지오메트리
   const smokeGeometry = useMemo(() => {
@@ -71,14 +75,14 @@ const Smoke = () => {
 
   return (
     <mesh
-    geometry={smokeGeometry as any}
-    material={smokeMaterial as any}
+      geometry={smokeGeometry as any}
+      material={smokeMaterial as any}
       position={[-1.8, 3, -2.1]}
     />
   );
 };
 
-const Scene =  ({ isNight }: { isNight: boolean }) => {
+const Scene = ({ isNight }: { isNight: boolean }) => {
   const { scene } = useGLTF("/models/room.glb");
 
   useEffect(() => {
@@ -138,25 +142,25 @@ const Light = ({ isNight }: { isNight: boolean }) => {
             decay={1}
             castShadow
             color={"#ffffff"}
-            shadow-bias={-0.005} 
+            shadow-bias={-0.005}
             shadow-mapSize-width={1024}
             shadow-mapSize-height={1024}
           />
           <pointLight
-           //ref={pointLightRef}
+            //ref={pointLightRef}
             position={[-2.1, 5, 0.1]}
             intensity={30}
             distance={7}
             decay={2}
             castShadow
             color={"#ffffff"}
-            shadow-bias={-0.005} 
+            shadow-bias={-0.005}
             shadow-mapSize-width={1024}
             shadow-mapSize-height={1024}
           />
           <spotLight
             //ref={spotLightRef}
-            color='#ffffff' // 조명 색상
+            color="#ffffff" // 조명 색상
             intensity={80} // 조명 세기
             position={[-2.3, 5.5, 0.1]}
             distance={5} // 조명이 영향을 미치는 거리 (기본값: 0, 무한한 거리)
@@ -200,7 +204,6 @@ export default function Room({ className }: { className?: string }) {
         <color attach="background" args={[isNight ? "#000000" : "#ffffff"]} />
 
         {!isNight && <Environment preset="city" />}
-
 
         <Light isNight={isNight} />
         <Suspense
@@ -270,7 +273,7 @@ export default function Room({ className }: { className?: string }) {
           zIndex: 10,
         }}
       >
-      {isNight ? "☀️ 낮으로" : "🌙 밤으로"}
+        {isNight ? "☀️ 낮으로" : "🌙 밤으로"}
       </button>
       <Loader />
     </>
