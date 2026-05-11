@@ -181,7 +181,7 @@ const Light = ({ isNight }: { isNight: boolean }) => {
 };
 
 export default function Room({ className }: { className?: string }) {
-  const [isNight, setIsNight] = useState(true);
+  const [isNight, setIsNight] = useState(false);
 
   return (
     <>
