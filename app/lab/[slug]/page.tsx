@@ -7,7 +7,7 @@ export default function Page({ params }: { params: { slug: string } }) {
   });
 
   return (
-    <div style={{ width: "100vw", height: "100vh" }}>
+    <div className="wrap-lab">
       <Post />
     </div>
   );

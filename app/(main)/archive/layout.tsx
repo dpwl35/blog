@@ -18,19 +18,14 @@ export default function ArchiveLayout({
   return (
     <section className="post-section">
       <ul className="post-list">
-      <li className="post-item">
-  <Link
-    href="/lab/room"
-    className="post-item_link"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    room 새창
-  </Link>
-</li>
         {dirs.map((slug) => (
           <li key={slug} className="post-item">
-            <Link href={`/archive/${slug}`} className="post-item_link" >
+            <Link
+              href={`/lab/${slug}`}
+              className="post-item_link"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {slug}
             </Link>
           </li>

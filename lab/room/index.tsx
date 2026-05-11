@@ -71,8 +71,8 @@ const Smoke = () => {
 
   return (
     <mesh
-      geometry={smokeGeometry}
-      material={smokeMaterial}
+    geometry={smokeGeometry as any}
+    material={smokeMaterial as any}
       position={[-1.8, 3, -2.1]}
     />
   );
