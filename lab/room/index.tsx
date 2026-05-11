@@ -184,7 +184,11 @@ const Light = ({ isNight }: { isNight: boolean }) => {
   );
 };
 
-export default function Room({ className }: { className?: string }) {
+export default function Room({
+  transparent = false,
+}: {
+  transparent?: boolean;
+}) {
   const [isNight, setIsNight] = useState(false);
 
   return (
@@ -195,13 +199,16 @@ export default function Room({ className }: { className?: string }) {
         gl={{
           antialias: true, // 안티엘리어싱 활성화 (기본값)
           powerPreference: "high-performance", // GPU 사용 최적화
+          alpha: transparent,
         }}
         onCreated={({ gl }) => {
           gl.shadowMap.enabled = true;
           gl.shadowMap.type = THREE.PCFSoftShadowMap;
         }}
       >
-        <color attach="background" args={[isNight ? "#000000" : "#ffffff"]} />
+        {!transparent && (
+          <color attach="background" args={[isNight ? "#000000" : "#ffffff"]} />
+        )}
 
         {!isNight && <Environment preset="city" />}
 
@@ -237,44 +244,29 @@ export default function Room({ className }: { className?: string }) {
         minDistance={2}
       /> */}
         <OrbitControls makeDefault target={[-0.5, 2, 0]} />
-
-        {/* Canvas 안에서 버튼 추가 */}
-        {/* <Html position={[0, 8, 0]}>
-          <button
-            onClick={() => setIsNight((prev) => !prev)}
-            style={{
-              padding: "8px 12px",
-              background: "#333",
-              color: "#fff",
-              border: "none",
-              borderRadius: "6px",
-              cursor: "pointer",
-              whiteSpace: "nowrap",
-            }}
-          >
-            {isNight ? "☀️ 낮으로" : "🌙 밤으로"}
-          </button>
-        </Html> */}
       </Canvas>
-      <button
-        onClick={() => setIsNight((prev) => !prev)}
-        style={{
-          position: "absolute",
-          top: "10%",
-          left: "50%",
-          transform: "translateX(-50%)",
-          padding: "8px 12px",
-          background: "#333",
-          color: "#fff",
-          border: "none",
-          borderRadius: "6px",
-          cursor: "pointer",
-          whiteSpace: "nowrap",
-          zIndex: 10,
-        }}
-      >
-        {isNight ? "☀️ 낮으로" : "🌙 밤으로"}
-      </button>
+      {!transparent && (
+        <button
+          onClick={() => setIsNight((prev) => !prev)}
+          style={{
+            position: "absolute",
+            top: "10%",
+            left: "50%",
+            transform: "translateX(-50%)",
+            padding: "8px 12px",
+            background: "#333",
+            color: "#fff",
+            border: "none",
+            borderRadius: "6px",
+            cursor: "pointer",
+            whiteSpace: "nowrap",
+            zIndex: 10,
+          }}
+        >
+          {isNight ? "☀️ 낮으로" : "🌙 밤으로"}
+        </button>
+      )}
+      <Loader />
       <Loader />
     </>
   );
