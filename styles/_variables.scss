@@ -1,37 +1,12 @@
-@font-face {
-  font-style: normal;
-  font-weight: 700;
-  font-family: Pretendard;
-  src: local("Pretendard"),
-    url("/font/Pretendard-Bold.subset.woff") format("woff");
-  font-display: swap;
-}
-@font-face {
-  font-style: normal;
-  font-weight: 600;
-  font-family: Pretendard;
-  src: local("Pretendard"),
-    url("/font/Pretendard-SemiBold.subset.woff") format("woff");
-  font-display: swap;
-}
-@font-face {
-  font-style: normal;
-  font-weight: 500;
-  font-family: Pretendard;
-  src: local("Pretendard"),
-    url("/font/Pretendard-Medium.subset.woff") format("woff");
-  font-display: swap;
-}
-@font-face {
-  font-style: normal;
-  font-weight: 400;
-  font-family: Pretendard;
-  src: local("Pretendard"),
-    url("/font/Pretendard-Regular.subset.woff") format("woff");
-  font-display: swap;
-}
+@use "mixin" as mixin;
+
+@include mixin.font-face(700, "Pretendard-Bold");
+@include mixin.font-face(600, "Pretendard-SemiBold");
+@include mixin.font-face(500, "Pretendard-Medium");
+@include mixin.font-face(400, "Pretendard-Regular");
 
 :root {
+  // syntax highlight (sugar-high)
   --sh-identifier: #354150;
   --sh-keyword: #f47067;
   --sh-string: #00a99a;
@@ -42,7 +17,7 @@
   --sh-sign: #8996a3;
   --sh-comment: #a19595;
 
-  /* color */
+  // gray scale
   --color-black: #000;
   --color-white: #fff;
   --color-gray-50: #f8f8f8;
@@ -55,9 +30,18 @@
   --color-gray-700: #666;
   --color-gray-800: #333;
   --color-gray-900: #1c1c1c;
-  --color-orange-500: #f54;
 
-  /* spacing */
+  // point color
+  --color-orange-500: #ff5544;
+
+  // RGB 분리 — state layer에 rgb() / 0.xx 방식으로 사용
+  --color-black-rgb: 0 0 0;
+  --color-white-rgb: 255 255 255;
+  --color-orange-500-rgb: 255 85 68;
+
+  // ─────────────────────────────────────────
+  // spacing
+  // ─────────────────────────────────────────
   --spacing-none: 0;
   --spacing-xsmall: 5px;
   --spacing-small: 10px;
@@ -67,22 +51,41 @@
   --spacing-xxlarge: 30px;
   --spacing-xxxlarge: 60px;
 
-  /* font */
-  --family: "pretendard", sans-serif;
+  // ─────────────────────────────────────────
+  // border-radius
+  // ─────────────────────────────────────────
+  --radius-small: 6px;
+  --radius-medium: 8px;
+  --radius-large: 12px;
+  --radius-round: 9999px;
+
+  // ─────────────────────────────────────────
+  // z-index
+  // ─────────────────────────────────────────
+  --z-index-base: 0;
+  --z-index-above: 1;
+  --z-index-sticky: 100;
+  --z-index-fixed: 200;
+  --z-index-popup: 400;
+  --z-index-toast: 700;
+
+  // ─────────────────────────────────────────
+  // typography
+  // ─────────────────────────────────────────
+  --family: "Pretendard", sans-serif;
   --weight-400: 400;
   --weight-500: 500;
   --weight-600: 600;
   --weight-700: 700;
   --weight-900: 900;
 
-  /* Typography */
   --heading-1: 30px / 1.4124 var(--family);
   --heading-2: 24px / 1.4124 var(--family);
   --body-1: 20px / 1.3 var(--family);
   --body-2: 18px / 1.3333 var(--family);
   --body-3: 16px / 1.375 var(--family);
   --body-4: 15px / 1.4124 var(--family);
-  --heading-0-bold: var(--weight-700) var(--heading-0);
+
   --heading-1-bold: var(--weight-700) var(--heading-1);
   --heading-1-regular: var(--weight-400) var(--heading-1);
   --heading-2-bold: var(--weight-700) var(--heading-2);
@@ -108,17 +111,32 @@
     --body-2: 16px / 1.375 var(--family);
     --body-3: 14px / 1.4286 var(--family);
     --body-4: 13px / 1.5385 var(--family);
-
     --post-heading: var(--weight-600) 1.266rem / 1.2 var(--family);
+    --post-body: var(--weight-400) 0.873rem / 1.4286 var(--family);
   }
 }
 
 html[data-theme="light"] {
-  --text-color: var(--color-gray-900);
-  --background: #fafafa;
-  --border-radius: 12px;
-  --background-color: 238, 240, 241;
-  --border-color: 172, 175, 176;
+  // background
+  --color-background: var(--color-white);
+  --color-surface: #f4f5f5;
+  --color-surface-hover: #eeefef;
+
+  // border
+  --color-border: var(--color-gray-300);
+  --color-border-subtle: var(--color-gray-200);
+
+  // text
+  --color-text: var(--color-gray-900);
+  --color-text-muted: var(--color-gray-600);
+  --color-text-disabled: var(--color-gray-400);
+
+  // accent
+  --color-accent: var(--color-orange-500);
+  --color-accent-rgb: var(--color-orange-500-rgb);
+
+  // state layer (M3 방식 — light: 검정 레이어)
+  --color-state-layer-rgb: var(--color-black-rgb);
 
   *::selection {
     background-color: var(--color-gray-300);
@@ -127,11 +145,29 @@ html[data-theme="light"] {
 }
 
 html[data-theme="dark"] {
-  --text-color: var(--color-gray-300);
-  --background: #1a1a1a;
+  // background
+  --color-background: #1a1a1a;
+  --color-surface: #2a2a2a;
+  --color-surface-hover: #333;
+
+  // border
+  --color-border: #444;
+  --color-border-subtle: #333;
+
+  // text
+  --color-text: var(--color-gray-300);
+  --color-text-muted: var(--color-gray-500);
+  --color-text-disabled: var(--color-gray-800);
+
+  // accent
+  --color-accent: var(--color-orange-500);
+  --color-accent-rgb: var(--color-orange-500-rgb);
+
+  // state layer (dark: 흰색 레이어)
+  --color-state-layer-rgb: var(--color-white-rgb);
 
   *::selection {
-    background-color: var(--color-gray-300);
-    color: var(--color-gray-800);
+    background-color: var(--color-gray-700);
+    color: var(--color-gray-200);
   }
 }

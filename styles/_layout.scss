@@ -4,9 +4,8 @@
 body {
   font-family: "Pretendard", sans-serif;
   font-weight: 400;
-  font-display: swap;
-  background-color: var(--background);
-  color: var(--text-color);
+  background-color: var(--color-background);
+  color: var(--color-text);
   width: 100%;
   height: 100%;
   min-height: 100%;
@@ -16,6 +15,10 @@ body {
   @include mixin.flex-layout(column, nowrap);
   height: 100%;
   position: relative;
+
+  @include mixin.media(small) {
+    padding: var(--spacing-large);
+  }
 
   @include mixin.media(medium) {
     padding: var(--spacing-xlarge);
@@ -32,15 +35,15 @@ body {
 .header {
   @include mixin.layout-width;
   @include mixin.flex-layout(row, nowrap);
-  @include mixin.flex-alignment(space-between, normal, normal);
+  @include mixin.flex-alignment(space-between, center);
 
   padding-top: 100px;
   margin-bottom: var(--spacing-medium);
-  color: var(--text-color);
+  color: var(--color-text);
 
   &-nav {
     @include mixin.flex-layout(row, nowrap);
-    @include mixin.flex-alignment(center, center, normal);
+    @include mixin.flex-alignment(center, center);
 
     gap: 1rem;
     font-size: 12px;
@@ -50,7 +53,6 @@ body {
 .main {
   @include mixin.layout-width;
 
-  width: 100%;
   height: fit-content;
   flex: 1;
   // margin-bottom: 200px;
@@ -60,30 +62,11 @@ body {
     }
   }
   &-content-area {
+    @include mixin.box-surface(var(--radius-large));
+
     position: relative;
     padding: 1rem;
     font-size: 14px;
-    background-color: rgba(var(--background-color), 0.5);
-    border: 1px solid rgba(var(--border-color), 0.3);
-    border-radius: var(--border-radius);
-  }
-
-  &-archive {
-    .post-section {
-      position: relative;
-      width: 100%;
-      height: 100%;
-
-      &-inner {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: white;
-        z-index: 9999;
-      }
-    }
   }
 }
 
@@ -93,21 +76,23 @@ body {
   &-area {
     @include mixin.flex-layout(row, nowrap);
 
-    gap: 1rem;
+    gap: 2.5rem;
+
+    @include mixin.media(xsmall) {
+      gap: 1.75rem;
+    }
   }
 
   &-item {
     @include mixin.flex-layout(row, nowrap);
-    @include mixin.flex-alignment(center, center, normal);
+    @include mixin.flex-alignment(center, center);
 
-    padding: 0.5rem 1rem;
-    font-size: 14px;
-    border-radius: 8px;
+    font: var(--body-4-regular);
+    border-radius: var(--radius-medium);
 
     &.active {
-      // background-color: rgb(214 219 220);
-      background-color: rgba(var(--background-color), 0.5);
-      border: 1px solid rgba(var(--border-color), 0.3);
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
     }
 
     h1 {
@@ -126,13 +111,13 @@ body {
 footer {
   @include mixin.layout-width;
   @include mixin.flex-layout(row, nowrap);
-  @include mixin.flex-alignment(center, center, normal);
+  @include mixin.flex-alignment(center, center);
 
   margin-top: var(--spacing-xxlarge);
   padding-bottom: var(--spacing-xxlarge);
   font-size: 12px;
   gap: 10px;
-  color: var(--text-color);
+  color: var(--color-text);
 
   svg {
     position: relative;
@@ -148,10 +133,4 @@ footer {
       @include mixin.flex-layout(row, nowrap);
     }
   }
-}
-
-.modal {
-  position: relative;
-  width: 100%;
-  height: 100%;
 }

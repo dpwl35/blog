@@ -1,10 +1,27 @@
+@mixin font-face($weight, $file) {
+  @font-face {
+    font-style: normal;
+    font-weight: $weight;
+    font-family: Pretendard;
+    src:
+      local("Pretendard"),
+      url("/font/#{$file}.subset.woff") format("woff");
+    font-display: swap;
+  }
+}
+
 // breakpoint
+$breakpoint-xsmall: 320px;
 $breakpoint-small: 576px; // mobile
 $breakpoint-medium: 768px; // tablet
 $breakpoint-large: 1200px; // 큰 데스크탑
 
 @mixin media($breakpoint) {
-  @if $breakpoint == small {
+  @if $breakpoint == xsmall {
+    @media (max-width: #{$breakpoint-xsmall}) {
+      @content;
+    }
+  } @else if $breakpoint == small {
     @media (max-width: #{$breakpoint-small}) {
       @content;
     }
@@ -30,13 +47,13 @@ $breakpoint-large: 1200px; // 큰 데스크탑
   flex-flow: $direction $wrap;
 }
 
-@mixin flex-alignment($justify: flex-start, $align: normal, $content: normal) {
+@mixin flex-alignment($justify: flex-start, $align: normal) {
   justify-content: $justify;
   align-items: $align;
 }
 
-@mixin box-style {
-  position: relative;
-  margin: 0;
-  padding: 1rem;
+@mixin box-surface($radius: var(--radius-medium)) {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: $radius;
 }
