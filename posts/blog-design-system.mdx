@@ -1,0 +1,232 @@
+---
+title: "블로그에 디자인 시스템 적용하기"
+publishedAt: "2026-05-13"
+summary: "CSS 토큰 시스템 설계부터 다크모드 대응, M3 State Layer 방식 버튼까지"
+---
+
+블로그 규모에 맞는 작은 디자인 시스템을 만들었다.
+
+## 토큰이란
+디자인 토큰은 색상, 간격, 폰트 같은 값에 이름을 붙인 것이다. CSS 변수로 구현하면 이렇게 된다.
+ 
+```scss
+--color-gray-300: #ddd;
+--spacing-medium: 15px;
+--radius-large: 12px;
+```
+ 
+값 자체보다 이름이 중요하다. `#ddd` 는 그냥 색상이지만 `--color-border` 는 어디에 쓰는 색인지 바로 알 수 있다. 토큰은 보통 두 단계로 나눈다.
+ 
+**Primitive 토큰** — 색상 원시값. 직접 컴포넌트에 쓰지 않는다.
+ 
+```scss
+--color-gray-300: #ddd;
+--color-orange-500: #ff5544;
+```
+ 
+**Semantic 토큰** — 용도에 맞는 이름으로 primitive를 연결한다. 컴포넌트는 여기만 바라본다.
+ 
+```scss
+--color-border: var(--color-gray-300);
+--color-accent: var(--color-orange-500);
+```
+ 
+이렇게 나누면 다크모드 대응이 쉬워진다. 컴포넌트 코드는 그대로 두고 semantic 토큰 값만 테마에 따라 바꿔주면 되기 때문이다.
+
+## Primitive 토큰 — 색상 원시값 정의
+
+Primitive 토큰은 디자인 시스템의 가장 아래 단계다. 색상 팔레트를 숫자 스케일로 정의해둔다.
+
+```scss
+:root {
+  --color-gray-50: #f8f8f8;
+  --color-gray-100: #f4f4f4;
+  --color-gray-200: #eee;
+  --color-gray-300: #ddd;
+  --color-gray-400: #ccc;
+  --color-gray-500: #999;
+  --color-gray-600: #757575;
+  --color-gray-700: #666;
+  --color-gray-800: #333;
+  --color-gray-900: #1c1c1c;
+
+  --color-orange-500: #ff5544;
+}
+```
+
+숫자가 클수록 어두운 색이다. 이 값들은 컴포넌트에서 직접 쓰지 않는다. semantic 토큰에서만 참조한다. 
+
+```scss
+:root {
+  --color-black-rgb: 0 0 0;
+  --color-white-rgb: 255 255 255;
+  --color-orange-500-rgb: 255 85 68;
+}
+```
+한 가지 더 추가했다. state layer에서 opacity를 조절해야 하는 경우가 있어서 RGB 값을 별도로 저장해뒀다.  
+쉼표 대신 스페이스로 구분한 이유는 CSS `rgb()` 의 현대적인 문법 때문이다.
+
+```scss
+// 구버전
+rgba(0, 0, 0, 0.08)
+
+// 현대적인 문법
+rgb(var(--color-black-rgb) / 0.08)
+```
+
+
+## Semantic 토큰 — 테마별 의미 연결
+
+Semantic 토큰은 primitive 토큰을 용도에 맞는 이름으로 연결하는 단계다. 그리고 여기서 다크모드 분기가 일어난다.
+
+```scss
+html[data-theme="light"] {
+  --color-background: #fafafa;
+  --color-surface: #f4f5f5;
+  --color-surface-hover: #eeefef;
+
+  --color-border: #e3e4e4;
+  --color-border-subtle: var(--color-gray-200);
+
+  --color-text: var(--color-gray-900);
+  --color-text-muted: var(--color-gray-600);
+  --color-text-disabled: var(--color-gray-400);
+
+  --color-accent: var(--color-orange-500);
+  --color-accent-rgb: var(--color-orange-500-rgb);
+
+  --color-state-layer-rgb: var(--color-black-rgb);
+}
+
+html[data-theme="dark"] {
+  --color-background: #1a1a1a;
+  --color-surface: #2a2a2a;
+  --color-surface-hover: #333;
+
+  --color-border: #444;
+  --color-border-subtle: #333;
+
+  --color-text: var(--color-gray-300);
+  --color-text-muted: var(--color-gray-700);
+  --color-text-disabled: var(--color-gray-800);
+
+  --color-accent: var(--color-orange-500);
+  --color-accent-rgb: var(--color-orange-500-rgb);
+
+  --color-state-layer-rgb: var(--color-white-rgb);
+}
+```
+
+컴포넌트는 `--color-gray-300` 같은 primitive를 직접 참조하지 않는다. 항상 `--color-border` 같은 semantic 토큰만 바라본다. 덕분에 테마가 바뀌어도 컴포넌트 코드는 건드릴 필요가 없다.
+
+
+
+## 믹스인으로 반복 줄이기
+
+토큰을 정의했으면 자주 쓰는 패턴은 믹스인으로 묶어두면 편하다.
+
+```scss
+// 자주 쓰는 surface 스타일
+@mixin box-surface($radius: var(--radius-medium)) {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: $radius;
+}
+
+// flex 레이아웃
+@mixin flex-layout($direction: row, $wrap: nowrap) {
+  display: flex;
+  flex-flow: $direction $wrap;
+}
+
+@mixin flex-alignment($justify: flex-start, $align: normal) {
+  justify-content: $justify;
+  align-items: $align;
+}
+
+// 최대 너비 레이아웃
+@mixin layout-width {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+}
+```
+
+쓸 때는 이렇게 된다.
+
+```scss
+.category-item {
+  @include mixin.flex-layout(row, nowrap);
+  @include mixin.flex-alignment(center, center);
+
+  &.active {
+    @include mixin.box-surface;
+  }
+}
+
+.theme-toggle {
+  @include mixin.box-surface(var(--radius-large));
+}
+```
+
+`box-surface` 는 radius 인자를 받아서 카드처럼 크게 쓸 수도 있고, 버튼처럼 작게 쓸 수도 있다. 배경색이나 테두리는 항상 토큰에서 가져오기 때문에 테마가 바뀌어도 자동으로 대응된다.
+
+폰트도 반복이 많으면 믹스인으로 뺄 수 있다.
+
+```scss
+@mixin font-face($weight, $file) {
+  @font-face {
+    font-style: normal;
+    font-weight: $weight;
+    font-family: Pretendard;
+    src: local("Pretendard"), url("/font/#{$file}.subset.woff") format("woff");
+    font-display: swap;
+  }
+}
+
+@include font-face(700, "Pretendard-Bold");
+@include font-face(600, "Pretendard-SemiBold");
+@include font-face(500, "Pretendard-Medium");
+@include font-face(400, "Pretendard-Regular");
+```
+
+
+## 다크모드 대응
+
+다크모드는 `html` 에 `data-theme` 속성을 붙이는 방식으로 구현했다.
+
+```tsx
+// 테마 토글 버튼
+const toggleTheme = () => {
+  const html = document.documentElement;
+  const current = html.getAttribute("data-theme");
+  html.setAttribute("data-theme", current === "dark" ? "light" : "dark");
+};
+```
+
+CSS에서는 이렇게 분기한다.
+
+```scss
+html[data-theme="light"] {
+  --color-background: #fafafa;
+  --color-text: var(--color-gray-900);
+}
+
+html[data-theme="dark"] {
+  --color-background: #1a1a1a;
+  --color-text: var(--color-gray-300);
+}
+```
+
+컴포넌트는 토큰만 바라보기 때문에 따로 건드릴 게 없다.
+
+```scss
+body {
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+```
+
+토큰 설계를 제대로 해두면 다크모드 대응은 semantic 토큰 값을 교체하는 것으로 끝난다. 반대로 토큰 없이 색상을 직접 썼다면 모든 컴포넌트를 하나씩 찾아가며 고쳐야 한다.
+
+블로그 규모에서 디자인 시스템이 거창할 필요는 없다. 값에 이름을 붙이고, 한 곳에서 관리하는 것만으로도 충분히 유지보수하기 편한 구조가 된다.
