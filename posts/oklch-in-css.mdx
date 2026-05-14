@@ -1,0 +1,258 @@
+---
+title: "OKLCH in CSS"
+publishedAt: "2026-05-14"
+summary: "RGB, HSL의 한계부터 OKLCH 문법, 그라데이션 비교, 디자인 시스템 적용까지"
+---
+
+
+## HSL와 HSB
+
+RGB의 불편함을 해결하려고 나온 게 HSL과 HSB다. Hue로 색조를, Saturation으로 채도를, Lightness나 Brightness로 밝기를 조절하는 방식이라 훨씬 직관적이다. 포토샵, 일러스트레이터 컬러피커도 기본이 HSB다.
+
+근데 문제가 있다. HSL에서 Lightness를 똑같이 맞춰도 Hue에 따라 실제로 느껴지는 밝기가 다르다.
+
+```css
+/* Lightness 50%로 고정, Hue만 다름 */
+color: hsl(60, 100%, 50%);  /* 노랑 — 엄청 밝아 보임 */
+color: hsl(240, 100%, 50%); /* 파랑 — 훨씬 어두워 보임 */
+```
+
+수치상으로는 같은 밝기인데 눈에는 전혀 다르게 보인다. RGB 원색마다 사람이 느끼는 밝기가 제각각인데, HSL은 그걸 무시하고 동일하다고 가정해서 생기는 문제다. Saturation도 마찬가지다. 같은 Saturation 값이어도 보라색은 채도 차이가 거의 안 느껴지고, 다른 색은 확연히 차이가 난다. 그래서 HSL로 색 조합을 뽑으면 밝기나 채도가 들쑥날쑥하게 나온다. 어울리는 색 조합을 만들려면 엄청난 눈대중 피지컬이 필요한 이유가 여기 있다.
+
+## LAB, LCH  사람 눈 기준으로 만든 색 공간
+
+HSL의 문제를 해결하려면 색을 정의하는 공간 자체를 바꿔야 한다. 그래서 나온 게 CIELAB이다.
+
+CIELAB은 사람이 시각적으로 느끼기에 색 차이가 균일하게 나도록 색을 배치한 공간이다. HSL에서 Lightness 5%를 올리면 Hue마다 결과가 달랐던 것과 달리, CIELAB에서는 어떤 색이든 같은 수치만큼 조절하면 사람 눈에도 같은 만큼 차이가 난다.
+
+근데 LAB은 개발자가 직접 다루기 불편하다. L은 밝기, a는 녹색~빨강, b는 파랑~노랑을 나타내는데, a와 b 값을 조절해서 원하는 색을 뽑는 건 직관적이지 않다.
+
+그래서 LAB을 사람이 쓰기 편하게 바꾼 게 LCH다.
+
+```css
+color: lch(60% 80 30); /* L: 밝기, C: 채도, H: 색조 */
+```
+
+L은 밝기, C는 채도, H는 색조 각도다. HSL이랑 비슷한 느낌으로 쓸 수 있는데, 계산은 CIELAB 공간에서 한다. 그래서 Hue를 바꿔도 밝기가 일정하게 유지된다.
+
+근데 LCH도 한 가지 버그가 있다. 파란색 계열(Hue 270~330 구간)에서 채도나 밝기를 바꾸면 Hue가 파랑에서 보라로 틀어지는 문제가 생긴다.
+
+```css
+color: lch(0.35 110 300); /* 파랑 */
+color: lch(0.35 75 300);  /* 채도만 바꿨는데 보라가 됨 */
+```
+
+이 버그를 고친 게 바로 OKLCH다.
+
+## OKLCH — LCH의 버그를 고친 버전
+
+OKLCH는 2020년 Björn Ottosson이라는 개발자가 블로그에 올린 글에서 시작됐다. LCH의 파란색 hue shift 버그를 고치고 싶었고, 그 결과물이 Oklab과 OKLCH다.
+
+```css
+color: oklch(0.48 0.27 274); /* 파랑 */
+color: oklch(0.48 0.185 274); /* 채도만 바꿔도 여전히 파랑 */
+color: oklch(0.48 0.1 274);  /* 아직도 파랑 */
+```
+
+LCH에서 같은 조작을 하면 보라로 틀어졌던 것과 달리 OKLCH는 Hue가 유지된다.
+
+블로그 글 하나였던 게 몇 년 만에 CSS 스펙에 공식 채택됐고, 현재 모든 주요 브라우저에서 지원한다. Photoshop은 그라데이션 보간에 Oklab을 내장했고, Figma는 플러그인으로 쓸 수 있다. 다만 Illustrator 컬러피커에서 직접 OKLCH 값을 다루는 건 아직 지원하지 않는다.
+
+정리하면 색 공간의 발전 흐름은 이렇다.
+
+
+> RGB / hex   → 기계 친화적, 사람이 읽기 어려움  
+> HSL / HSB   → 사람이 읽기 편하지만 밝기가 불균일  
+> LAB / LCH   → 사람 눈 기준으로 균일하지만 파란색 버그 존재  
+> OKLCH       → LCH 버그 수정, 현재 가장 권장되는 색 공간  
+
+
+## OKLCH 문법 이해하기
+
+CSS에서 OKLCH는 이렇게 쓴다.
+
+```css
+color: oklch(L C H);
+color: oklch(L C H / a); /* opacity 포함 */
+```
+
+각 값의 의미는 이렇다.
+
+- `L` — 밝기. 0(검정)부터 1(흰색)까지. 0.5면 중간 밝기  
+- `C` — 채도. 0(무채색)부터 최대 약 0.37까지. 값이 클수록 선명한 색  
+- `H` — 색조 각도. 0~360도. 빨강 20, 노랑 90, 초록 140, 파랑 220, 보라 320  
+- `a` — 투명도. 0~1 또는 0~100%  
+
+```css
+color: oklch(0 0 0);         /* 검정 */
+color: oklch(1 0 0);         /* 흰색 */
+color: oklch(0.5 0 0);       /* 회색 */
+color: oklch(0.7 0.15 220);  /* 파랑 */
+color: oklch(0.7 0.15 140);  /* 같은 밝기, 같은 채도의 초록 */
+color: oklch(0 0 0 / 50%);  /* 반투명 검정 */
+```
+
+HSL이랑 비교하면 OKLCH가 얼마나 읽기 편한지 바로 보인다.
+
+```css
+/* HSL — 이 색이 뭔지 바로 알기 어렵다 */
+color: hsl(210, 60%, 64%);
+/* OKLCH — 밝기 70%, 적당한 채도, 파란 계열이라는 게 바로 보인다 */
+color: oklch(0.7 0.1 250);
+```
+
+같은 밝기와 채도를 유지하면서 색조만 바꾸는 것도 직관적이다.
+
+```css
+.button          { background: oklch(0.7 0.15 250); } /* 파랑 */
+.button.success  { background: oklch(0.7 0.15 140); } /* 초록 — 밝기, 채도 동일 */
+.button.danger   { background: oklch(0.7 0.15 20);  } /* 빨강 — 밝기, 채도 동일 */
+```
+
+HSL로 같은 작업을 하면 Hue만 바꿔도 밝기가 달라 보여서 일일이 수동으로 보정해야 했다. OKLCH에서는 L과 C를 고정하면 진짜로 균일한 결과가 나온다.
+
+## 그라데이션에서의 차이 
+
+OKLCH의 장점이 가장 눈에 띄는 곳이 그라데이션이다. RGB나 HSL로 그라데이션을 만들면 중간 부분이 이상하게 어둡거나 탁해지는 경우가 많다. 색 공간이 사람 눈 기준이 아니라 기계 기준으로 설계돼 있어서 생기는 문제다.
+
+CSS에서 그라데이션 보간 색 공간을 바꾸는 건 간단하다.
+
+![그라데이션 비교](/images/posts/oklch-in-css/oklch-in-css.jpg)
+
+RGB, HSL, OKLAB, OKLCH 네 가지를 비교하면 차이가 바로 보인다. RGB와 HSL은 중간에 탁하거나 어두운 구간이 생기고, OKLAB은 밝기가 균일하게 유지된다. OKLCH는 hue 각도를 따라 회전하며 보간하기 때문에 색조가 자연스럽게 변한다.
+
+기존 hex나 rgb 색상을 그대로 쓰면서 보간 방식만 바꾸고 싶으면 `in oklab` 한 줄만 추가하면 된다.
+
+```css
+/* 기존 코드에서 in oklab만 추가 */
+background: linear-gradient(to right in oklab, #ff4561, #59ff75);
+```
+
+Photoshop도 최근 그라데이션에 Oklab 보간을 내장했고, Illustrator도 베타에서 Perceptual 모드로 같은 방식을 지원하기 시작했다.
+
+
+## 디자인 시스템에 적용하면 뭐가 좋을까?
+
+OKLCH를 디자인 시스템 토큰에 적용하면 색 팔레트를 훨씬 일관성 있게 만들 수 있다.
+
+예를 들어 gray 스케일을 만들 때 hex로 하면 이렇다.
+
+```css
+:root {
+  --color-gray-100: #f4f4f4;
+  --color-gray-200: #eee;
+  --color-gray-300: #ddd;
+  --color-gray-400: #ccc;
+  --color-gray-500: #999;
+}
+```
+
+각 값이 실제로 균일한 밝기 차이를 가지는지 알 수 없다. 눈대중으로 맞춘 값들이라 어떤 구간은 차이가 크고 어떤 구간은 좁다.
+
+OKLCH로 바꾸면 L 값만 균일하게 조절하면 된다.
+
+```css
+:root {
+  --color-gray-100: oklch(0.96 0 0);
+  --color-gray-200: oklch(0.92 0 0);
+  --color-gray-300: oklch(0.86 0 0);
+  --color-gray-400: oklch(0.78 0 0);
+  --color-gray-500: oklch(0.60 0 0);
+}
+```
+
+L 값이 0.04씩 균일하게 줄어드니까 사람 눈에도 균일한 단계로 느껴진다.
+
+포인트 컬러도 마찬가지다. 같은 느낌의 버튼 색을 여러 개 만들고 싶을 때 L과 C를 고정하고 H만 바꾸면 밝기와 채도가 일정한 색 조합을 쉽게 뽑을 수 있다.
+
+```css
+:root {
+  --color-accent:  oklch(0.65 0.18 250); /* 파랑 */
+  --color-success: oklch(0.65 0.18 140); /* 초록 — 밝기, 채도 동일 */
+  --color-danger:  oklch(0.65 0.18 20);  /* 빨강 — 밝기, 채도 동일 */
+}
+```
+
+hex로 이런 조합을 만들려면 컬러피커를 열고 눈으로 맞춰야 했다. OKLCH는 숫자만 바꾸면 된다.
+
+다크모드도 더 예측 가능하게 만들 수 있다. L 값을 반전시키는 방식으로 라이트/다크 토큰을 설계하면 두 테마의 밝기 균형이 자연스럽게 맞아떨어진다.
+
+```css
+html[data-theme="light"] {
+  --color-surface: oklch(0.96 0.005 240);
+  --color-text:    oklch(0.2 0 0);
+}
+
+html[data-theme="dark"] {
+  --color-surface: oklch(0.2 0.005 240);
+  --color-text:    oklch(0.96 0 0);
+}
+```
+
+
+## Relative Colors — 토큰 하나로 hover까지
+
+CSS Color 5에서 추가된 Relative Colors는 OKLCH와 함께 쓸 때 진가가 나온다. 기존 색상에서 특정 값만 바꿔 새로운 색을 만드는 기능이다.
+
+```css
+.button {
+  background: oklch(from var(--color-accent) calc(l + 0.1) c h);
+}
+```
+
+`from var(--color-accent)` 로 기준 색을 가져오고, `l c h` 각 값을 그대로 쓰거나 `calc()` 로 조절할 수 있다. 위 예시는 accent 색에서 밝기만 10% 올린 색을 만드는 거다.
+
+실제로 쓰면 이렇게 된다.
+
+```css
+.button {
+  background: var(--color-accent);
+}
+.button:hover {
+  /* 10% 더 밝게 */
+  background: oklch(from var(--color-accent) calc(l + 0.1) c h);
+}
+.button:active {
+  /* 10% 더 어둡게 */
+  background: oklch(from var(--color-accent) calc(l - 0.1) c h);
+}
+```
+
+HSL로 같은 걸 하면 밝기가 Hue마다 달라서 예측하기 어렵다. OKLCH는 L이 진짜 밝기를 나타내기 때문에 `calc(l + 0.1)` 이 어떤 색이든 균일하게 10% 밝아진다는 게 보장된다.
+
+버튼 variant가 여러 개여도 hover 로직을 한 번만 정의하면 된다.
+
+```css
+.button {
+  background: var(--button-color);
+}
+.button:hover {
+  background: oklch(from var(--button-color) calc(l + 0.1) c h);
+}
+
+.button-primary  { --button-color: var(--color-accent); }
+.button-success  { --button-color: var(--color-success); }
+.button-danger   { --button-color: var(--color-danger); }
+```
+
+토큰 하나만 바꾸면 hover 색도 자동으로 따라온다. 지금까지 M3 State Layer 방식으로 해결하던 걸 CSS 네이티브로 할 수 있게 되는 거다.
+
+현재 모든 주요 브라우저에서 지원한다.
+
+
+## Adobe 지원, 생태계
+
+OKLCH가 좋은 건 알겠는데 당장 모든 걸 바꾸기엔 아쉬운 부분이 있다.
+
+**Adobe 지원이 느리다**
+
+Photoshop은 그라데이션 보간에 Oklab을 내장했고, Illustrator도 베타에서 Perceptual 그라데이션을 추가했다. 하지만 컬러피커에서 OKLCH 값을 직접 입력하거나 뽑는 건 아직 안 된다. 디자이너가 Illustrator에서 HSB로 색을 뽑고 개발자가 CSS에서 OKLCH로 쓰면 중간에 변환 과정이 필요하다. Figma도 공식 지원은 없고 OkColor 플러그인으로 쓰는 수준이다.
+
+**모든 숫자 조합이 유효한 색은 아니다**
+
+OKLCH는 색 공간을 왜곡하지 않고 실제 색 공간을 그대로 보여준다. 그래서 L, C, H 조합에 따라 sRGB 범위를 벗어나는 색이 나올 수 있다. 브라우저가 자동으로 가장 가까운 색으로 보정해주긴 하지만, 의도한 색과 다를 수 있어서 oklch.com 같은 컬러피커로 확인하는 게 좋다.
+
+**기존 코드 마이그레이션**
+
+이미 hex나 rgb로 짜놓은 코드를 OKLCH로 전환하는 건 번거롭다. 다만 `npx convert-to-oklch` 같은 툴로 자동 변환할 수 있고, 기존 색상을 그대로 두고 그라데이션에서만 `in oklab` 을 추가하는 방식으로 점진적으로 적용할 수도 있다.
+
