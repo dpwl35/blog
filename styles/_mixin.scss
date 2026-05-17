@@ -1,11 +1,11 @@
-@mixin font-face($weight, $file) {
+@mixin font-face($family, $weight, $file, $format: "woff") {
   @font-face {
     font-style: normal;
     font-weight: $weight;
-    font-family: Pretendard;
+    font-family: $family;
     src:
-      local("Pretendard"),
-      url("/font/#{$file}.subset.woff") format("woff");
+      local($family),
+      url("/font/#{$file}") format($format);
     font-display: swap;
   }
 }

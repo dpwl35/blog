@@ -1,9 +1,16 @@
 @use "mixin" as mixin;
 
-@include mixin.font-face(700, "Pretendard-Bold");
-@include mixin.font-face(600, "Pretendard-SemiBold");
-@include mixin.font-face(500, "Pretendard-Medium");
-@include mixin.font-face(400, "Pretendard-Regular");
+// Pretendard
+@include mixin.font-face("Pretendard", 700, "Pretendard-Bold.subset.woff");
+@include mixin.font-face("Pretendard", 600, "Pretendard-SemiBold.subset.woff");
+@include mixin.font-face("Pretendard", 500, "Pretendard-Medium.subset.woff");
+@include mixin.font-face("Pretendard", 400, "Pretendard-Regular.subset.woff");
+@include mixin.font-face(
+  "JetBrainsMono",
+  400,
+  "JetBrainsMono-VariableFont_wght.ttf",
+  "truetype"
+);
 
 :root {
   // syntax highlight (sugar-high)
@@ -77,14 +84,13 @@
   --weight-500: 500;
   --weight-600: 600;
   --weight-700: 700;
-  --weight-900: 900;
 
   --heading-1: 30px / 1.4124 var(--family);
   --heading-2: 24px / 1.4124 var(--family);
   --body-1: 20px / 1.3 var(--family);
   --body-2: 18px / 1.3333 var(--family);
   --body-3: 16px / 1.375 var(--family);
-  --body-4: 15px / 1.4124 var(--family);
+  --body-4: 14px / 1.5 var(--family);
 
   --heading-1-bold: var(--weight-700) var(--heading-1);
   --heading-1-regular: var(--weight-400) var(--heading-1);

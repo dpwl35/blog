@@ -87,8 +87,10 @@ body {
     @include mixin.flex-layout(row, nowrap);
     @include mixin.flex-alignment(center, center);
 
-    font: var(--body-4-regular);
+    font-family: JetBrainsMono;
+    font-size: 14px;
     border-radius: var(--radius-medium);
+    font-weight: 500;
 
     &.active {
       background-color: var(--color-surface);
@@ -96,7 +98,9 @@ body {
     }
 
     h1 {
+      font-family: JetBrainsMono;
       font-size: 14px;
+      font-weight: 500;
     }
 
     .icon-arrow {
