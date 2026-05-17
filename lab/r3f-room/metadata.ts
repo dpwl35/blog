@@ -1,6 +1,9 @@
 export const metadata = {
-  title: "My Room",
+  title: "R3F : GLB 모델로 3D 방 구현하기",
   description:
     "r3f(React Three Fiber)를 활용해 GLB 모델 로드 후 낮/밤 조명 전환 구현하기",
   image: "images/thumbnails/room-thumbnail.jpg",
+  tags: ["R3F", "GLB", "GLSL", "Three.js"],
+  postUrl: "/blog/r3f-room",
+  year: "2026",
 };

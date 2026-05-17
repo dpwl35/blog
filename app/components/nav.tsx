@@ -3,10 +3,10 @@ import ArrowIcon from "./arrowIcon";
 
 const navItems = {
   "/blog": {
-    name: "blog",
+    name: "BLOG",
   },
   "/archive": {
-    name: "archive",
+    name: "AECHIVE",
   },
 };
 
@@ -15,7 +15,7 @@ export function Navbar() {
     <div className="category">
       <nav className="category-area" id="nav">
         <Link className="category-item" href="/">
-          <h1>*</h1>
+          <h1>HOME</h1>
         </Link>
         {Object.entries(navItems).map(([path, { name }]) => {
           return (
@@ -30,7 +30,7 @@ export function Navbar() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <span>Notes</span>
+          <span>NOTES</span>
           <ArrowIcon />
         </Link>
       </nav>

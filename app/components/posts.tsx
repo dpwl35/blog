@@ -17,10 +17,7 @@ export function BlogPosts() {
         })
         .map((post) => (
           <li key={post.slug} className="post-item">
-            <Link
-              className="post-item_link"
-              href={`/blog/${post.slug}`}
-            >
+            <Link className="post-item_link" href={`/blog/${post.slug}`}>
               <p className="post-item_text">{post.metadata.title}</p>
               <p className="post-item_date">
                 {formatDate(post.metadata.publishedAt, false)}

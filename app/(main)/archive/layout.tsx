@@ -23,29 +23,56 @@ export default async function ArchiveLayout({
           slug,
           title: mod.metadata?.title ?? slug,
           image: mod.metadata?.image ?? null,
+          tags: mod.metadata?.tags ?? [],
+          postUrl: mod.metadata?.postUrl ?? null,
+          year: mod.metadata?.year ?? null,
         };
       } catch {
-        return { slug, title: slug, image: null };
+        return {
+          slug,
+          title: slug,
+          image: null,
+          tags: [],
+          postUrl: null,
+          year: null,
+        };
       }
     }),
   );
 
   return (
     <section className="post-section">
-      <ul className="post-list">
-        {items.map(({ slug, title, image }) => (
+      <ul className="post-gallery">
+        {items.map(({ slug, title, image, tags, postUrl, year }) => (
           <li key={slug} className="post-item gallery">
-            <Link
-              href={`/lab/${slug}`}
-              className="post-item_link"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {image && (
-                <img src={image} alt={title} className="post-item_thumbnail" />
-              )}
-              <p className="post-item_title">{title}</p>
-            </Link>
+            <div className="post-item_list">
+              <div className="post-item_left">
+                <p className="post-item_title">{title}</p>
+                <div className="post-item_description">
+                  <p className="post-item_year">{year}</p>
+                  <div className="post-item_link">
+                    <a
+                      href={`/lab/${slug}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      View Project
+                    </a>
+                    {postUrl && <a href={postUrl}>Read More</a>}
+                  </div>
+                  <div className="post-item_tags">
+                    {tags.map((tag) => (
+                      <span key={tag}>#{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="post-item_thumbnail">
+                <div className="post-item_image">
+                  {image && <img src={image} alt={title} />}
+                </div>
+              </div>
+            </div>
           </li>
         ))}
       </ul>
