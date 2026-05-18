@@ -5,10 +5,10 @@
   padding: 0;
   overflow: hidden;
   border-top: 2px dotted var(--color-border);
-  border-bottom: 2px dotted var(--color-border);
 
   .post-item {
-    margin: var(--spacing-medium) 0 var(--spacing-medium);
+    padding: var(--spacing-medium) 0 var(--spacing-medium);
+    border-bottom: 2px dotted var(--color-border);
 
     &_list {
       @include mixin.flex-layout(row, nowrap);
