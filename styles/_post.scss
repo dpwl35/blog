@@ -13,14 +13,19 @@
     &_list {
       @include mixin.flex-layout(row, nowrap);
       gap: var(--spacing-xxlarge);
+      cursor: pointer;
 
-      &:hover {
+      &.active {
         .post-item_thumbnail {
           aspect-ratio: 1 / 1;
         }
 
         .post-item_description {
           opacity: 1;
+        }
+
+        .post-item_link a {
+          transition: color 0.3s ease;
         }
       }
     }
@@ -47,6 +52,7 @@
       @include mixin.flex-layout(row, nowrap);
       gap: var(--spacing-medium);
       transition: opacity 0.4s ease;
+      font-size: 13px;
     }
 
     &_link a:hover {

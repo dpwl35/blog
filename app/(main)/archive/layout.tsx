@@ -1,7 +1,6 @@
 import fs from "fs";
 import path from "path";
-import Link from "next/link";
-import Image from "next/image";
+import GalleryItem from "app/components/gallery";
 
 export default async function ArchiveLayout({
   children,
@@ -45,34 +44,14 @@ export default async function ArchiveLayout({
       <ul className="post-gallery">
         {items.map(({ slug, title, image, tags, postUrl, year }) => (
           <li key={slug} className="post-item gallery">
-            <div className="post-item_list">
-              <div className="post-item_left">
-                <p className="post-item_title">{title}</p>
-                <div className="post-item_description">
-                  <p className="post-item_year">{year}</p>
-                  <div className="post-item_link">
-                    <a
-                      href={`/lab/${slug}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      View Project
-                    </a>
-                    {postUrl && <a href={postUrl}>Read More</a>}
-                  </div>
-                  <div className="post-item_tags">
-                    {tags.map((tag) => (
-                      <span key={tag}>#{tag}</span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              <div className="post-item_thumbnail">
-                <div className="post-item_image">
-                  {image && <img src={image} alt={title} />}
-                </div>
-              </div>
-            </div>
+            <GalleryItem
+              slug={slug}
+              title={title}
+              image={image}
+              tags={tags}
+              postUrl={postUrl}
+              year={year}
+            />
           </li>
         ))}
       </ul>
