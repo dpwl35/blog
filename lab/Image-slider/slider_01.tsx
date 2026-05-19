@@ -6,41 +6,38 @@ import * as THREE from "three";
 
 export default function Slider01() {
   useEffect(() => {
-    const canvas = document.getElementById("canvas") as HTMLCanvasElement;
-    const titleElement = document.getElementById("slide-title")!;
-    const counterElement = document.getElementById("slide-count")!;
-
     const slides = [
       {
-        name: "Serene Peaks",
+        name: "Barozzi Veiga",
         image:
-          "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1000",
+          "https://cdn.cosmos.so/ca15a9de-9592-4e8d-9989-f7af1dc0da43?format=jpeg",
       },
       {
-        name: "Mystic Forest",
+        name: "Inge Schuster",
         image:
-          "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1000",
+          "https://cdn.cosmos.so/7ab8df08-145a-4a39-b846-b7762e3de3a1?format=jpeg",
       },
       {
-        name: "Ocean Breeze",
+        name: "Stephen Lenthall",
         image:
-          "https://images.unsplash.com/photo-1505118380757-91f5f5632de0?q=80&w=1000",
+          "https://cdn.cosmos.so/7434ef34-e8fb-4456-9a46-21f63f12ee3a?format=jpeg",
       },
       {
-        name: "Desert Dunes",
+        name: "Nicholas Alan Cope",
         image:
-          "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?q=80&w=1000",
+          "https://cdn.cosmos.so/48c9717f-0100-4e9d-8e6b-a993a1debc57?format=jpeg",
       },
       {
-        name: "Urban Neon",
+        name: "Source unknown",
         image:
-          "https://images.unsplash.com/photo-1519501025264-65ba15a82390?q=80&w=1000",
+          "https://cdn.cosmos.so/af860a51-e7bd-4fd1-a7b5-246b2b932b0e?format=jpeg",
       },
     ];
 
+    //슬라이드 제어판
     const config = {
-      minHeight: 1,
-      maxHeight: 1.5,
+      minHeight: 1.5,
+      maxHeight: 2,
       aspectRatio: 1.5,
       gap: 0.05,
       smoothing: 0.05,
@@ -55,6 +52,11 @@ export default function Slider01() {
       touchSpeed: 0.01,
       touchMomentum: 0.1,
     };
+
+    //캔버스 설정 + GPU 제한
+    const canvas = document.getElementById("canvas") as HTMLCanvasElement;
+    const titleElement = document.getElementById("slide-title")!;
+    const counterElement = document.getElementById("slide-count")!;
 
     const renderer = new THREE.WebGLRenderer({
       canvas,
@@ -75,12 +77,15 @@ export default function Slider01() {
     );
     camera.position.z = 5;
 
+    //무한루프
     const wrap = (value: number, range: number) =>
       ((value % range) + range) % range;
+
+    //슬라이드 번호 표시
     const zeroPad = (n: number) => String(n).padStart(2, "0");
 
+    //슬라이드 크기 제어
     const totalSlides = slides.length;
-
     const slideHeights = Array.from(
       { length: totalSlides },
       () =>
@@ -88,6 +93,7 @@ export default function Slider01() {
         Math.random() * (config.maxHeight - config.minHeight),
     );
 
+    // canvas내의 슬라이드 위치값 계산(초기Y축)
     const slideOffsets: number[] = [];
     let stackPosition = 0;
 
@@ -99,19 +105,23 @@ export default function Slider01() {
         stackPosition += config.gap + slideHeights[i] / 2;
         slideOffsets.push(stackPosition);
         stackPosition += slideHeights[i] / 2;
+        /* 슬라이드 높이의 1/2 값 : mesh 위치는 중심점 기준이기 때문에 */
       }
     }
 
+    // 시작과 끝 루프 위치 맞추기 + 카메라 범위로 슬라이드 유지
     const loopLength = stackPosition + config.gap + slideHeights[0] / 2;
     const halfLoop = loopLength / 2;
 
+    // mesh 저장 배열
     const meshes: THREE.Mesh[] = [];
     const textureLoader = new THREE.TextureLoader();
 
     for (let i = 0; i < totalSlides; i++) {
       const height = slideHeights[i];
-      const width = height * config.aspectRatio;
+      const width = height * config.aspectRatio; //종횡비 유지
 
+      // mesh 설정
       const geometry = new THREE.PlaneGeometry(width, height, 32, 16);
       const material = new THREE.MeshBasicMaterial({
         side: THREE.DoubleSide,
@@ -119,6 +129,7 @@ export default function Slider01() {
       });
       const mesh = new THREE.Mesh(geometry, material);
 
+      // mesh 정보 (각 슬라이드 정보)
       mesh.userData = {
         originalVertices: Array.from(geometry.attributes.position.array),
         offset: slideOffsets[i],
@@ -126,6 +137,7 @@ export default function Slider01() {
         index: i,
       };
 
+      // 이미지 로드 + 비율 유지
       textureLoader.load(slides[i].image, (texture) => {
         texture.colorSpace = THREE.SRGBColorSpace;
         (material as THREE.MeshBasicMaterial).map = texture;
@@ -144,6 +156,7 @@ export default function Slider01() {
       meshes.push(mesh);
     }
 
+    // mesh 왜곡
     function applyDistortion(
       mesh: THREE.Mesh,
       positionY: number,
@@ -165,6 +178,7 @@ export default function Slider01() {
       mesh.geometry.computeVertexNormals();
     }
 
+    //스크롤 관련 변수
     let scrollPosition = 0;
     let scrollTarget = 0;
     let scrollMomentum = 0;
@@ -190,6 +204,7 @@ export default function Slider01() {
       distortionTarget = Math.min(1, distortionTarget + amount);
     };
 
+    //스크롤 이동 제한 + 왜곡 & 스크롤 적용 + 150ms 후 스크롤 종료
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
       const clampedDelta =
