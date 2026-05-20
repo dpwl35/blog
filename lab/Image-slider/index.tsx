@@ -1,6 +1,7 @@
 "use client";
 
 import Slider01 from "./slider_01";
+import Slider02 from "./slider_02";
 import "./style.scss";
 import { useState } from "react";
 
@@ -24,7 +25,7 @@ export default function Page() {
       </ul>
       <div className="tab-content">
         {activeTab === 0 && <Slider01 />}
-        {activeTab === 1 && <div>Tab 2 내용</div>}
+        {activeTab === 1 && <Slider02 />}
         {activeTab === 2 && <div>Tab 3 내용</div>}
       </div>
     </div>

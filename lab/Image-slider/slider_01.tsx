@@ -55,8 +55,8 @@ export default function Slider01() {
 
     //캔버스 설정 + GPU 제한
     const canvas = document.getElementById("canvas") as HTMLCanvasElement;
-    const titleElement = document.getElementById("slide-title")!;
-    const counterElement = document.getElementById("slide-count")!;
+    const titleElement = document.getElementById("slider01-title")!;
+    const counterElement = document.getElementById("slider01-count")!;
 
     const renderer = new THREE.WebGLRenderer({
       canvas,
@@ -390,12 +390,12 @@ export default function Slider01() {
   }, []);
 
   return (
-    <section className="slider">
-      <div className="slide-info">
-        <p id="slide-title">Slide Name</p>
-        <p id="slide-count">00</p>
+    <section className="slider01">
+      <div className="slider01-info">
+        <p id="slider01-title">Slide Name</p>
+        <p id="slider01-count">00</p>
       </div>
-      <canvas id="canvas"></canvas>
+      <canvas id="canvas" className="slider01-canvas"></canvas>
     </section>
   );
 }
