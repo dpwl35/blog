@@ -258,46 +258,45 @@ export default function Slider02() {
   }, []);
 
   return (
-    <div id="swup" className="transition-fade">
-      <div>
-        <div className="slider02">
-          <div className="slider02-wrap">
-            <div className="slider02-hero">
-              <p>SCROLL DOWN</p>
-              <p>
-                Built with Three.js, GLSL shaders, scroll interaction and image
-                hover distortion.
-              </p>
-            </div>
-
-            {contents.map((item) => (
-              <section key={item.id} className="slider02-content">
-                {!item.reverse && (
-                  <div className="slider02-content-img">
-                    <img src={item.image} alt={item.title} />
-                  </div>
-                )}
-                <div className="slider02-description">
-                  <p>{item.category}</p>
-                  <h2>{item.title}</h2>
-                  <p className="main-text">{item.mainText}</p>
-                  <p className="sub-text">{item.subText}</p>
-                </div>
-                {item.reverse && (
-                  <div className="slider02-content-img">
-                    <img src={item.image} alt={item.title} />
-                  </div>
-                )}
-              </section>
-            ))}
+    <section>
+      <div className="slider02">
+        <div className="slider02-wrap">
+          <div className="slider02-hero">
+            <p>SCROLL DOWN</p>
+            <p>
+              Built with Three.js, GLSL shaders, scroll interaction and image
+              hover distortion.
+            </p>
           </div>
 
-          <footer className="slider02-footer">
-            <p>Fancy Gallery is creative and interactive Gallery</p>
-          </footer>
+          {contents.map((item) => (
+            <section key={item.id} className="slider02-content">
+              {!item.reverse && (
+                <div className="slider02-content-img">
+                  <img src={item.image} alt={item.title} />
+                </div>
+              )}
+              <div className="slider02-description">
+                <p>{item.category}</p>
+                <h2>{item.title}</h2>
+                <p className="main-text">{item.mainText}</p>
+                <p className="sub-text">{item.subText}</p>
+              </div>
+              {item.reverse && (
+                <div className="slider02-content-img">
+                  <img src={item.image} alt={item.title} />
+                </div>
+              )}
+            </section>
+          ))}
         </div>
+
+        <footer className="slider02-footer">
+          <p>Fancy Gallery is creative and interactive Gallery</p>
+        </footer>
       </div>
+
       <div id="slider02-container"></div>
-    </div>
+    </section>
   );
 }
