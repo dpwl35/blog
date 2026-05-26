@@ -390,12 +390,12 @@ export default function Slider01() {
   }, []);
 
   return (
-    <section className="slider01">
+    <div className="slider01">
       <div className="slider01-info">
         <p id="slider01-title">Slide Name</p>
         <p id="slider01-count">00</p>
       </div>
       <canvas id="canvas" className="slider01-canvas"></canvas>
-    </section>
+    </div>
   );
 }

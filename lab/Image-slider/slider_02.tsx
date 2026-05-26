@@ -258,7 +258,7 @@ export default function Slider02() {
   }, []);
 
   return (
-    <section>
+    <div>
       <div className="slider02">
         <div className="slider02-wrap">
           <div className="slider02-hero">
@@ -270,7 +270,7 @@ export default function Slider02() {
           </div>
 
           {contents.map((item) => (
-            <section key={item.id} className="slider02-content">
+            <div key={item.id} className="slider02-content">
               {!item.reverse && (
                 <div className="slider02-content-img">
                   <img src={item.image} alt={item.title} />
@@ -287,7 +287,7 @@ export default function Slider02() {
                   <img src={item.image} alt={item.title} />
                 </div>
               )}
-            </section>
+            </div>
           ))}
         </div>
 
@@ -297,6 +297,6 @@ export default function Slider02() {
       </div>
 
       <div id="slider02-container"></div>
-    </section>
+    </div>
   );
 }

@@ -7,10 +7,10 @@ export function Header() {
     <header className="header">
       <Navbar />
       <nav className="header-nav">
-        <ThemeSwitcher />
-        {/* <Link className="header-nav-link" href="/about">
+        <Link className="header-nav-link" href="/about">
           about
-        </Link> */}
+        </Link>
+        <ThemeSwitcher />
       </nav>
     </header>
   );

@@ -6,7 +6,11 @@ import Slider03 from "./slider_03";
 import "./style.scss";
 import { useState } from "react";
 
-const tabs = ["Slider 01", "Slider 02", "Slider 03"];
+const tabs = [
+  "01 Scroll Distortion Slider",
+  "02 Scroll & Hover Distortion",
+  "03 Ripple Click Slider",
+];
 
 export default function Page() {
   const [activeTab, setActiveTab] = useState(0);

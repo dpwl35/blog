@@ -260,7 +260,7 @@ function animateTextIn(container: Element) {
 }
 
 export default function Slider03() {
-  const sliderRef = useRef<HTMLElement>(null);
+  const sliderRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     gsap.registerPlugin(SplitText);
@@ -393,7 +393,7 @@ export default function Slider03() {
   }, []);
 
   return (
-    <section className="slider03" ref={sliderRef}>
+    <div className="slider03" ref={sliderRef}>
       <div className="slider03-content">
         <div className="slider03-title">
           <p>Blackwater '91</p>
@@ -406,6 +406,6 @@ export default function Slider03() {
           </p>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

@@ -54,13 +54,13 @@ export function generateMetadata({ params }) {
 
 export default function Blog({ params }) {
   let post = getBlogPosts().find((post) => post.slug === params.slug);
- // const count = 100;
+  // const count = 100;
   if (!post) {
     notFound();
   }
 
   return (
-    <section className="post">
+    <div className="post">
       <script
         type="application/ld+json"
         suppressHydrationWarning
@@ -99,6 +99,6 @@ export default function Blog({ params }) {
       <article className="post-body">
         <CustomMDX source={post.content} />
       </article>
-    </section>
+    </div>
   );
 }

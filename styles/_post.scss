@@ -4,11 +4,14 @@
 .post-gallery {
   padding: 0;
   overflow: hidden;
-  border-top: 2px dotted var(--color-border);
 
   .post-item {
     padding: var(--spacing-medium) 0 var(--spacing-medium);
     border-bottom: 2px dotted var(--color-border);
+
+    &:last-of-type {
+      border-bottom: none;
+    }
 
     &_list {
       @include mixin.flex-layout(row, nowrap);

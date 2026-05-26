@@ -40,7 +40,7 @@ export default async function ArchiveLayout({
   );
 
   return (
-    <section className="post-section">
+    <div className="post-section">
       <ul className="post-gallery">
         {items.map(({ slug, title, image, tags, postUrl, year }) => (
           <li key={slug} className="post-item gallery">
@@ -56,6 +56,6 @@ export default async function ArchiveLayout({
         ))}
       </ul>
       {children}
-    </section>
+    </div>
   );
 }
