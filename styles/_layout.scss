@@ -121,7 +121,7 @@ footer {
   padding-bottom: var(--spacing-xxlarge);
   font-size: 12px;
   gap: 10px;
-  color: var(--color-text);
+  color: var(--color-text-muted);
 
   svg {
     position: relative;
@@ -136,5 +136,55 @@ footer {
     li a {
       @include mixin.flex-layout(row, nowrap);
     }
+  }
+}
+
+.about {
+  &-intro {
+    @include mixin.flex-layout(column, nowrap);
+    gap: var(--spacing-small);
+
+    p {
+      font: var(--body-3-regular);
+    }
+  }
+
+  &-career {
+    @include mixin.flex-layout(column, nowrap);
+    gap: var(--spacing-large);
+    font: var(--body-4-regular);
+    margin: var(--spacing-xxxlarge) 0;
+
+    &-item {
+      @include mixin.flex-layout(row, nowrap);
+      gap: var(--spacing-large);
+
+      div {
+        font: var(--body-4-regular);
+
+        &:first-of-type {
+          @include mixin.flex-layout(column, nowrap);
+          white-space: nowrap;
+        }
+      }
+    }
+
+    &-title {
+      font: var(--body-4-bold);
+    }
+
+    &-company {
+      font: var(--body-4-bold);
+    }
+
+    &-period {
+      color: var(--color-text-muted);
+      font-size: 12px;
+    }
+  }
+
+  &-resume {
+    text-align: center;
+    margin-bottom: var(--spacing-xxlarge);
   }
 }
