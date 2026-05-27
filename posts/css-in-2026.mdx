@@ -1,0 +1,183 @@
+---
+title: "CSS in 2026 : JavaScript 없이 가능한 것들"
+publishedAt: "2026-05-27"
+summary: "appearance: base-select, sibling-index(), typed attr(), random() 등 2026년 CSS 새 기능들"
+---
+
+
+## CSS의 발전
+
+CSS가 JavaScript 없이도 처리할 수 있는 영역이 점점 넓어지고 있다.
+
+브라우저는 페이지를 렌더링할 때 HTML을 파싱해서 DOM을 만들고, CSS를 파싱해서 CSSOM을 만든 뒤 합쳐서 화면에 그린다. JavaScript는 이 과정 이후에 실행된다. 레이아웃과 스타일은 CSS가 담당하는 게 구조적으로 맞고, JavaScript로 스타일을 제어하면 렌더링 이후에 다시 계산이 일어나서 불필요한 비용이 생긴다. CSS로 해결할 수 있는 문제는 CSS에서 해결하는 게 성능면에서도, 구조면에서도 맞는 이유다.
+
+CSS가 이렇게 발전할 수 있는 건 브라우저가 레이아웃 레이어에서 직접 처리하는 게 늘어났기 때문이다. JavaScript로 레이아웃 문제를 푸는 건 동작은 하지만 구조적으로 맞지 않는다. CSS에서 해결해야 할 문제를 다른 레이어로 위임하는 거니까. 새로운 CSS 기능들은 그 문제를 제자리로 돌려놓는 과정이다.
+
+
+
+## `appearance: base-select` — 드롭다운을 CSS로만
+
+`<select>` 요소는 오랫동안 프론트엔드 개발자의 골칫거리였다. 브라우저마다 기본 스타일이 다르고, 조금만 커스텀하려고 해도 한계에 부딪혔다. 결국 대부분은 `<select>` 를 숨기고 `<div>` 로 가짜 드롭다운을 직접 만드는 방식을 택했다. 키보드 네비게이션, 포커스 관리, 위치 계산까지 직접 구현하면 많은 양의 JavaScript가 필요했다.
+
+`appearance: base-select` 는 이 문제를 해결한다.
+
+```css
+select,
+select::picker(select) {
+  appearance: base-select;
+}
+```
+
+이 한 줄로 `<select>` 가 완전히 커스텀 가능한 모드로 전환된다. 그 상태에서 `::picker(select)` 로 드롭다운 영역을 직접 스타일링할 수 있다.
+
+```css
+select::picker(select) {
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.12);
+}
+```
+
+브라우저가 알아서 처리해주는 것들도 있다. 뷰포트 공간에 따라 드롭다운 위치를 자동으로 조정하고, 키보드 네비게이션과 포커스 관리도 네이티브로 제공된다. 지원하지 않는 브라우저에서는 그냥 기본 `<select>` 로 렌더링되니까 별도의 폴백도 필요 없다.
+
+현재 Chrome 135+ 에서 지원한다.
+
+
+## `sibling-index()` — stagger 애니메이션을 JavaScript 없이
+
+리스트 아이템에 순서대로 딜레이를 줘서 하나씩 등장하는 stagger 애니메이션을 만들 때 지금까지는 이런 식으로 했다.
+
+```css
+/* `:nth-child()` 하드코딩 방식 */
+li:nth-child(1) { animation-delay: 0s; }
+li:nth-child(2) { animation-delay: 0.1s; }
+li:nth-child(3) { animation-delay: 0.2s; }
+/* ... 항목이 늘어나면 계속 추가해야 함 */
+```
+
+또는 JavaScript로 각 요소에 `--index` 를 직접 심어주는 방식을 썼다.
+
+```js
+items.forEach((el, i) => el.style.setProperty('--index', i));
+```
+
+`sibling-index()` 는 이걸 CSS에서 직접 처리한다. 형제 요소 중 몇 번째인지를 반환하는 함수다.
+
+```css
+li {
+  transition: opacity 0.25s ease, translate 0.5s ease;
+  transition-delay: calc(0.1s * (sibling-index() - 1));
+
+  @starting-style {
+    opacity: 0;
+    translate: 20px 0;
+  }
+}
+```
+
+첫 번째 아이템은 딜레이 `0s`, 두 번째는 `0.1s`, 세 번째는 `0.2s` 순서로 자동 계산된다. 항목이 추가되거나 삭제돼도 CSS가 알아서 다시 계산하니까 따로 업데이트할 필요가 없다.
+
+`sibling-count()` 도 같이 추가됐는데, 형제 요소의 총 개수를 반환한다. 전체 개수에 비례해서 크기나 간격을 조절할 때 쓸 수 있다.
+
+```css
+li {
+  width: calc(100% / sibling-count());
+}
+```
+## typed `attr()` — HTML 속성값을 CSS에서 직접
+
+`attr()` 함수는 오래전부터 있었다. 근데 `content` 프로퍼티에서만 쓸 수 있었고, 다른 곳에선 거의 무용지물이었다.
+
+```css
+/* 기존 — content에서만 가능 */
+li::before {
+  content: attr(data-label);
+}
+```
+
+typed `attr()` 는 속성값을 타입과 함께 읽을 수 있게 됐다. 색상, 숫자, 길이 등 다양한 타입을 지정할 수 있어서 `background-color`, `width` 같은 프로퍼티에도 직접 쓸 수 있다.
+
+```html
+<li data-color="#833AB4">항목 1</li>
+<li data-color="#00FFFB">항목 2</li>
+```
+
+```css
+li {
+  /* attr(속성명 타입, 폴백값) */
+  background-color: attr(data-color color, transparent);
+}
+```
+
+이게 유용한 이유는 컴포넌트 스타일을 HTML 속성으로 제어할 수 있게 되기 때문이다. 색상이나 크기를 바꾸고 싶을 때 CSS를 건드리지 않고 HTML 속성만 바꾸면 된다.
+
+```html
+<!-- 색상 변경이 필요하면 HTML만 수정 -->
+<li data-color="#ff5544">항목</li>
+```
+
+디자인 시스템에서 컴포넌트 variant를 만들 때도 활용할 수 있다. JavaScript로 클래스를 토글하거나 인라인 스타일을 심는 대신 `data-*` 속성으로 깔끔하게 처리할 수 있게 된다.
+
+## `random()`, `random-item()` — CSS 네이티브 랜덤
+
+CSS는 선언형이고 결정론적인 언어다. 같은 입력에는 항상 같은 출력이 나온다. 그래서 랜덤한 스타일을 만들려면 항상 JavaScript에 의존해야 했다.
+
+SCSS 컴파일 타임에 랜덤값을 생성하는 방법도 있었지만, 한번 컴파일되면 값이 고정된다. 페이지를 새로고침해도 항상 같은 값이 나오는 거다.
+
+이제 CSS에 두 가지 네이티브 랜덤 함수가 추가됐다.
+
+**`random()`** — 최솟값과 최댓값 사이의 랜덤한 숫자를 반환한다.
+
+```css
+.card {
+  /* 200px ~ 300px 사이의 랜덤한 너비 */
+  width: random(200px, 300px);
+
+  /* 0.5 ~ 1 사이의 랜덤한 투명도 */
+  opacity: random(0.5, 1);
+}
+```
+
+**`random-item()`** — 리스트에서 랜덤한 값을 하나 선택한다.
+
+```css
+.card {
+  /* 네 가지 색상 중 랜덤 선택 */
+  background-color: random-item(#ff5544, #833AB4, #00FFFB, #f4f5f5);
+
+  /* 세 가지 크기 중 랜덤 선택 */
+  font-size: random-item(14px, 16px, 18px);
+}
+```
+
+generative 아트, 유기적인 레이아웃, 자연스러운 마이크로인터랙션 같은 걸 JavaScript 없이 CSS에서 직접 만들 수 있게 된다. 눈송이, 별자리, 배경 파티클 같은 효과도 CSS만으로 가능해지는 거다.
+
+앞서 읽은 CSS-Tricks 글에서도 말했듯이, 이건 단순히 새 기능이 추가된 게 아니다. CSS가 결정론적 언어라는 전통을 깨는 변화고, 레이아웃 레이어가 할 수 있는 일의 범위 자체가 넓어지는 거다.
+
+## 앞으로의 방향
+
+이 기능들의 공통점이 있다. 전부 JavaScript가 하던 일을 CSS로 가져오는 방향이다.
+
+드롭다운 접근성 처리, stagger 애니메이션 인덱스 계산, 동적 스타일 주입, 랜덤값 생성. 전부 지금까지 JavaScript로 해결하던 것들이다. 동작은 했지만 레이아웃 문제를 로직 레이어에서 푸는 구조적 불일치가 있었다.
+
+CSS가 이 문제들을 직접 처리하기 시작하면서 각 레이어가 본연의 역할로 돌아가고 있다.
+
+
+> HTML — 구조<br />
+> CSS  — 스타일, 레이아웃, 인터랙션<br />
+> JS   — 비즈니스 로직, 데이터
+
+
+당장 프로덕션에 쓸 수 있는 기능들은 아니다. 대부분 Chrome 최신 버전에서만 지원하고 있고, 브라우저 호환성이 안정될 때까지는 시간이 필요하다. 하지만 방향은 명확하다.
+
+새 프로젝트를 시작할 때 JavaScript로 구현하기 전에 CSS로 먼저 해결할 수 있는지 확인하는 습관이 점점 더 중요해질 것 같다.
+
+
+
+<br />
+<br />
+<br />
+<br />
+출처
+- [CSS in 2026: The new features reshaping frontend development](https://blog.logrocket.com/css-in-2026/)
+- [The Importance of Native Randomness in CSS](https://css-tricks.com/the-importance-of-native-randomness-in-css/)
