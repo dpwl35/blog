@@ -7,7 +7,7 @@
 
   .post-item {
     padding: var(--spacing-medium) 0 var(--spacing-medium);
-    border-bottom: 2px dotted var(--color-border);
+    border-bottom: 1px solid var(--color-border);
 
     &:last-of-type {
       border-bottom: none;
