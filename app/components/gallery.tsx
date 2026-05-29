@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 
 export default function GalleryItem({
   slug,
@@ -21,28 +21,28 @@ export default function GalleryItem({
 
   return (
     <div
-      className={`post-item_list ${active ? "active" : ""}`}
+      className={`post-item-list ${active ? 'active' : ''}`}
       onClick={() => setActive((prev) => !prev)}
     >
-      <div className="post-item_left">
-        <p className="post-item_title">{title}</p>
-        <div className="post-item_description">
-          <p className="post-item_year">{year}</p>
-          <div className="post-item_link">
-            <a href={`/lab/${slug}`} target="_blank" rel="noopener noreferrer">
+      <div className='post-item-left'>
+        <p className='post-item-title'>{title}</p>
+        <div className='post-item-description'>
+          <p className='post-item-year'>{year}</p>
+          <div className='post-item-link'>
+            <a href={`/lab/${slug}`} target='_blank' rel='noopener noreferrer'>
               View Project
             </a>
             {postUrl && <a href={postUrl}>Read More</a>}
           </div>
-          <div className="post-item_tags">
+          <div className='post-item_tags'>
             {tags.map((tag) => (
               <span key={tag}>#{tag}</span>
             ))}
           </div>
         </div>
       </div>
-      <div className="post-item_thumbnail">
-        <div className="post-item_image">
+      <div className='post-item-thumbnail'>
+        <div className='post-item-image'>
           {image && <img src={image} alt={title} />}
         </div>
       </div>

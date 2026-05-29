@@ -1,5 +1,5 @@
-@use "variables" as *;
-@use "mixin" as mixin;
+@use 'variables' as *;
+@use 'mixin' as mixin;
 
 .theme {
   @include mixin.flex-layout(row, nowrap);

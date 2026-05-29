@@ -1,20 +1,21 @@
-@use "variables" as *;
-@use "mixin" as mixin;
+@use 'variables' as *;
+@use 'mixin' as mixin;
 
 body {
-  font-family: "Pretendard", sans-serif;
-  font-weight: 400;
-  background-color: var(--color-background);
-  color: var(--color-text);
   width: 100%;
   height: 100%;
   min-height: 100%;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-weight: 400;
+  font-family: Pretendard, sans-serif;
 }
 
 .wrap {
   @include mixin.flex-layout(column, nowrap);
-  height: 100%;
+
   position: relative;
+  height: 100%;
 
   @include mixin.media(small) {
     padding: var(--spacing-large);
@@ -37,8 +38,8 @@ body {
   @include mixin.flex-layout(row, nowrap);
   @include mixin.flex-alignment(space-between, center);
 
-  padding-top: 100px;
   margin-bottom: var(--spacing-medium);
+  padding-top: 100px;
   color: var(--color-text);
 
   &-nav {
@@ -53,14 +54,16 @@ body {
 .main {
   @include mixin.layout-width;
 
-  height: fit-content;
   flex: 1;
+  height: fit-content;
+
   // margin-bottom: 200px;
   &-content {
     canvas {
       height: 500px;
     }
   }
+
   &-content-area {
     @include mixin.box-surface(var(--radius-large));
 
@@ -87,27 +90,27 @@ body {
     @include mixin.flex-layout(row, nowrap);
     @include mixin.flex-alignment(center, center);
 
-    font-family: JetBrainsMono;
-    font-size: 14px;
     border-radius: var(--radius-medium);
     font-weight: 500;
+    font-size: 14px;
+    font-family: JetBrainsMono, monospace;
 
     &.active {
-      background-color: var(--color-surface);
       border: 1px solid var(--color-border);
+      background-color: var(--color-surface);
     }
 
     h1 {
-      font-family: JetBrainsMono;
-      font-size: 14px;
       font-weight: 500;
+      font-size: 14px;
+      font-family: JetBrainsMono, monospace;
     }
 
     .icon-arrow {
       position: relative;
-      width: 10px;
-      margin-left: 4px;
       top: 1px;
+      margin-left: 4px;
+      width: 10px;
     }
   }
 }
@@ -117,17 +120,17 @@ footer {
   @include mixin.flex-layout(row, nowrap);
   @include mixin.flex-alignment(center, center);
 
+  gap: 10px;
   margin-top: var(--spacing-xxlarge);
   padding-bottom: var(--spacing-xxlarge);
-  font-size: 12px;
-  gap: 10px;
   color: var(--color-text-muted);
+  font-size: 12px;
 
   svg {
     position: relative;
     top: 1px;
-    width: 8px;
     margin-left: 4px;
+    width: 8px;
   }
 
   ul {
@@ -142,6 +145,7 @@ footer {
 .about {
   &-intro {
     @include mixin.flex-layout(column, nowrap);
+
     gap: var(--spacing-small);
 
     p {
@@ -151,12 +155,14 @@ footer {
 
   &-career {
     @include mixin.flex-layout(column, nowrap);
+
     gap: var(--spacing-large);
-    font: var(--body-4-regular);
     margin: var(--spacing-xxxlarge) 0;
+    font: var(--body-4-regular);
 
     &-item {
       @include mixin.flex-layout(row, nowrap);
+
       gap: var(--spacing-large);
 
       div {
@@ -164,6 +170,7 @@ footer {
 
         &:first-of-type {
           @include mixin.flex-layout(column, nowrap);
+
           white-space: nowrap;
         }
       }
@@ -184,21 +191,23 @@ footer {
   }
 
   &-resume {
-    text-align: center;
     margin-bottom: var(--spacing-xxlarge);
+    text-align: center;
   }
 }
 
 .main-content {
   @include mixin.flex-layout(column, nowrap);
+
+  gap: var(--spacing-large);
   position: relative;
   width: 100%;
   height: 100%;
-  gap: var(--spacing-large);
 }
 
 .main-feed {
   @include mixin.flex-layout(column, nowrap);
+
   gap: var(--spacing-medium);
   font: var(--body-4-regular);
 
@@ -213,35 +222,36 @@ footer {
   &-item {
     @include mixin.flex-layout(row, nowrap);
     @include mixin.flex-alignment(flex-start, flex-end);
+
     gap: var(--spacing-small);
     padding-left: var(--spacing-small);
 
     &:hover {
-      cursor: pointer;
       background-color: var(--color-surface);
+      cursor: pointer;
     }
 
     &::after {
-      content: "";
+      content: '';
       position: absolute;
-      background-color: var(--color-surface);
-      width: 5px;
-      height: 100%;
       top: 0;
       left: 0;
+      width: 5px;
+      height: 100%;
+      background-color: var(--color-surface);
     }
   }
 
   &-date {
-    font-size: 12px;
     color: var(--color-text-muted);
+    font-size: 12px;
   }
 }
 
 .main-flip {
+  flex: 1;
   position: relative;
   width: 100%;
-  flex: 1;
 
   &-item {
     position: absolute;
@@ -254,38 +264,38 @@ footer {
 
     img {
       position: relative;
-      height: 100%;
       top: 0;
       left: 0;
+      height: 100%;
       user-select: none;
       -webkit-user-drag: none;
     }
 
     &.pen {
+      z-index: 1;
       top: 20%;
       left: 45%;
-      transform: translateX(-50%) rotate(-20deg);
-      z-index: 1;
       height: 50%;
+      transform: translateX(-50%) rotate(-20deg);
     }
 
     &.diary {
       top: 5%;
       left: 45%;
-      transform: translateX(-50%) rotate(-10deg);
       height: 80%;
+      transform: translateX(-50%) rotate(-10deg);
     }
 
     &.phone {
       top: 20%;
       left: 70%;
-      transform: translateX(-50%) rotate(5deg);
       height: 70%;
+      transform: translateX(-50%) rotate(5deg);
     }
 
     &.newspaper {
-      height: 30%;
       top: 5%;
+      height: 30%;
       transform: rotate(-5deg);
     }
   }
@@ -295,31 +305,34 @@ footer {
   img {
     pointer-events: none;
   }
+
   &-area {
     position: absolute;
-    width: 99%;
-    height: 99%;
-    background-color: black;
     top: 0;
     left: 0.5%;
+    width: 99%;
+    height: 99%;
     border-radius: 15%;
+    background-color: black;
     color: #fff;
 
     &-view {
-      height: 100%;
       width: 100%;
+      height: 100%;
     }
 
     &-time {
       @include mixin.flex-layout(column, nowrap);
       @include mixin.flex-alignment(flex-start, center);
+
       position: relative;
-      padding-top: 30%;
       margin-bottom: 10%;
+      padding-top: 30%;
 
       span:first-of-type {
         font-size: 70%;
       }
+
       span:last-of-type {
         font-size: 200%;
       }
@@ -328,13 +341,14 @@ footer {
     &-todo {
       @include mixin.flex-layout(column, nowrap);
       @include mixin.flex-alignment(flex-start, center);
+
       gap: 2px;
-      font-size: 50%;
-      width: 70%;
       margin-left: 15%;
-      background-color: rgba($color: #fff, $alpha: 0.3);
       padding: 5%;
+      width: 70%;
       border-radius: var(--radius-small);
+      background-color: rgba($color: #fff, $alpha: 30%);
+      font-size: 50%;
 
       li {
         width: 100%;
@@ -345,15 +359,15 @@ footer {
         @include mixin.flex-alignment(flex-start, center);
       }
 
-      input[type="checkbox"] {
+      input[type='checkbox'] {
         width: 10%;
         height: 10%;
       }
 
       span {
-        font-size: 50%;
         display: inline-block;
         padding-left: 5px;
+        font-size: 50%;
       }
     }
   }

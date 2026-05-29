@@ -26,6 +26,9 @@
     "glslify": "^7.1.1",
     "glslify-loader": "^2.0.0",
     "raw-loader": "^4.0.2",
-    "sass": "^1.89.2"
+    "sass": "^1.89.2",
+    "stylelint": "^17.12.0",
+    "stylelint-config-standard-scss": "^17.0.0",
+    "stylelint-order": "^8.1.1"
   }
 }

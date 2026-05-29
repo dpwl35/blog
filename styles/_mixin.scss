@@ -1,11 +1,11 @@
-@mixin font-face($family, $weight, $file, $format: "woff") {
+@mixin font-face($family, $weight, $file, $format: 'woff') {
   @font-face {
     font-style: normal;
     font-weight: $weight;
     font-family: $family;
     src:
       local($family),
-      url("/font/#{$file}") format($format);
+      url('/font/#{$file}') format($format);
     font-display: swap;
   }
 }
@@ -37,9 +37,9 @@ $breakpoint-large: 1200px; // 큰 데스크탑
 }
 
 @mixin layout-width {
+  margin: 0 auto;
   width: 100%;
   max-width: 720px;
-  margin: 0 auto;
 }
 
 @mixin flex-layout($direction: row, $wrap: nowrap) {
@@ -48,12 +48,12 @@ $breakpoint-large: 1200px; // 큰 데스크탑
 }
 
 @mixin flex-alignment($justify: flex-start, $align: normal) {
-  justify-content: $justify;
   align-items: $align;
+  justify-content: $justify;
 }
 
 @mixin box-surface($radius: var(--radius-medium)) {
-  background-color: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: $radius;
+  background-color: var(--color-surface);
 }
