@@ -14,9 +14,6 @@ body {
 .wrap {
   @include mixin.flex-layout(column, nowrap);
 
-  position: relative;
-  height: 100%;
-
   @include mixin.media(small) {
     padding: var(--spacing-large);
   }
@@ -24,6 +21,9 @@ body {
   @include mixin.media(medium) {
     padding: var(--spacing-xlarge);
   }
+
+  position: relative;
+  height: 100%;
 }
 
 .wrap-lab {
@@ -79,11 +79,11 @@ body {
   &-area {
     @include mixin.flex-layout(row, nowrap);
 
-    gap: 2.5rem;
-
     @include mixin.media(xsmall) {
       gap: 1.75rem;
     }
+
+    gap: 2.5rem;
   }
 
   &-item {
@@ -253,7 +253,24 @@ footer {
   position: relative;
   width: 100%;
 
+  &-modes {
+    @include mixin.flex-layout(row, nowrap);
+    @include mixin.flex-alignment(flex-end, center);
+
+    gap: var(--spacing-small);
+    position: relative;
+
+    button {
+      @include mixin.flex-layout(row, nowrap);
+      @include mixin.flex-alignment(center, center);
+      @include mixin.box-surface(var(--radius-medium));
+
+      padding: var(--spacing-xsmall);
+    }
+  }
+
   &-item {
+    opacity: 0;
     position: absolute;
 
     & > div {
@@ -272,31 +289,65 @@ footer {
     }
 
     &.pen {
-      z-index: 1;
-      top: 20%;
-      left: 45%;
+      z-index: 2;
       height: 50%;
-      transform: translateX(-50%) rotate(-20deg);
     }
 
     &.diary {
-      top: 5%;
-      left: 45%;
+      z-index: 1;
       height: 80%;
-      transform: translateX(-50%) rotate(-10deg);
     }
 
     &.phone {
-      top: 20%;
-      left: 70%;
+      z-index: 2;
       height: 70%;
-      transform: translateX(-50%) rotate(5deg);
     }
 
     &.newspaper {
-      top: 5%;
       height: 30%;
-      transform: rotate(-5deg);
+    }
+
+    &.cd {
+      height: 40%;
+    }
+  }
+
+  .main-player {
+    @include mixin.flex-layout(column, nowrap);
+    @include mixin.flex-alignment(center, center);
+    @include mixin.box-surface(var(--radius-medium));
+
+    gap: 2px;
+    position: absolute;
+    z-index: 4;
+    padding: var(--spacing-small);
+    width: 30%;
+
+    &-artist {
+      font-size: 11px;
+    }
+
+    &-title,
+    &-time {
+      font-size: 13px;
+    }
+
+    &-time {
+      @include mixin.flex-layout(row, nowrap);
+
+      gap: 2px;
+    }
+
+    &-bar {
+      margin: var(--spacing-xsmall) 0;
+      width: 100%;
+      height: 4px;
+      background-color: #ddd;
+    }
+
+    &-fill {
+      height: 100%;
+      background-color: red;
     }
   }
 }
@@ -347,7 +398,7 @@ footer {
       padding: 5%;
       width: 70%;
       border-radius: var(--radius-small);
-      background-color: rgba($color: #fff, $alpha: 30%);
+      background-color: rgba($color: #fff, $alpha: 50%);
       font-size: 50%;
 
       li {
@@ -357,9 +408,13 @@ footer {
       label {
         @include mixin.flex-layout(row, nowrap);
         @include mixin.flex-alignment(flex-start, center);
+
+        cursor: pointer;
       }
 
       input[type='checkbox'] {
+        position: relative;
+        top: 1px;
         width: 10%;
         height: 10%;
       }
