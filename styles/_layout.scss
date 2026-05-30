@@ -83,10 +83,6 @@ body {
       gap: 1rem !important;
     }
 
-    @include mixin.media(xsmall) {
-      gap: 5px !important;
-    }
-
     gap: 2.5rem;
   }
 
