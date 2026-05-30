@@ -22,7 +22,7 @@ $breakpoint-large: 1200px; // 큰 데스크탑
       @content;
     }
   } @else if $breakpoint == small {
-    @media (max-width: #{$breakpoint-small}) {
+    @media (min-width: #{$breakpoint-xsmall + 1}) and (max-width: #{$breakpoint-small}) {
       @content;
     }
   } @else if $breakpoint == medium {

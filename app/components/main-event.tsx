@@ -14,19 +14,21 @@ const arrangements: Record<string, any> = {
   notebook: {
     items: [
       { id: 'flip-pen', x: 50, y: 50, rotation: -16, scale: 1 },
-      { id: 'flip-diary', x: 49, y: 52, rotation: -10, scale: 1 },
-      { id: 'flip-phone', x: 80, y: 60, rotation: 5, scale: 1 },
+      { id: 'flip-diary', x: 55, y: 52, rotation: -10, scale: 1 },
+      { id: 'flip-phone', x: 85, y: 60, rotation: 5, scale: 1 },
       { id: 'flip-newspaper', x: 15, y: 28, rotation: -3, scale: 1 },
       { id: 'flip-cd', x: 12, y: 70, rotation: -3, scale: 1 },
+      { id: 'flip-player', x: 8, y: 35, rotation: 0, scale: 1 },
     ],
   },
   cleanup: {
     items: [
-      { id: 'flip-pen', x: 50, y: 10, rotation: 91, scale: 1 },
-      { id: 'flip-diary', x: 40, y: 52, rotation: 1, scale: 0.9 },
-      { id: 'flip-phone', x: 80, y: 50, rotation: 0, scale: 0.9 },
+      { id: 'flip-pen', x: 58, y: 15, rotation: 91, scale: 1 },
+      { id: 'flip-diary', x: 55, y: 52, rotation: 1, scale: 0.8 },
+      { id: 'flip-phone', x: 90, y: 56, rotation: 0, scale: 0.8 },
       { id: 'flip-newspaper', x: 85, y: 50, rotation: 0, scale: 1 },
-      { id: 'flip-cd', x: 85, y: 50, rotation: 0, scale: 0.7 },
+      { id: 'flip-cd', x: 15, y: 60, rotation: 0, scale: 0.9 },
+      { id: 'flip-player', x: 15, y: 28, rotation: 0, scale: 1 },
     ],
   },
 };
@@ -35,10 +37,17 @@ export default function MainEvent() {
   const deskRef = useRef<HTMLDivElement>(null);
   const activeModeRef = useRef('notebook');
   const playerRef = useRef<any>(null);
+  const cdRef = useRef<HTMLDivElement>(null);
+  const cdRotationRef = useRef(0);
+  const cdAnimRef = useRef<gsap.core.Tween | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [now, setNow] = useState<Date | null>(null);
+  const [playerVisible, setPlayerVisible] = useState(false);
+  const clickSoundRef = useRef<HTMLAudioElement | null>(null);
+  const [phoneOn, setPhoneOn] = useState(false);
+  const phoneSoundRef = useRef<HTMLAudioElement | null>(null);
 
   const formatTime = (sec: number) => {
     const m = Math.floor(sec / 60);
@@ -46,11 +55,52 @@ export default function MainEvent() {
     return `${m}:${s.toString().padStart(2, '0')}`;
   };
 
+  useEffect(() => {
+    clickSoundRef.current = new Audio('/images/main/click.mp3');
+  }, []);
+
+  useEffect(() => {
+    phoneSoundRef.current = new Audio('/images/main/lock-unlock.mp3');
+  }, []);
+
   const togglePlay = () => {
+    clickSoundRef.current?.play();
+
+    if (!playerVisible) {
+      setPlayerVisible(true);
+      gsap.fromTo(
+        '#flip-player',
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
+      );
+      playerRef.current?.playVideo();
+      if (!cdAnimRef.current) {
+        cdAnimRef.current = gsap.to(cdRef.current, {
+          rotation: '+=360',
+          duration: 4,
+          ease: 'none',
+          repeat: -1,
+        });
+      } else {
+        cdAnimRef.current.resume();
+      }
+      return;
+    }
+
     if (isPlaying) {
       playerRef.current?.pauseVideo();
+      cdAnimRef.current?.pause();
+      gsap.to('#flip-player', {
+        opacity: 0,
+        y: 20,
+        duration: 0.5,
+        ease: 'power2.in',
+      });
+      setTimeout(() => setPlayerVisible(false), 300);
     } else {
       playerRef.current?.playVideo();
+      cdAnimRef.current?.resume();
+      gsap.to('#flip-player', { opacity: 1, duration: 0.5 });
     }
   };
 
@@ -61,6 +111,7 @@ export default function MainEvent() {
     const deskWidth = desk.offsetWidth;
     const deskHeight = desk.offsetHeight;
     const config = arrangements[mode];
+    if (!config) return;
 
     config.items.forEach((itemData: any) => {
       const itemEl = document.getElementById(itemData.id);
@@ -107,7 +158,10 @@ export default function MainEvent() {
     setLayout('notebook');
 
     requestAnimationFrame(() => {
-      gsap.to(items, {
+      const nonPlayerItems = document.querySelectorAll(
+        '.main-flip-item:not(#flip-player)',
+      );
+      gsap.to(nonPlayerItems, {
         opacity: 1,
         duration: 0.8,
         stagger: 0.1,
@@ -137,7 +191,15 @@ export default function MainEvent() {
         playerVars: { controls: 0, autoplay: 0 },
         events: {
           onReady: (e: any) => setDuration(e.target.getDuration()),
-          onStateChange: (e: any) => setIsPlaying(e.data === 1),
+          onStateChange: (e: any) => {
+            const playing = e.data === 1;
+            setIsPlaying(playing);
+            if (playing) {
+              cdAnimRef.current?.resume();
+            } else {
+              cdAnimRef.current?.pause();
+            }
+          },
         },
       });
     };
@@ -174,19 +236,23 @@ export default function MainEvent() {
         <button onClick={() => switchMode('notebook')}>Notebook</button>
         <button onClick={() => switchMode('cleanup')}>Cleanup</button>
       </div>
-      <div className='main-flip-item newspaper' id='flip-newspaper'>
-        <img src='/images/main/newspaper.png' alt='newspaper' />
-      </div>
       <div className='main-flip-item pen' id='flip-pen'>
         <img src='/images/main/pen.png' alt='pen' />
       </div>
       <div className='main-flip-item diary' id='flip-diary'>
         <img src='/images/main/diary.png' alt='diary' />
       </div>
-      <div className='main-flip-item phone' id='flip-phone'>
+      <div
+        className='main-flip-item phone'
+        id='flip-phone'
+        onClick={() => {
+          phoneSoundRef.current?.play();
+          setPhoneOn((prev) => !prev);
+        }}
+      >
         <div>
           <div className='phone-area'>
-            <div className='phone-area-view'>
+            <div className={`phone-area-view ${phoneOn ? 'on' : ''}`}>
               <div className='phone-area-time'>
                 <span>{date}</span>
                 <span>{time}</span>
@@ -216,10 +282,22 @@ export default function MainEvent() {
           <img src='/images/main/phone.png' alt='phone' />
         </div>
       </div>
-      <div className='main-flip-item cd' id='flip-cd'>
+      <div
+        className='main-flip-item cd'
+        id='flip-cd'
+        ref={cdRef}
+        onClick={togglePlay}
+      >
         <img src='/images/main/cd.png' alt='cd' />
       </div>
-      <div className='main-player' id='flip-player'>
+      <div
+        className='main-flip-item main-player'
+        id='flip-player'
+        style={{
+          opacity: playerVisible ? 1 : 0,
+          pointerEvents: playerVisible ? 'auto' : 'none',
+        }}
+      >
         <div id='yt-player' style={{ display: 'none' }} />
         <p className='main-player-artist'>{playlist[0].artist}</p>
         <p className='main-player-title'>{playlist[0].title}</p>
@@ -235,9 +313,13 @@ export default function MainEvent() {
           <span>{formatTime(currentTime)}</span>/
           <span>{formatTime(duration)}</span>
         </div>
-        <button className='main-player-btn' onClick={togglePlay}>
-          {isPlaying ? '⏸' : '▶'}
-        </button>
+        <div className={`main-player-wave ${isPlaying ? 'playing' : ''}`}>
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
+        </div>
       </div>
     </div>
   );

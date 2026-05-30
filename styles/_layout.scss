@@ -79,8 +79,12 @@ body {
   &-area {
     @include mixin.flex-layout(row, nowrap);
 
+    @include mixin.media(small) {
+      gap: 1rem !important;
+    }
+
     @include mixin.media(xsmall) {
-      gap: 1.75rem;
+      gap: 5px !important;
     }
 
     gap: 2.5rem;
@@ -284,13 +288,14 @@ footer {
       top: 0;
       left: 0;
       height: 100%;
+      cursor: pointer;
       user-select: none;
       -webkit-user-drag: none;
     }
 
     &.pen {
       z-index: 2;
-      height: 50%;
+      height: 55%;
     }
 
     &.diary {
@@ -301,6 +306,7 @@ footer {
     &.phone {
       z-index: 2;
       height: 70%;
+      cursor: pointer;
     }
 
     &.newspaper {
@@ -317,11 +323,22 @@ footer {
     @include mixin.flex-alignment(center, center);
     @include mixin.box-surface(var(--radius-medium));
 
+    @keyframes wave {
+      from {
+        height: 4px;
+      }
+
+      to {
+        height: 10px;
+      }
+    }
+
     gap: 2px;
     position: absolute;
     z-index: 4;
     padding: var(--spacing-small);
-    width: 30%;
+    width: 20%;
+    min-width: 150px;
 
     &-artist {
       font-size: 11px;
@@ -334,20 +351,63 @@ footer {
 
     &-time {
       @include mixin.flex-layout(row, nowrap);
+      @include mixin.flex-alignment(center, center);
 
       gap: 2px;
     }
 
     &-bar {
+      overflow: hidden;
       margin: var(--spacing-xsmall) 0;
       width: 100%;
       height: 4px;
+      border-radius: var(--radius-small);
       background-color: #ddd;
     }
 
     &-fill {
-      height: 100%;
-      background-color: red;
+      height: 4px;
+      background-color: var(--color-orange-500);
+    }
+
+    &-wave {
+      @include mixin.flex-layout(row, nowrap);
+      @include mixin.flex-alignment(center, flex-end);
+
+      gap: 2px;
+      margin-top: var(--spacing-xsmall);
+      height: 10px;
+
+      span {
+        width: 2px;
+        height: 10px;
+        background-color: #ddd;
+        transition: height 0.2s ease;
+      }
+
+      &.playing span {
+        animation: wave 0.5s ease-in-out infinite alternate;
+
+        &:nth-child(1) {
+          animation-delay: 0s;
+        }
+
+        &:nth-child(2) {
+          animation-delay: 0.2s;
+        }
+
+        &:nth-child(3) {
+          animation-delay: 0.1s;
+        }
+
+        &:nth-child(4) {
+          animation-delay: 0.3s;
+        }
+
+        &:nth-child(5) {
+          animation-delay: 0.2s;
+        }
+      }
     }
   }
 }
@@ -368,8 +428,14 @@ footer {
     color: #fff;
 
     &-view {
+      opacity: 0; // 기본 꺼진 상태
       width: 100%;
       height: 100%;
+      transition: opacity 0.3s ease;
+
+      &.on {
+        opacity: 1;
+      }
     }
 
     &-time {
