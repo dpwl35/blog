@@ -1,8 +1,8 @@
-import { notFound } from "next/navigation";
-import { CustomMDX } from "app/components/mdx";
-import { formatDate, getBlogPosts } from "app/(main)/blog/utils";
-import { baseUrl } from "app/sitemap";
-import { Toc } from "app/components/toc";
+import { notFound } from 'next/navigation';
+import { CustomMDX } from 'app/components/mdx';
+import { formatDate, getBlogPosts } from 'app/(main)/blog/utils';
+import { baseUrl } from 'app/sitemap';
+import { Toc } from 'app/components/toc';
 
 export async function generateStaticParams() {
   let posts = getBlogPosts();
@@ -34,7 +34,7 @@ export function generateMetadata({ params }) {
     openGraph: {
       title,
       description,
-      type: "article",
+      type: 'article',
       publishedTime,
       url: `${baseUrl}/blog/${post.slug}`,
       images: [
@@ -44,7 +44,7 @@ export function generateMetadata({ params }) {
       ],
     },
     twitter: {
-      card: "summary_large_image",
+      card: 'summary_large_image',
       title,
       description,
       images: [ogImage],
@@ -60,14 +60,14 @@ export default function Blog({ params }) {
   }
 
   return (
-    <div className="post">
+    <div className='post'>
       <script
-        type="application/ld+json"
+        type='application/ld+json'
         suppressHydrationWarning
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BlogPosting",
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
             headline: post.metadata.title,
             datePublished: post.metadata.publishedAt,
             dateModified: post.metadata.publishedAt,
@@ -77,26 +77,26 @@ export default function Blog({ params }) {
               : `/og?title=${encodeURIComponent(post.metadata.title)}`,
             url: `${baseUrl}/blog/${post.slug}`,
             author: {
-              "@type": "Person",
-              name: "My Portfolio",
+              '@type': 'Person',
+              name: 'My Portfolio',
             },
           }),
         }}
       />
 
-      <Toc headings={post.headings} />
+      <Toc headings={post.headings} title={post.metadata.title} />
 
-      <div className="post-header">
-        <h1 className="post-title">{post.metadata.title}</h1>
-        <div className="post-info">
-          <p className="post-info_date">
+      <div className='post-header'>
+        <h1 className='post-title'>{post.metadata.title}</h1>
+        <div className='post-info'>
+          <p className='post-info_date'>
             {formatDate(post.metadata.publishedAt)}
           </p>
           {/* <div className="post-info_views"> {100} views</div> */}
         </div>
       </div>
 
-      <article className="post-body">
+      <article className='post-body'>
         <CustomMDX source={post.content} />
       </article>
     </div>

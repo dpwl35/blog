@@ -125,6 +125,7 @@
 html[data-theme='light'] {
   // background
   --color-background: var(--color-white);
+  --color-background-rgb: 244 245 245;
   --color-surface: #f4f5f5;
   --color-surface-hover: #eeefef;
 
@@ -153,6 +154,7 @@ html[data-theme='light'] {
 html[data-theme='dark'] {
   // background
   --color-background: #1a1a1a;
+  --color-background-rgb: 26 26 26;
   --color-surface: #2a2a2a;
   --color-surface-hover: #333;
 

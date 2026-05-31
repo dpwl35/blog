@@ -148,6 +148,10 @@
     border-bottom: 1px dotted var(--color-border);
   }
 
+  &-section {
+    width: 100%;
+  }
+
   &-title {
     margin-bottom: var(--spacing-large);
     color: var(--color-text);
@@ -333,53 +337,77 @@
 }
 
 .toc {
-  @media (width < 1300px) {
-    position: relative;
-    left: unset;
+  opacity: 0;
+  position: fixed;
+  z-index: 100;
+  top: 24px;
+  left: 50%;
+  width: auto;
+  max-width: 400px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-medium);
+  background: rgb(var(--color-background-rgb) / 50%);
+  backdrop-filter: blur(8px);
+  transform: translateX(-50%);
 
-    &-container {
+  &-wrap {
+    padding: 16px;
+    transform: none;
+    transform-origin: 50% 50% 0;
+    transition: border-color 0.2s ease-in-out;
+    cursor: default;
+  }
+
+  &-title {
+    @include mixin.flex-layout(row, nowrap);
+    @include mixin.flex-alignment(center, center);
+
+    opacity: 1;
+    align-items: start;
+    gap: 8px;
+    width: 100%;
+    filter: blur(0);
+    transform: none;
+    transform-origin: 50% 50% 0;
+    cursor: pointer;
+
+    &-icon {
+      max-height: 20px;
+    }
+
+    &-icon svg {
       position: relative;
-      top: unset;
-      margin-left: 0;
-      width: 100%;
+      top: -2px;
     }
   }
 
-  position: absolute;
-  left: 100%;
-  height: 100%;
-
   &-container {
-    position: sticky;
-    top: 100px;
-    margin-bottom: var(--spacing-xxxlarge);
-    margin-left: var(--spacing-xxxlarge);
-    padding: var(--spacing-medium);
-    width: 200px;
-    border-left: 4px solid var(--color-border);
-    font: var(--post-body);
-    transition: all 0.2s;
+    &-area {
+      @include mixin.flex-layout(column, nowrap);
+
+      overflow: hidden;
+      gap: var(--spacing-xsmall);
+      padding-top: var(--spacing-medium);
+    }
   }
 
   &-list {
-    margin-bottom: var(--spacing-xsmall);
-  }
-
-  &-link {
-    display: block;
-    color: var(--color-text-muted);
     font: var(--body-4-regular);
 
-    &:hover {
-      color: var(--color-accent);
+    a {
+      display: block;
+    }
+
+    a[data-depth='3'] {
+      text-indent: var(--spacing-small);
     }
   }
 
-  a[data-depth='3'] {
-    text-indent: var(--spacing-small);
+  &-progress-circle {
+    stroke: var(--color-text);
   }
 
-  a[data-depth='4'] {
-    display: none;
+  &-background-circle {
+    stroke: var(--color-background);
   }
 }
