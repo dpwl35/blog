@@ -83,9 +83,22 @@ function Pre(props) {
   return <pre className='post-code'>{props.children}</pre>;
 }
 
-function slugify(str: string) {
-  return str
-    .toString()
+function slugify(str: unknown): string {
+  let text = '';
+
+  if (typeof str === 'string') {
+    text = str;
+  } else if (Array.isArray(str)) {
+    text = str
+      .map((s) =>
+        typeof s === 'string' ? s : (s as any)?.props?.children || '',
+      )
+      .join('');
+  } else if (str && typeof str === 'object') {
+    text = (str as any)?.props?.children || '';
+  }
+
+  return text
     .toLowerCase()
     .trim()
     .replace(/\./g, '')
