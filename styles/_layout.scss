@@ -22,6 +22,10 @@ body {
     padding: var(--spacing-xlarge);
   }
 
+  @include mixin.media(xsmall) {
+    padding: var(--spacing-xlarge);
+  }
+
   position: relative;
   height: 100%;
 }

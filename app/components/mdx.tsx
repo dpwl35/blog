@@ -1,8 +1,15 @@
-import Link from "next/link";
-import Image from "next/image";
-import { MDXRemote } from "next-mdx-remote/rsc";
-import { highlight } from "sugar-high";
-import React from "react";
+import Link from 'next/link';
+import Image from 'next/image';
+import { MDXRemote } from 'next-mdx-remote/rsc';
+import { highlight } from 'sugar-high';
+import React from 'react';
+import {
+  ButtonScaleDemo,
+  EasingDemo,
+  SpeedDemo,
+  BlurDemo,
+  ListHoverDemo,
+} from '../components/animationDemos';
 
 function Table({ data }) {
   let headers = data.headers.map((header, index) => (
@@ -29,7 +36,7 @@ function Table({ data }) {
 function CustomLink(props) {
   let href = props.href;
 
-  if (href.startsWith("/")) {
+  if (href.startsWith('/')) {
     return (
       <Link href={href} {...props}>
         {props.children}
@@ -37,22 +44,22 @@ function CustomLink(props) {
     );
   }
 
-  if (href.startsWith("#")) {
+  if (href.startsWith('#')) {
     return <a {...props} />;
   }
 
   return (
     <a
-      className="external-link"
-      target="_blank"
-      rel="noopener noreferrer"
+      className='external-link'
+      target='_blank'
+      rel='noopener noreferrer'
       {...props}
     />
   );
 }
 
 function RoundedImage(props) {
-  return <Image alt={props.alt} className="rounded-lg" {...props} />;
+  return <Image alt={props.alt} className='rounded-lg' {...props} />;
 }
 
 function Code({ children, className, ...props }) {
@@ -73,7 +80,7 @@ function Code({ children, className, ...props }) {
 }
 
 function Pre(props) {
-  return <pre className="post-code">{props.children}</pre>;
+  return <pre className='post-code'>{props.children}</pre>;
 }
 
 function slugify(str: string) {
@@ -81,10 +88,10 @@ function slugify(str: string) {
     .toString()
     .toLowerCase()
     .trim()
-    .replace(/\./g, "")
-    .replace(/\s+/g, "-")
-    .replace(/&/g, "-and-")
-    .replace(/[^\w가-힣\-]/g, "");
+    .replace(/\./g, '')
+    .replace(/\s+/g, '-')
+    .replace(/&/g, '-and-')
+    .replace(/[^\w가-힣\-]/g, '');
 }
 
 function createHeading(level) {
@@ -109,6 +116,11 @@ let components = {
   code: Code,
   pre: Pre,
   Table,
+  ButtonScaleDemo,
+  EasingDemo,
+  SpeedDemo,
+  BlurDemo,
+  ListHoverDemo,
 };
 
 export function CustomMDX(props) {
