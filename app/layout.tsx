@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
     default: '웹퍼블리셔 포트폴리오: dpwl35.blog',
-    template: '%s | dpwl.35.blog',
+    template: '%s | dpwl35.blog',
   },
   description:
     '웹 퍼블리셔 dpwl35의 포트폴리오 블로그입니다. HTML, CSS, JavaScript, React를 활용한 인터랙션 구현 작업물을 기록합니다.',
@@ -21,6 +21,9 @@ export const metadata: Metadata = {
     'React',
     '인터랙션',
   ],
+  alternates: {
+    canonical: 'https://dpwl35.com',
+  },
   openGraph: {
     title: 'dpwl35 | 웹 퍼블리셔 포트폴리오',
     description:
