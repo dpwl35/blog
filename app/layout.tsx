@@ -5,6 +5,9 @@ import Script from 'next/script';
 import { themeEffect } from '@utils/themeEffect';
 
 export const metadata: Metadata = {
+  icons: {
+    icon: '/favicon.png',
+  },
   metadataBase: new URL(baseUrl),
   title: {
     default: '웹퍼블리셔 포트폴리오: dpwl35.blog',
