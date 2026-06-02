@@ -2,7 +2,12 @@
   "extends": ["stylelint-config-standard-scss"],
   "plugins": ["stylelint-order"],
   "rules": {
-    "order/order": ["at-rules", "declarations", "rules"],
+    "order/order": [
+      { "type": "at-rule", "name": "include", "hasBlock": false },
+      "declarations",
+      "at-rules",
+      "rules"
+    ],
     "order/properties-order": [
       {
         "name": "Content",
