@@ -75,6 +75,10 @@
       }
     }
 
+    &-link {
+      @include mixin.flex-layout(column, nowrap);
+    }
+
     &-link a:hover {
       color: var(--color-orange-500);
     }
