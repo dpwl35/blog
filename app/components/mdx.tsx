@@ -10,6 +10,7 @@ import {
   BlurDemo,
   ListHoverDemo,
 } from '../components/animationDemos';
+import ArrowIcon from './arrowIcon';
 
 function Table({ data }) {
   let headers = data.headers.map((header, index) => (
@@ -54,7 +55,10 @@ function CustomLink(props) {
       target='_blank'
       rel='noopener noreferrer'
       {...props}
-    />
+    >
+      <span>{props.children}</span>
+      <ArrowIcon />
+    </a>
   );
 }
 
