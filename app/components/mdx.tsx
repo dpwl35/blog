@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { MDXRemote } from 'next-mdx-remote/rsc';
-import { highlight } from 'sugar-high';
+import rehypePrettyCode from 'rehype-pretty-code';
 import React from 'react';
 import {
   ButtonScaleDemo,
@@ -62,27 +62,6 @@ function RoundedImage(props) {
   return <Image alt={props.alt} className='rounded-lg' {...props} />;
 }
 
-function Code({ children, className, ...props }) {
-  // 인라인 코드 처리
-  if (!className) {
-    return <code {...props}>{children}</code>;
-  }
-
-  // 코드 블록 처리
-  const codeHTML = highlight(children);
-  return (
-    <code
-      className={className}
-      dangerouslySetInnerHTML={{ __html: codeHTML }}
-      {...props}
-    />
-  );
-}
-
-function Pre(props) {
-  return <pre className='post-code'>{props.children}</pre>;
-}
-
 function slugify(str: unknown): string {
   let text = '';
 
@@ -126,8 +105,6 @@ let components = {
   h6: createHeading(6),
   Image: RoundedImage,
   a: CustomLink,
-  code: Code,
-  pre: Pre,
   Table,
   ButtonScaleDemo,
   EasingDemo,
@@ -135,12 +112,26 @@ let components = {
   BlurDemo,
   ListHoverDemo,
 };
-
 export function CustomMDX(props) {
   return (
     <MDXRemote
       {...props}
       components={{ ...components, ...(props.components || {}) }}
+      options={{
+        mdxOptions: {
+          rehypePlugins: [
+            [
+              rehypePrettyCode,
+              {
+                theme: {
+                  dark: 'github-dark-default',
+                  light: 'github-light',
+                },
+              },
+            ],
+          ],
+        },
+      }}
     />
   );
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function GalleryItem({
   slug,
@@ -18,11 +18,19 @@ export default function GalleryItem({
   year: string | null;
 }) {
   const [active, setActive] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 576);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   return (
     <div
-      className={`post-item-list ${active ? 'active' : ''}`}
-      onClick={() => setActive((prev) => !prev)}
+      className={`post-item-list ${!isMobile && active ? 'active' : ''}`}
+      onClick={() => !isMobile && setActive((prev) => !prev)}
     >
       <div className='post-item-left'>
         <p className='post-item-title'>{title}</p>

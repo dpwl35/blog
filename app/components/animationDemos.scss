@@ -8,9 +8,14 @@
 .list-wrapper {
   margin: 24px 0;
   padding: 32px;
-  border: 1px solid #e5e5e5;
+  border: 1px solid #ddd;
   border-radius: 12px;
-  background: #fff;
+  background: #f4f5f5;
+
+  html[data-theme='dark'] & {
+    border-color: #444;
+    background: #2a2a2a;
+  }
 }
 
 // ===========================
@@ -337,6 +342,7 @@
   }
 
   .list-wrap {
+    overflow: hidden;
     padding: 0;
     border: 1px solid #e5e5e5;
     border-radius: 8px;
@@ -347,8 +353,13 @@
     padding: 10px 14px;
     border-bottom: 1px solid #e5e5e5;
     background: #fff;
+    color: #000;
     font-size: 14px;
     cursor: pointer;
+
+    &:last-of-type {
+      border-bottom: none;
+    }
 
     &.with-anim {
       transition:
