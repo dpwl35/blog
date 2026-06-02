@@ -193,6 +193,7 @@ export default function MainEvent() {
   const [phoneOn, setPhoneOn] = useState(false);
   const phoneSoundRef = useRef<HTMLAudioElement | null>(null);
   const [showModes, setShowModes] = useState(false);
+  const isPlayerReadyRef = useRef(false);
 
   const formatTime = (sec: number) => {
     const m = Math.floor(sec / 60);
@@ -218,6 +219,8 @@ export default function MainEvent() {
   const togglePlay = () => {
     clickSoundRef.current?.play();
 
+    if (!isPlayerReadyRef.current) return;
+
     if (!playerVisible) {
       setPlayerVisible(true);
       gsap.fromTo(
@@ -225,6 +228,7 @@ export default function MainEvent() {
         { opacity: 0, y: 20 },
         { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
       );
+
       playerRef.current?.playVideo();
 
       if (!cdAnimRef.current) {
@@ -397,7 +401,10 @@ export default function MainEvent() {
         videoId: playlist[0].id,
         playerVars: { controls: 0, autoplay: 0 },
         events: {
-          onReady: (e: any) => setDuration(e.target.getDuration()),
+          onReady: (e: any) => {
+            setDuration(e.target.getDuration());
+            isPlayerReadyRef.current = true;
+          },
           onStateChange: (e: any) => {
             const playing = e.data === 1;
             setIsPlaying(playing);
