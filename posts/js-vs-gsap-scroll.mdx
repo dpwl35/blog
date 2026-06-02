@@ -1,0 +1,163 @@
+---
+title: "Vanilla JS 와 GSAP ScrollTrigger"
+publishedAt: "2026-06-02"
+summary: "Vanilla JS와 GSAP ScrollTrigger 비교, Vanilla JS에서 스크롤 위치를 계산하는 방법"
+---
+import { ScrollAnimationDemo } from '../app/components/animationDemos';
+
+## Vanilla JS 와 GSAP ScrollTrigger
+
+스크롤 인터랙션은 GSAP ScrollTrigger나 기타 라이브러리를 쓰면 편하게 구현할 수 있지만 알아둬서 나쁠 건 없다.
+
+
+### Vanilla JS 방식
+
+<ScrollAnimationDemo />
+
+```javascript
+useEffect(() => {
+    const wrapper = wrapperRef.current;
+    if (!wrapper) return;
+
+    const handleScroll = () => {
+        const items = wrapper.querySelectorAll('.scroll-anim-item');
+        const scaleList = wrapper.querySelector('.scroll-anim-scale');
+        const wrapperBottom = wrapper.getBoundingClientRect().bottom;
+
+        items.forEach((item) => {
+            const itemTop = item.getBoundingClientRect().top;
+            item.classList.toggle('on', wrapperBottom > itemTop + 50);
+        });
+
+        if (scaleList) {
+            const scaleTop = scaleList.getBoundingClientRect().top;
+            scaleList.classList.toggle('on', wrapperBottom > scaleTop + 50);
+        }
+    };
+
+    wrapper.addEventListener('scroll', handleScroll);
+    return () => wrapper.removeEventListener('scroll', handleScroll);
+}, []);
+```
+
+`wrapper.addEventListener('scroll', handleScroll)` 로 스크롤 이벤트를 등록한다. 스크롤할 때마다 `handleScroll` 이 실행되고, `return () => wrapper.removeEventListener` 는 컴포넌트가 언마운트될 때 이벤트를 정리하는 클린업 함수다.
+
+`handleScroll` 안에서는 애니메이션을 적용할 요소들(`items`), scale 애니메이션을 적용할 부모 요소(`scaleList`), wrapper의 하단 위치(`wrapperBottom`) 를 구한다.
+
+핵심은 `getBoundingClientRect()` 다. 이 메서드는 요소의 뷰포트 기준 위치를 반환하는데, 뷰포트 기준이라는 건 현재 화면에 보이는 영역 기준이라는 뜻이다. 스크롤하면 값이 계속 바뀐다.
+
+wrapper의 `bottom` 과 각 요소의 `top` 을 비교해서 요소가 wrapper 안에 들어왔는지 판단한다. `wrapperBottom > itemTop + 50` 이 `true` 가 되는 순간 `on` 클래스가 붙고, 스크롤을 올려서 다시 `false` 가 되면 클래스가 제거된다. `classList.toggle` 이 추가/제거를 자동으로 처리한다.
+
+`+ 50` 은 요소가 wrapper 안으로 50px 들어왔을 때 동작하도록 여유를 준 값이다. 이 숫자를 조절하면 애니메이션 시작 타이밍을 바꿀 수 있다.
+
+
+
+
+
+### GSAP ScrollTrigger 방식
+
+```javascript
+ScrollTrigger.create({
+    trigger: '.about',
+    start: 'top 70%',
+    end: 'bottom 50%',
+    scrub: 1,
+    onUpdate: (self) => {
+        const targetIndex = Math.round(self.progress * (listItem.length - 1));
+
+        if (document.getElementById('on'))
+            document.getElementById('on').removeAttribute('id');
+
+        if (listItem[targetIndex]) listItem[targetIndex].id = 'on';
+    },
+});
+```
+
+`start: 'top 70%'` 는 트리거 요소의 상단이 화면 70% 지점에 닿을 때 시작한다는 뜻이다. Vanilla JS에서 `+ 50` 같은 픽셀값으로 조절하던 것을 직관적인 문자열로 표현한다. `self.progress` 는 현재 스크롤 진행도를 0~1 사이 값으로 제공해서 픽셀 계산 없이 인덱스를 구할 수 있다. 레이아웃이 바뀌어도 자동으로 재계산된다.
+
+
+
+## Vanilla JS에서 스크롤 위치를 계산하는 방법
+
+### 뷰포트 좌표 vs 문서 좌표
+
+브라우저에는 두 가지 좌표계가 있다.
+
+**뷰포트 좌표** 는 현재 화면에 보이는 영역 기준이고 스크롤을 내리면 값이 바뀐다.
+
+```
+스크롤 전                    스크롤 후
+┌──────────────┐            ┌──────────────┐
+│              │            │   .about     │  ← top: 0px (뷰포트 기준)
+│   .about     │  top: 500px│              │
+│              │            │              │
+└──────────────┘            └──────────────┘
+```
+
+`getBoundingClientRect().top` 이 뷰포트 좌표다. 스크롤하면 값이 계속 바뀐다.
+
+**문서 좌표** 는 페이지 맨 위부터의 거리다. 스크롤해도 값이 안 바뀐다.
+
+```javascript
+// 뷰포트 좌표 (스크롤하면 바뀜)
+element.getBoundingClientRect().top
+
+// 문서 좌표 (항상 고정)
+element.getBoundingClientRect().top + window.scrollY
+```
+
+
+
+### window.scrollY란?
+
+`window.scrollY` 는 현재 페이지가 얼마나 스크롤 됐는지 알 수 있는 픽셀 값이다.
+
+```
+페이지 맨 위 ─── scrollY: 0px
+     │
+     │  스크롤 500px
+     │
+현재 화면 ────── scrollY: 500px
+     │
+     │
+페이지 맨 아래
+```
+
+
+
+
+### 인덱스 계산
+
+위의 `getBoundingClientRect()` 방식과 달리 `window.scrollY` 를 직접 쓰는 방식도 있다. 스크롤 진행도에 따라 어떤 요소를 활성화할지 픽셀값으로 직접 계산한다.
+
+```javascript
+const division = (listStyleChangeEnd - listStyleChangeStart) / listItem.length;
+const targetIndex = Math.round((window.scrollY - listStyleChangeStart) / division);
+```
+
+전체 스크롤 구간을 `listItem.length` 로 나눠서 구간당 하나의 li가 하이라이트되도록 한다.
+
+```
+스크롤 구간: 0px ───────────────────── 1000px
+li 개수: 10개
+division: 100px
+
+scrollY - start = 0px   → index 0  → 1번째 li
+scrollY - start = 100px → index 1  → 2번째 li
+scrollY - start = 500px → index 5  → 6번째 li
+
+```
+
+GSAP은 현재 진행도를 `self.progress` 라는 0~1 사이 값으로 추상화해서 제공한다. 픽셀 계산 없이 진행도만으로 인덱스를 구할 수 있다.
+
+```javascript
+const targetIndex = Math.round(self.progress * (listItem.length - 1));
+```
+
+```
+self.progress = 0    → index 0  → 1번째 li
+self.progress = 0.5  → index 5  → 6번째 li
+self.progress = 1    → index 9  → 10번째 li
+```
+
+0이면 첫 번째, 1이면 마지막 li다. 시작/끝 픽셀을 직접 계산하지 않아도 되는 게 가장 큰 차이다.
