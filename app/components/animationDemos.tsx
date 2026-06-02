@@ -1,8 +1,7 @@
 'use client';
 
-import { useState } from 'react';
 import './animationDemos.scss';
-
+import { useState, useEffect, useRef } from 'react';
 // ===========================
 // 1. Button Scale Demo
 // ===========================
@@ -213,6 +212,57 @@ export function ListHoverDemo() {
       <div className='list-icons'>
         <div className='list-icon'>✕</div>
         <div className='list-icon'>✓</div>
+      </div>
+    </div>
+  );
+}
+
+export function ScrollAnimationDemo() {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const wrapper = wrapperRef.current;
+    if (!wrapper) return;
+
+    const handleScroll = () => {
+      const items = wrapper.querySelectorAll('.scroll-anim-item');
+      const scaleList = wrapper.querySelector('.scroll-anim-scale');
+      const wrapperBottom = wrapper.getBoundingClientRect().bottom;
+
+      items.forEach((item) => {
+        const itemTop = item.getBoundingClientRect().top;
+        item.classList.toggle('on', wrapperBottom > itemTop + 50);
+      });
+
+      if (scaleList) {
+        const scaleTop = scaleList.getBoundingClientRect().top;
+        scaleList.classList.toggle('on', wrapperBottom > scaleTop + 50);
+      }
+    };
+
+    wrapper.addEventListener('scroll', handleScroll);
+    return () => wrapper.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <div className='scroll-anim-wrapper' ref={wrapperRef}>
+      <div className='scroll-anim-hint'>⬇ 스크롤해보세요</div>
+      <div className='scroll-anim-content'>
+        <div className='scroll-anim-item scroll-right'>Right →</div>
+        <div className='scroll-anim-item scroll-left'>← Left</div>
+        <div className='scroll-anim-item scroll-up'>↑ Up</div>
+        <div className='scroll-anim-item scroll-down'>↓ Down</div>
+        <div className='scroll-anim-scale'>
+          <span className='scale-item' style={{ animationDelay: '0s' }}>
+            1
+          </span>
+          <span className='scale-item' style={{ animationDelay: '0.3s' }}>
+            2
+          </span>
+          <span className='scale-item' style={{ animationDelay: '0.6s' }}>
+            3
+          </span>
+        </div>
       </div>
     </div>
   );

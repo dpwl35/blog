@@ -9,6 +9,7 @@ import {
   SpeedDemo,
   BlurDemo,
   ListHoverDemo,
+  ScrollAnimationDemo,
 } from '../components/animationDemos';
 import ArrowIcon from './arrowIcon';
 
@@ -115,6 +116,7 @@ let components = {
   SpeedDemo,
   BlurDemo,
   ListHoverDemo,
+  ScrollAnimationDemo,
 };
 export function CustomMDX(props) {
   return (
