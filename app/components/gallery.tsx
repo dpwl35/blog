@@ -42,7 +42,7 @@ export default function GalleryItem({
             </a>
             {postUrl && <a href={postUrl}>Read More</a>}
           </div>
-          <div className='post-item_tags'>
+          <div className='post-item-tags'>
             {tags.map((tag) => (
               <span key={tag}>#{tag}</span>
             ))}

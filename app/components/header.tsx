@@ -1,14 +1,14 @@
-import Link from "next/link";
-import { ThemeSwitcher } from "./theme-switcher";
-import { Navbar } from "./nav";
+import Link from 'next/link';
+import { ThemeSwitcher } from './theme-switcher';
+import { Navbar } from './nav';
 
 export function Header() {
   return (
-    <header className="header">
+    <header className='header'>
       <Navbar />
-      <nav className="header-nav">
-        <Link className="header-nav-link" href="/about">
-          about
+      <nav className='header-nav'>
+        <Link className='header-nav-link' href='/about'>
+          ABOUT
         </Link>
         <ThemeSwitcher />
       </nav>
