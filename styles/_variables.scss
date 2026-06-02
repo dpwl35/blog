@@ -13,17 +13,6 @@
 );
 
 :root {
-  // syntax highlight (sugar-high)
-  --sh-identifier: #354150;
-  --sh-keyword: #f47067;
-  --sh-string: #00a99a;
-  --sh-class: #8d85ff;
-  --sh-property: #4e8fdf;
-  --sh-entity: #6eafad;
-  --sh-jsxliterals: #bf7db6;
-  --sh-sign: #8996a3;
-  --sh-comment: #a19595;
-
   // gray scale
   --color-black: #000;
   --color-white: #fff;
@@ -41,7 +30,7 @@
   // point color
   --color-orange-500: #f54;
 
-  // RGB 분리 — state layer에 rgb() / 0.xx 방식으로 사용
+  // RGB 분리
   --color-black-rgb: 0 0 0;
   --color-white-rgb: 255 255 255;
   --color-orange-500-rgb: 255 85 68;
@@ -107,6 +96,12 @@
   --body-4-regular: var(--weight-400) var(--body-4);
   --post-heading: var(--weight-600) 1.44rem / 1.2 var(--family);
   --post-body: var(--weight-400) 1rem / 1.75 var(--family);
+
+  // ─────────────────────────────────────────
+  // etc
+  // ─────────────────────────────────────────
+  --gallery-title-font-size: 1.5rem;
+  --gallery-title-font-family: 'jetbrainsmono', monospace;
 }
 
 @media (width <= 500px) {
@@ -119,6 +114,7 @@
     --body-4: 13px / 1.5385 var(--family);
     --post-heading: var(--weight-600) 1.266rem / 1.2 var(--family);
     --post-body: var(--weight-400) 0.873rem / 1.4286 var(--family);
+    --gallery-title-font-size: 1rem;
   }
 }
 
@@ -177,5 +173,16 @@ html[data-theme='dark'] {
   *::selection {
     background-color: var(--color-gray-700);
     color: var(--color-gray-200);
+  }
+}
+
+code[data-theme*=' '],
+code[data-theme*=' '] span {
+  background-color: var(--shiki-light-bg);
+  color: var(--shiki-light);
+
+  html[data-theme='dark'] & {
+    background-color: var(--shiki-dark-bg);
+    color: var(--shiki-dark);
   }
 }

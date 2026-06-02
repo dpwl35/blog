@@ -12,6 +12,10 @@ body {
 .wrap {
   @include mixin.flex-layout(column, nowrap);
 
+  position: relative;
+  height: 100%;
+  min-height: 100vh;
+
   @include mixin.media(small) {
     padding: var(--spacing-large);
   }
@@ -23,10 +27,6 @@ body {
   @include mixin.media(xsmall) {
     padding: var(--spacing-xlarge);
   }
-
-  position: relative;
-  height: 100%;
-  min-height: 100vh;
 }
 
 .wrap-lab {
@@ -44,6 +44,10 @@ body {
   margin-bottom: var(--spacing-medium);
   padding-top: 100px;
   color: var(--color-text);
+
+  @include mixin.media(small) {
+    padding-top: 0;
+  }
 
   &-nav {
     @include mixin.flex-layout(row, nowrap);
@@ -83,11 +87,11 @@ body {
   &-area {
     @include mixin.flex-layout(row, nowrap);
 
+    gap: 2.5rem;
+
     @include mixin.media(small) {
       gap: 1rem !important;
     }
-
-    gap: 2.5rem;
   }
 
   &-item {
@@ -301,16 +305,20 @@ footer {
     &.diary {
       z-index: 1;
       height: 80%;
+
+      @media (height <= 1366px) and (width <= 1024px) {
+        height: 70%;
+      }
     }
 
     &.phone {
       z-index: 2;
       height: 70%;
       cursor: pointer;
-    }
 
-    &.newspaper {
-      height: 30%;
+      @media (height <= 1366px) and (width <= 1024px) {
+        height: 60%;
+      }
     }
 
     &.cd {
@@ -323,6 +331,13 @@ footer {
     @include mixin.flex-alignment(center, center);
     @include mixin.box-surface(var(--radius-medium));
 
+    gap: 2px;
+    position: absolute;
+    z-index: 4;
+    padding: var(--spacing-small);
+    width: 20%;
+    min-width: 150px;
+
     @keyframes wave {
       from {
         height: 4px;
@@ -332,13 +347,6 @@ footer {
         height: 10px;
       }
     }
-
-    gap: 2px;
-    position: absolute;
-    z-index: 4;
-    padding: var(--spacing-small);
-    width: 20%;
-    min-width: 150px;
 
     &-artist {
       font-size: 11px;
