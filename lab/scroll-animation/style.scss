@@ -175,4 +175,72 @@
       }
     }
   }
+
+  .scroll02 {
+    p {
+      font-weight: 500;
+      font-family: 'DM Mono', monospace;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    section {
+      overflow: hidden;
+      position: relative;
+      width: 100%;
+      height: 100svh;
+    }
+
+    .intro,
+    .outro {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background-color: #141414;
+      color: #fff;
+    }
+
+    .spotlight {
+      &-img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+        will-change: clip-path;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+    }
+
+    .dissolve-grid {
+      position: absolute;
+      z-index: 100;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .dissolve-cell {
+      display: flex;
+      visibility: hidden;
+      overflow: hidden;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      background: var(--dissolve-color, #ff6426);
+      color: #000;
+      font-weight: 500;
+      font-family: 'DM Mono', monospace;
+      line-height: 1;
+    }
+  }
 }

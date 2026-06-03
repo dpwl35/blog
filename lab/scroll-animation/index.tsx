@@ -1,6 +1,7 @@
 'use client';
 
 import Scroll01 from './scroll_01';
+import Scroll02 from './scroll_02';
 import './style.scss';
 import { useState } from 'react';
 
@@ -23,8 +24,8 @@ export default function Page() {
         ))}
       </ul>
       <div className='tab-content'>
-        {activeTab === 0 && <Scroll01 />}
-        {activeTab === 1 && <p>2</p>}
+        {activeTab === 0 && <Scroll01 key={0} />}
+        {activeTab === 1 && <Scroll02 key={1} />}
       </div>
     </div>
   );
