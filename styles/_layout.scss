@@ -201,6 +201,13 @@ footer {
   &-resume {
     margin-bottom: var(--spacing-xxlarge);
     text-align: center;
+
+    a {
+      @include mixin.box-surface(var(--radius-medium));
+
+      padding: var(--spacing-small);
+      cursor: pointer;
+    }
   }
 }
 
