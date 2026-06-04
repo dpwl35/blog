@@ -46,6 +46,9 @@ export function Toc({ headings, title }: TocProps) {
         opacity: 0,
         duration: 0.3,
         ease: 'power2.inOut',
+        onComplete: () => {
+          list.style.display = 'none';
+        },
       });
       gsap.to(arrowRef.current, {
         rotate: 180,
@@ -53,6 +56,7 @@ export function Toc({ headings, title }: TocProps) {
         ease: 'power2.inOut',
       });
     } else {
+      list.style.display = 'block';
       gsap.to(list, {
         height: 'auto',
         opacity: 1,
@@ -70,9 +74,8 @@ export function Toc({ headings, title }: TocProps) {
     setIsOpen(!isOpen);
   };
 
-  // 스크롤 진행도
   useEffect(() => {
-    gsap.set(navRef.current, { opacity: 0, y: -20 });
+    gsap.set(navRef.current, { opacity: 0, y: -20, display: 'none' });
 
     const onScroll = () => {
       const scrollTop = window.scrollY;
@@ -80,6 +83,7 @@ export function Toc({ headings, title }: TocProps) {
         document.documentElement.scrollHeight - window.innerHeight;
       const p = docHeight > 0 ? scrollTop / docHeight : 0;
       setProgress(p);
+
       if (scrollTop <= 200) {
         if (isVisibleRef.current) {
           isVisibleRef.current = false;
@@ -90,6 +94,9 @@ export function Toc({ headings, title }: TocProps) {
               opacity: 0,
               duration: 0.3,
               ease: 'power2.inOut',
+              onComplete: () => {
+                if (listRef.current) listRef.current.style.display = 'none';
+              },
             });
             gsap.to(arrowRef.current, {
               rotate: 180,
@@ -105,6 +112,9 @@ export function Toc({ headings, title }: TocProps) {
               duration: 0.3,
               ease: 'power2.inOut',
               delay: 0.4,
+              onComplete: () => {
+                if (navRef.current) navRef.current.style.display = 'none';
+              },
             });
           } else {
             gsap.to(navRef.current, {
@@ -113,6 +123,9 @@ export function Toc({ headings, title }: TocProps) {
               duration: 0.3,
               delay: 0.2,
               ease: 'power2.inOut',
+              onComplete: () => {
+                if (navRef.current) navRef.current.style.display = 'none';
+              },
             });
           }
         }
@@ -120,6 +133,7 @@ export function Toc({ headings, title }: TocProps) {
         if (!isVisibleRef.current) {
           isVisibleRef.current = true;
 
+          if (navRef.current) navRef.current.style.display = 'block';
           gsap.set(listRef.current, { height: 0, opacity: 0 });
           gsap.set(arrowRef.current, { rotate: 180 });
           isOpenRef.current = false;
@@ -145,36 +159,38 @@ export function Toc({ headings, title }: TocProps) {
     <nav ref={navRef} className='toc' style={{ opacity: 0 }}>
       <div className='toc-wrap'>
         <div className='toc-title' onClick={toggle}>
-          <div className='toc-title-icon'>
-            <svg
-              width='20'
-              height='20'
-              viewBox='0 0 20 20'
-              style={{ transform: 'rotate(-90deg)' }}
-            >
-              <circle
-                className='toc-background-circle'
-                cx='10'
-                cy='10'
-                r='8'
-                strokeWidth='2'
-                stroke='blue'
-                fill='none'
-                strokeLinecap='round'
-              />
-              <circle
-                className='toc-progress-circle'
-                cx='10'
-                cy='10'
-                r='8'
-                strokeWidth='2'
-                fill='none'
-                strokeLinecap='round'
-                strokeDasharray={`${progress * circumference} ${circumference}`}
-              />
-            </svg>
+          <div className='toc-title-left'>
+            <div className='toc-title-icon'>
+              <svg
+                width='20'
+                height='20'
+                viewBox='0 0 20 20'
+                style={{ transform: 'rotate(-90deg)' }}
+              >
+                <circle
+                  className='toc-background-circle'
+                  cx='10'
+                  cy='10'
+                  r='8'
+                  strokeWidth='2'
+                  stroke='blue'
+                  fill='none'
+                  strokeLinecap='round'
+                />
+                <circle
+                  className='toc-progress-circle'
+                  cx='10'
+                  cy='10'
+                  r='8'
+                  strokeWidth='2'
+                  fill='none'
+                  strokeLinecap='round'
+                  strokeDasharray={`${progress * circumference} ${circumference}`}
+                />
+              </svg>
+            </div>
+            <p className='toc-title-text'>{title}</p>
           </div>
-          <p className='toc-title-text'>{title}</p>
           <div className='toc-title-icon'>
             <svg
               ref={arrowRef}

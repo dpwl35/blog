@@ -410,7 +410,7 @@
 
   &-title {
     @include mixin.flex-layout(row, nowrap);
-    @include mixin.flex-alignment(center, center);
+    @include mixin.flex-alignment(space-between, center);
 
     opacity: 1;
     align-items: start;
@@ -420,6 +420,12 @@
     transform: none;
     transform-origin: 50% 50% 0;
     cursor: pointer;
+
+    &-left {
+      @include mixin.flex-layout(row, nowrap);
+
+      gap: 8px;
+    }
 
     &-text {
       font: var(--body-3-regular);

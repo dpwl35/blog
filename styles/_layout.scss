@@ -150,63 +150,66 @@ footer {
   }
 }
 
-.about {
-  &-intro {
-    @include mixin.flex-layout(column, nowrap);
+.post-section {
+  .about {
+    &-intro {
+      @include mixin.flex-layout(column, nowrap);
 
-    gap: var(--spacing-small);
+      gap: var(--spacing-small);
 
-    p {
-      font: var(--body-3-regular);
-    }
-  }
-
-  &-career {
-    @include mixin.flex-layout(column, nowrap);
-
-    gap: var(--spacing-large);
-    margin: var(--spacing-xxxlarge) 0;
-    font: var(--body-4-regular);
-
-    &-item {
-      @include mixin.flex-layout(row, nowrap);
-
-      gap: var(--spacing-large);
-
-      div {
-        font: var(--body-4-regular);
-
-        &:first-of-type {
-          @include mixin.flex-layout(column, nowrap);
-
-          white-space: nowrap;
-        }
+      p {
+        font: var(--body-3-regular);
       }
     }
 
-    &-title {
-      font: var(--body-4-bold);
+    &-career {
+      @include mixin.flex-layout(column, nowrap);
+
+      gap: var(--spacing-large);
+      margin: var(--spacing-xxxlarge) 0;
+      font: var(--body-4-regular);
+
+      &-item {
+        @include mixin.flex-layout(row, nowrap);
+
+        gap: var(--spacing-large);
+
+        div {
+          font: var(--body-4-regular);
+
+          &:first-of-type {
+            @include mixin.flex-layout(column, nowrap);
+
+            white-space: nowrap;
+          }
+        }
+      }
+
+      &-title {
+        font: var(--body-4-bold);
+      }
+
+      &-company {
+        font: var(--body-4-bold);
+      }
+
+      &-period {
+        color: var(--color-text-muted);
+        font-size: 12px;
+      }
     }
 
-    &-company {
-      font: var(--body-4-bold);
-    }
+    &-resume {
+      margin-bottom: var(--spacing-xxlarge);
+      text-align: center;
 
-    &-period {
-      color: var(--color-text-muted);
-      font-size: 12px;
-    }
-  }
+      a {
+        @include mixin.box-surface(var(--radius-medium));
 
-  &-resume {
-    margin-bottom: var(--spacing-xxlarge);
-    text-align: center;
-
-    a {
-      @include mixin.box-surface(var(--radius-medium));
-
-      padding: var(--spacing-small);
-      cursor: pointer;
+        padding: var(--spacing-small);
+        font: var(--body-4-regular);
+        cursor: pointer;
+      }
     }
   }
 }
