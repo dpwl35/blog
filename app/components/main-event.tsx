@@ -1,542 +1,261 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { gsap } from 'gsap';
-import { Flip } from 'gsap/Flip';
-
-gsap.registerPlugin(Flip);
-
-const playlist = [
-  { id: 'LQjGf9rN5W0', title: 'Jazz et thé vert', artist: 'Souleance' },
-];
-
-const arrangements: Record<string, any> = {
-  notebook: {
-    items: [
-      {
-        id: 'flip-pen',
-        x: 50,
-        y: 50,
-        xPad: 50,
-        yPad: 52,
-        xPadSm: 56,
-        yPadSm: 50,
-        xPadXs: 56,
-        yPadXs: 50,
-        rotation: -16,
-        scale: 1,
-      },
-      {
-        id: 'flip-diary',
-        x: 53,
-        y: 52,
-        xPad: 55,
-        yPad: 50,
-        xPadSm: 55,
-        yPadSm: 50,
-        xPadXs: 55,
-        yPadXs: 50,
-        rotation: -10,
-        scale: 1,
-      },
-      {
-        id: 'flip-phone',
-        x: 85,
-        y: 60,
-        xPad: 95,
-        yPad: 60,
-        xPadSm: 85,
-        yPadSm: 56,
-        xPadXs: 85,
-        yPadXs: 56,
-        rotation: 5,
-        scale: 1,
-      },
-      {
-        id: 'flip-newspaper',
-        x: 15,
-        y: 28,
-        xPad: 15,
-        yPad: 20,
-        xPadSm: 15,
-        yPadSm: 15,
-        xPadXs: 15,
-        yPadXs: 15,
-        rotation: -3,
-        scale: 1,
-      },
-      {
-        id: 'flip-cd',
-        x: 12,
-        y: 70,
-        xPad: 12,
-        yPad: 65,
-        xPadSm: 17,
-        yPadSm: 64,
-        xPadXs: 17,
-        yPadXs: 64,
-        rotation: -3,
-        scale: 1,
-      },
-      {
-        id: 'flip-player',
-        x: 8,
-        y: 35,
-        xPad: -2,
-        yPad: 38,
-        xPadSm: 8,
-        yPadSm: 35,
-        xPadXs: 11,
-        yPadXs: 30,
-        rotation: 0,
-        scale: 1,
-      },
-    ],
-  },
-  cleanup: {
-    items: [
-      {
-        id: 'flip-pen',
-        x: 58,
-        y: 15,
-        xPad: 58,
-        yPad: 10,
-        xPadSm: 58,
-        yPadSm: 8,
-        xPadXs: 58,
-        yPadXs: 8,
-        rotation: 91,
-        scale: 0.8,
-      },
-      {
-        id: 'flip-diary',
-        x: 55,
-        y: 52,
-        xPad: 55,
-        yPad: 48,
-        xPadSm: 55,
-        yPadSm: 44,
-        xPadXs: 55,
-        yPadXs: 44,
-        rotation: 1,
-        scale: 0.8,
-      },
-      {
-        id: 'flip-phone',
-        x: 90,
-        y: 56,
-        xPad: 85,
-        yPad: 52,
-        xPadSm: 80,
-        yPadSm: 48,
-        xPadXs: 80,
-        yPadXs: 48,
-        rotation: 0,
-        scale: 0.8,
-      },
-      {
-        id: 'flip-newspaper',
-        x: 85,
-        y: 50,
-        xPad: 80,
-        yPad: 45,
-        xPadSm: 75,
-        yPadSm: 40,
-        xPadXs: 75,
-        yPadXs: 40,
-        rotation: 0,
-        scale: 1,
-      },
-      {
-        id: 'flip-cd',
-        x: 15,
-        y: 60,
-        xPad: 15,
-        yPad: 55,
-        xPadSm: 15,
-        yPadSm: 50,
-        xPadXs: 15,
-        yPadXs: 50,
-        rotation: 0,
-        scale: 0.9,
-      },
-      {
-        id: 'flip-player',
-        x: 15,
-        y: 28,
-        xPad: 15,
-        yPad: 23,
-        xPadSm: 15,
-        yPadSm: 18,
-        xPadXs: 15,
-        yPadXs: 18,
-        rotation: 0,
-        scale: 1,
-      },
-    ],
-  },
-};
+import { useEffect, useRef } from 'react';
 
 export default function MainEvent() {
-  const deskRef = useRef<HTMLDivElement>(null);
-  const activeModeRef = useRef('notebook');
-  const playerRef = useRef<any>(null);
-  const cdRef = useRef<HTMLDivElement>(null);
-  const cdRotationRef = useRef(0);
-  const cdAnimRef = useRef<gsap.core.Tween | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [now, setNow] = useState<Date | null>(null);
-  const [playerVisible, setPlayerVisible] = useState(false);
-  const clickSoundRef = useRef<HTMLAudioElement | null>(null);
-  const [phoneOn, setPhoneOn] = useState(false);
-  const phoneSoundRef = useRef<HTMLAudioElement | null>(null);
-  const [showModes, setShowModes] = useState(false);
-  const isPlayerReadyRef = useRef(false);
-
-  const formatTime = (sec: number) => {
-    const m = Math.floor(sec / 60);
-    const s = Math.floor(sec % 60);
-    return `${m}:${s.toString().padStart(2, '0')}`;
-  };
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const logoRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
-    clickSoundRef.current = new Audio('/images/main/click.mp3');
-  }, []);
+    const canvas = canvasRef.current!;
+    const logoImg = logoRef.current!;
+    const ctx = canvas.getContext('2d', { alpha: true })!;
+    const dpr = window.devicePixelRatio || 1;
+    const logo = canvas
+      .closest('.main-event')
+      ?.querySelector('.main-event-logo') as HTMLElement;
 
-  useEffect(() => {
-    phoneSoundRef.current = new Audio('/images/main/lock-unlock.mp3');
-  }, []);
+    let CELL_SIZE = 8;
+    let CELL_GAP = 2;
+    let CELL_STEP = CELL_SIZE + CELL_GAP;
+    let isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    let CHAR_COLOR = isDark ? '#ddd' : '#1c1c1c';
+    const GRID_COLOR = 'rgba(0, 0, 0, 0)';
+    const ASCII_CHARS = '.：+#%@0369';
+    const THRESHOLD = 0.5;
+    const PUSH_RADIUS = 5;
+    const PUSH_FORCE = 30;
+    const SPRING = 0.025;
+    const DAMPING = 0.5;
 
-  useEffect(() => {
-    const check = () => setShowModes(window.innerWidth > 767);
-    check();
-    window.addEventListener('resize', check);
-    return () => window.removeEventListener('resize', check);
-  }, []);
+    let cols: number,
+      rows: number,
+      cells: any[] = [];
+    let animationId: number | null = null;
+    let charIntervalId: ReturnType<typeof setInterval> | null = null;
+    let mouse = { col: -999, row: -999, isMoving: false };
+    let idleTimer: ReturnType<typeof setTimeout> | null = null;
 
-  const togglePlay = () => {
-    clickSoundRef.current?.play();
+    function setupCanvas() {
+      CELL_SIZE = window.innerWidth < 768 ? 3 : 8;
+      CELL_GAP = window.innerWidth < 768 ? 1 : 2;
+      CELL_STEP = CELL_SIZE + CELL_GAP;
+      cols = Math.floor(canvas.offsetWidth / CELL_STEP);
+      rows = Math.floor(canvas.offsetHeight / CELL_STEP);
+      canvas.width = canvas.offsetWidth * dpr;
+      canvas.height = canvas.offsetHeight * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
 
-    if (!isPlayerReadyRef.current) return;
+    function drawGrid() {
+      ctx.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
+      ctx.fillStyle = GRID_COLOR;
+      for (let row = 0; row < rows; row++)
+        for (let col = 0; col < cols; col++)
+          ctx.fillRect(col * CELL_STEP, row * CELL_STEP, CELL_SIZE, CELL_SIZE);
+    }
 
-    if (!playerVisible) {
-      setPlayerVisible(true);
-      gsap.fromTo(
-        '#flip-player',
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
-      );
+    function sampleLogoIntoCells() {
+      const rect = logoImg.getBoundingClientRect();
+      const logoCols = Math.ceil(rect.width / CELL_STEP);
+      const logoRows = Math.ceil(rect.height / CELL_STEP);
+      const canvasRect = canvas.getBoundingClientRect();
+      const startCol = Math.floor((rect.left - canvasRect.left) / CELL_STEP);
+      const startRow = Math.floor((rect.top - canvasRect.top) / CELL_STEP);
 
-      playerRef.current?.playVideo();
+      const sampleCanvas = document.createElement('canvas');
+      sampleCanvas.width = logoCols;
+      sampleCanvas.height = logoRows;
+      const sampleCtx = sampleCanvas.getContext('2d')!;
+      sampleCtx.fillStyle = '#fff';
+      sampleCtx.fillRect(0, 0, logoCols, logoRows);
+      sampleCtx.drawImage(logoImg, 0, 0, logoCols, logoRows);
+      const { data } = sampleCtx.getImageData(0, 0, logoCols, logoRows);
 
-      if (!cdAnimRef.current) {
-        cdAnimRef.current = gsap.to(cdRef.current, {
-          rotation: '+=360',
-          duration: 4,
-          ease: 'none',
-          repeat: -1,
-          immediateRender: false,
-        });
-      } else {
-        cdAnimRef.current.resume();
+      cells = [];
+      for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+          const inLogo =
+            col >= startCol &&
+            col < startCol + logoCols &&
+            row >= startRow &&
+            row < startRow + logoRows;
+          let isLit = false,
+            char = ' ';
+          if (inLogo) {
+            const idx = ((row - startRow) * logoCols + (col - startCol)) * 4;
+            const brightness =
+              (data[idx] * 0.299 +
+                data[idx + 1] * 0.587 +
+                data[idx + 2] * 0.114) /
+              255;
+            isLit = brightness < THRESHOLD;
+            char = isLit
+              ? ASCII_CHARS[
+                  Math.min(
+                    ASCII_CHARS.length - 1,
+                    Math.floor(brightness * ASCII_CHARS.length),
+                  )
+                ]
+              : ' ';
+          }
+          cells.push({
+            col,
+            row,
+            char,
+            isLit,
+            offsetX: 0,
+            offsetY: 0,
+            velX: 0,
+            velY: 0,
+          });
+        }
       }
-      return;
+    }
+    function renderFrame() {
+      ctx.font = `${CELL_SIZE + 2}px monospace`;
+      ctx.textBaseline = 'top';
+      ctx.textAlign = 'center';
+      ctx.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
+
+      ctx.fillStyle = GRID_COLOR;
+      for (const { col, row } of cells)
+        ctx.fillRect(col * CELL_STEP, row * CELL_STEP, CELL_SIZE, CELL_SIZE);
+
+      ctx.fillStyle = CHAR_COLOR;
+      for (const { col, row, char, isLit, offsetX, offsetY } of cells) {
+        if (!isLit) continue;
+        const x = (col + Math.round(offsetX)) * CELL_STEP;
+        const y = (row + Math.round(offsetY)) * CELL_STEP;
+        ctx.fillText(char, x + CELL_SIZE / 2, y);
+      }
     }
 
-    if (isPlaying) {
-      playerRef.current?.pauseVideo();
-      cdAnimRef.current?.pause();
-      cdRotationRef.current = gsap.getProperty(
-        cdRef.current,
-        'rotation',
-      ) as number;
-      gsap.to('#flip-player', {
-        opacity: 0,
-        y: 20,
-        duration: 0.5,
-        ease: 'power2.in',
-      });
-      setTimeout(() => setPlayerVisible(false), 300);
-    } else {
-      playerRef.current?.playVideo();
-      cdAnimRef.current?.resume();
-      gsap.to('#flip-player', { opacity: 1, duration: 0.5 });
+    function init() {
+      isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      CHAR_COLOR = isDark ? '#ddd' : '#1c1c1c';
+      setupCanvas();
+      sampleLogoIntoCells();
+      drawGrid();
     }
-  };
 
-  const setLayout = (mode: string) => {
-    const desk = deskRef.current;
-    if (!desk) return;
+    function updatePhysics() {
+      for (const cell of cells) {
+        if (!cell.isLit) continue;
+        if (mouse.isMoving) {
+          const dx = cell.col + cell.offsetX - mouse.col;
+          const dy = cell.row + cell.offsetY - mouse.row;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < PUSH_RADIUS && dist > 0) {
+            const force = (1 - dist / PUSH_RADIUS) ** 2 * PUSH_FORCE;
+            cell.velX += (dx / dist) * force;
+            cell.velY += (dy / dist) * force;
+          }
+        }
+        cell.velX += -cell.offsetX * SPRING;
+        cell.velY += -cell.offsetY * SPRING;
+        cell.velX *= DAMPING;
+        cell.velY *= DAMPING;
+        cell.offsetX += cell.velX;
+        cell.offsetY += cell.velY;
+        if (Math.abs(cell.offsetX) < 0.01 && Math.abs(cell.velX) < 0.01)
+          cell.offsetX = cell.velX = 0;
+        if (Math.abs(cell.offsetY) < 0.01 && Math.abs(cell.velY) < 0.01)
+          cell.offsetY = cell.velY = 0;
+      }
+    }
 
-    const deskWidth = desk.offsetWidth;
-    const deskHeight = desk.offsetHeight;
-    const config = arrangements[mode];
-    if (!config) return;
+    function animationLoop() {
+      updatePhysics();
+      renderFrame();
+      animationId = requestAnimationFrame(animationLoop);
+    }
 
-    const isPad = window.innerWidth <= 1024 && window.innerWidth > 820;
-    const isPadSm = window.innerWidth <= 820 && window.innerWidth > 768;
-    const isPadXs = window.innerWidth <= 768;
-
-    config.items.forEach((itemData: any) => {
-      const itemEl = document.getElementById(itemData.id);
-      if (!itemEl) return;
-
-      const x = isPadXs
-        ? (itemData.xPadXs ?? itemData.x)
-        : isPadSm
-          ? (itemData.xPadSm ?? itemData.x)
-          : isPad
-            ? (itemData.xPad ?? itemData.x)
-            : itemData.x;
-      const y = isPadXs
-        ? (itemData.yPadXs ?? itemData.y)
-        : isPadSm
-          ? (itemData.yPadSm ?? itemData.y)
-          : isPad
-            ? (itemData.yPad ?? itemData.y)
-            : itemData.y;
-      const scale = isPadXs
-        ? (itemData.scalePadXs ?? itemData.scale)
-        : isPadSm
-          ? (itemData.scalePadSm ?? itemData.scale)
-          : isPad
-            ? (itemData.scalePad ?? itemData.scale)
-            : itemData.scale;
-
-      const pixelX = (x / 100) * deskWidth - itemEl.offsetWidth / 2;
-      const pixelY = (y / 100) * deskHeight - itemEl.offsetHeight / 2;
-
-      gsap.set(itemEl, {
-        left: pixelX,
-        top: pixelY,
-        rotation: itemData.rotation,
-        scale: scale ?? 1,
-      });
-    });
-  };
-
-  const switchMode = (newMode: string) => {
-    if (newMode === activeModeRef.current) return;
-
-    const desk = deskRef.current;
-    if (!desk) return;
-
-    const flipTargets = Array.from(desk.querySelectorAll('.main-flip-item'));
-    const state = Flip.getState(flipTargets);
-
-    setLayout(newMode);
-
-    Flip.from(state, {
-      duration: 1.25,
-      ease: 'power3.inOut',
-      stagger: { from: 'center', amount: 0.2 },
-      absolute: true,
-      scale: true,
-    });
-
-    activeModeRef.current = newMode;
-  };
-
-  useEffect(() => {
-    const desk = deskRef.current;
-    if (!desk) return;
-
-    const items = document.querySelectorAll('.main-flip-item');
-    gsap.set(items, { opacity: 0 });
-
-    const doLayout = () => {
-      setLayout('notebook');
-      requestAnimationFrame(() => {
-        const nonPlayerItems = document.querySelectorAll(
-          '.main-flip-item:not(#flip-player)',
-        );
-        gsap.to(nonPlayerItems, {
-          opacity: 1,
-          duration: 0.8,
-          stagger: 0.1,
-          ease: 'power2.out',
-        });
-      });
+    const onMouseEnter = () => {
+      logoImg.style.opacity = '0';
+      charIntervalId = setInterval(() => {
+        for (const cell of cells)
+          if (cell.isLit)
+            cell.char =
+              ASCII_CHARS[Math.floor(Math.random() * ASCII_CHARS.length)];
+      }, 50);
+      if (!animationId) animationLoop();
     };
 
-    // desk 안의 모든 이미지가 로드된 후 실행
-    const images = Array.from(desk.querySelectorAll('img'));
-    const unloaded = images.filter((img) => !img.complete);
-
-    if (unloaded.length === 0) {
-      // 이미 다 로드된 경우 (캐시)
-      doLayout();
-    } else {
-      let loadedCount = 0;
-      unloaded.forEach((img) => {
-        const onLoad = () => {
-          loadedCount++;
-          if (loadedCount === unloaded.length) doLayout();
-        };
-        img.addEventListener('load', onLoad, { once: true });
-        img.addEventListener('error', onLoad, { once: true }); // 실패해도 진행
+    const onMouseLeave = () => {
+      logoImg.style.opacity = '1';
+      clearInterval(charIntervalId!);
+      charIntervalId = null;
+      cancelAnimationFrame(animationId!);
+      animationId = null;
+      cells.forEach((cell) => {
+        cell.offsetX = 0;
+        cell.offsetY = 0;
+        cell.velX = 0;
+        cell.velY = 0;
       });
-    }
-
-    const handleResize = () => setLayout(activeModeRef.current);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  useEffect(() => {
-    setNow(new Date());
-    const timer = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  useEffect(() => {
-    const tag = document.createElement('script');
-    tag.src = 'https://www.youtube.com/iframe_api';
-    document.body.appendChild(tag);
-
-    (window as any).onYouTubeIframeAPIReady = () => {
-      playerRef.current = new (window as any).YT.Player('yt-player', {
-        videoId: playlist[0].id,
-        playerVars: { controls: 0, autoplay: 0 },
-        events: {
-          onReady: (e: any) => {
-            setDuration(e.target.getDuration());
-            isPlayerReadyRef.current = true;
-          },
-          onStateChange: (e: any) => {
-            const playing = e.data === 1;
-            setIsPlaying(playing);
-            if (playing) {
-              cdAnimRef.current?.resume();
-            } else {
-              cdAnimRef.current?.pause();
-            }
-          },
-        },
-      });
+      drawGrid();
     };
 
-    const timer = setInterval(() => {
-      if (playerRef.current?.getCurrentTime) {
-        setCurrentTime(playerRef.current.getCurrentTime());
-      }
-    }, 500);
+    const onMouseMove = (e: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      mouse.col = (e.clientX - rect.left) / CELL_STEP;
+      mouse.row = (e.clientY - rect.top) / CELL_STEP;
+      mouse.isMoving = true;
+      clearTimeout(idleTimer!);
+      idleTimer = setTimeout(() => {
+        mouse.isMoving = false;
+      }, 50);
+    };
 
-    return () => clearInterval(timer);
+    const onWindowMouseLeave = () => {
+      mouse.col = mouse.row = -999;
+      mouse.isMoving = false;
+    };
+
+    const onResize = () => init();
+
+    const observer = new MutationObserver(() => {
+      init();
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+
+    logo?.addEventListener('mouseenter', onMouseEnter);
+    logo?.addEventListener('mouseleave', onMouseLeave);
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseleave', onWindowMouseLeave);
+    window.addEventListener('resize', onResize);
+
+    if (logoImg.complete) init();
+    else logoImg.addEventListener('load', init);
+
+    return () => {
+      observer.disconnect();
+      logo?.removeEventListener('mouseenter', onMouseEnter);
+      logo?.removeEventListener('mouseleave', onMouseLeave);
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseleave', onWindowMouseLeave);
+      window.removeEventListener('resize', onResize);
+      cancelAnimationFrame(animationId!);
+      clearInterval(charIntervalId!);
+    };
   }, []);
-
-  const date =
-    now?.toLocaleDateString('ko-KR', {
-      month: 'long',
-      day: 'numeric',
-      weekday: 'long',
-    }) ?? '';
-
-  const time =
-    now
-      ?.toLocaleTimeString('ko-KR', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true,
-      })
-      .replace('오전 ', '')
-      .replace('오후 ', '') ?? '';
 
   return (
-    <div className='main-flip' ref={deskRef}>
-      {showModes && (
-        <div className='main-flip-modes'>
-          <button onClick={() => switchMode('notebook')}>Notebook</button>
-          <button onClick={() => switchMode('cleanup')}>Cleanup</button>
-        </div>
-      )}
-      <div className='main-flip-item pen' id='flip-pen'>
-        <img src='/images/main/pen.png' alt='pen' />
+    <section className='main-event'>
+      <canvas ref={canvasRef} id='grid'></canvas>
+      <div className='main-event-logo'>
+        <img
+          ref={logoRef}
+          src='/images/main/main.svg'
+          id='source'
+          alt='have a good day'
+        />
       </div>
-      <div className='main-flip-item diary' id='flip-diary'>
-        <img src='/images/main/diary.png' alt='diary' />
-      </div>
-      <div
-        className='main-flip-item phone'
-        id='flip-phone'
-        onClick={() => {
-          phoneSoundRef.current?.play();
-          setPhoneOn((prev) => !prev);
-        }}
-      >
-        <div>
-          <div className='phone-area'>
-            <div className={`phone-area-view ${phoneOn ? 'on' : ''}`}>
-              <div className='phone-area-time'>
-                <span>{date}</span>
-                <span>{time}</span>
-              </div>
-              <ul className='phone-area-todo'>
-                <li>
-                  <label>
-                    <input type='checkbox' />
-                    <span>트렌드 리서치</span>
-                  </label>
-                </li>
-                <li>
-                  <label>
-                    <input type='checkbox' />
-                    <span>레퍼런스 수집</span>
-                  </label>
-                </li>
-                <li>
-                  <label>
-                    <input type='checkbox' defaultChecked />
-                    <span>블로그 포스트 작성</span>
-                  </label>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <img src='/images/main/phone.png' alt='phone' />
-        </div>
-      </div>
-      <div
-        className='main-flip-item cd'
-        id='flip-cd'
-        ref={cdRef}
-        onClick={togglePlay}
-      >
-        <img src='/images/main/cd.png' alt='cd' />
-      </div>
-      <div
-        className='main-flip-item main-player'
-        id='flip-player'
-        style={{
-          opacity: playerVisible ? 1 : 0,
-          pointerEvents: playerVisible ? 'auto' : 'none',
-        }}
-      >
-        <div id='yt-player' style={{ display: 'none' }} />
-        <p className='main-player-artist'>{playlist[0].artist}</p>
-        <p className='main-player-title'>{playlist[0].title}</p>
-        <div className='main-player-bar'>
-          <div
-            className='main-player-fill'
-            style={{
-              width: `${duration ? (currentTime / duration) * 100 : 0}%`,
-            }}
-          />
-        </div>
-        <div className='main-player-time'>
-          <span>{formatTime(currentTime)}</span>/
-          <span>{formatTime(duration)}</span>
-        </div>
-        <div className={`main-player-wave ${isPlaying ? 'playing' : ''}`}>
-          <span />
-          <span />
-          <span />
-          <span />
-          <span />
-        </div>
-      </div>
-    </div>
+    </section>
   );
 }
