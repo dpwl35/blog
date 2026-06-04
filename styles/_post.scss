@@ -59,9 +59,21 @@
     }
 
     &-title {
-      font-size: var(--gallery-title-font-size);
-      font-family: var(--gallery-title-font-family);
-      letter-spacing: -0.05em;
+      p:first-of-type {
+        margin-bottom: 2px;
+        font-size: var(--gallery-title-font-size);
+        font-family: var(--gallery-title-font-family);
+        letter-spacing: -0.05em;
+      }
+
+      p:last-of-type {
+        color: var(--color-text-muted);
+        font: var(--body-4-regular);
+
+        @include mixin.media(small) {
+          font-size: 12px;
+        }
+      }
     }
 
     &-description {

@@ -5,6 +5,7 @@ import type { LabMetadata } from '../../lab/types';
 type LabItem = {
   slug: string;
   title: string;
+  subtitle: string | null;
   description: string | null;
   image: string | null;
   tags: string[];
@@ -28,6 +29,7 @@ export async function getLabItems(): Promise<LabItem[]> {
         return {
           slug,
           title: metadata.title ?? slug,
+          subtitle: metadata.subtitle ?? null,
           description: metadata.description ?? null,
           image: metadata.image ?? null,
           tags: metadata.tags ?? [],
@@ -38,6 +40,7 @@ export async function getLabItems(): Promise<LabItem[]> {
         return {
           slug,
           title: slug,
+          subtitle: null,
           description: null,
           image: null,
           tags: [],

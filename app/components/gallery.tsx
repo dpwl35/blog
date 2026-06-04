@@ -9,6 +9,7 @@ export default function GalleryItem({
   tags,
   postUrl,
   year,
+  subtitle,
 }: {
   slug: string;
   title: string;
@@ -16,6 +17,7 @@ export default function GalleryItem({
   tags: string[];
   postUrl: string | null;
   year: string | null;
+  subtitle: string | null;
 }) {
   const [active, setActive] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -33,7 +35,10 @@ export default function GalleryItem({
       onClick={() => !isMobile && setActive((prev) => !prev)}
     >
       <div className='post-item-left'>
-        <p className='post-item-title'>{title}</p>
+        <div className='post-item-title'>
+          <p>{title}</p>
+          <p className='ddd'>{subtitle}</p>
+        </div>
         <div className='post-item-description'>
           <p className='post-item-year'>{year}</p>
           <div className='post-item-link'>

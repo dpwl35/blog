@@ -1,5 +1,5 @@
-import { getLabItems } from "../../lab/utils";
-import GalleryItem from "app/components/gallery";
+import { getLabItems } from '../../lab/utils';
+import GalleryItem from 'app/components/gallery';
 
 export default async function ArchiveLayout({
   children,
@@ -9,10 +9,10 @@ export default async function ArchiveLayout({
   const items = await getLabItems();
 
   return (
-    <div className="post-section">
-      <ul className="post-gallery">
-        {items.map(({ slug, title, image, tags, postUrl, year }) => (
-          <li key={slug} className="post-item gallery">
+    <div className='post-section'>
+      <ul className='post-gallery'>
+        {items.map(({ slug, title, image, tags, postUrl, year, subtitle }) => (
+          <li key={slug} className='post-item gallery'>
             <GalleryItem
               slug={slug}
               title={title}
@@ -20,6 +20,7 @@ export default async function ArchiveLayout({
               tags={tags}
               postUrl={postUrl}
               year={year}
+              subtitle={subtitle}
             />
           </li>
         ))}
