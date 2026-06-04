@@ -93,6 +93,12 @@
 
     &-link {
       @include mixin.flex-layout(column, nowrap);
+
+      @include mixin.media(small) {
+        @include mixin.flex-layout(row, nowrap);
+
+        gap: var(--spacing-small);
+      }
     }
 
     &-link a:hover {
@@ -108,6 +114,10 @@
       color: var(--color-text-muted);
       font-size: 13px;
       font-family: JetBrainsMono, monospace;
+
+      @include mixin.media(small) {
+        display: none;
+      }
     }
 
     &-thumbnail {
@@ -147,8 +157,18 @@
       width: 100%;
       height: 300px;
       aspect-ratio: 1.3333 / 1;
+      background-color: var(--color-surface);
       transform: translate(-50%, -50%);
       transform-origin: 50% 50% 0;
+
+      img {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+
+        &.loaded {
+          opacity: 1;
+        }
+      }
     }
   }
 }

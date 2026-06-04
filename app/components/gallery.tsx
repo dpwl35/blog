@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function GalleryItem({
   slug,
@@ -21,12 +21,19 @@ export default function GalleryItem({
 }) {
   const [active, setActive] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [imgLoaded, setImgLoaded] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth <= 576);
     check();
     window.addEventListener('resize', check);
     return () => window.removeEventListener('resize', check);
+  }, []);
+  useEffect(() => {
+    if (imgRef.current?.complete) {
+      setImgLoaded(true);
+    }
   }, []);
 
   return (
@@ -56,7 +63,15 @@ export default function GalleryItem({
       </div>
       <div className='post-item-thumbnail'>
         <div className='post-item-image'>
-          {image && <img src={image} alt={title} />}
+          {image && (
+            <img
+              ref={imgRef}
+              src={image}
+              alt={title}
+              className={imgLoaded ? 'loaded' : ''}
+              onLoad={() => setImgLoaded(true)}
+            />
+          )}
         </div>
       </div>
     </div>
