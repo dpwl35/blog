@@ -4,7 +4,7 @@ import { formatDate, getBlogPosts } from 'app/(main)/blog/utils';
 import { baseUrl } from 'app/sitemap';
 import { Toc } from 'app/components/toc';
 
-export async function generateStaticParams() {
+export function generateStaticParams() {
   let posts = getBlogPosts();
 
   return posts.map((post) => ({
