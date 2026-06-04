@@ -54,15 +54,7 @@ function getHeadingsFromContent(content: string): Heading[] {
   while ((match = headingRegex.exec(content)) !== null) {
     const depth = match[1].length;
     const text = match[2].trim();
-
-    const id = text
-      .replace(/`[^`]*`/g, (match) => match.slice(1, -1)) // backtick 안 텍스트만 추출
-      .toLowerCase()
-      .trim()
-      .replace(/\./g, '')
-      .replace(/\s+/g, '-')
-      .replace(/&/g, '-and-')
-      .replace(/[^\w가-힣\-]/g, '');
+    const id = slugify(text);
 
     headings.push({ depth, text, id });
   }
@@ -129,4 +121,15 @@ export function formatDate(date: string, includeRelative = false) {
   }
 
   return `${fullDate} (${formattedDate})`;
+}
+
+export function slugify(text: string): string {
+  return text
+    .replace(/`[^`]*`/g, (match) => match.slice(1, -1))
+    .toLowerCase()
+    .trim()
+    .replace(/\./g, '')
+    .replace(/\s+/g, '-')
+    .replace(/&/g, '-and-')
+    .replace(/[^\w가-힣\-]/g, '');
 }

@@ -12,6 +12,7 @@ import {
   ScrollAnimationDemo,
 } from '../components/animationDemos';
 import ArrowIcon from './arrowIcon';
+import { slugify } from 'app/(main)/blog/utils';
 
 function Table({ data }) {
   let headers = data.headers.map((header, index) => (
@@ -65,30 +66,6 @@ function CustomLink(props) {
 
 function RoundedImage(props) {
   return <Image alt={props.alt} className='rounded-lg' {...props} />;
-}
-
-function slugify(str: unknown): string {
-  let text = '';
-
-  if (typeof str === 'string') {
-    text = str;
-  } else if (Array.isArray(str)) {
-    text = str
-      .map((s) =>
-        typeof s === 'string' ? s : (s as any)?.props?.children || '',
-      )
-      .join('');
-  } else if (str && typeof str === 'object') {
-    text = (str as any)?.props?.children || '';
-  }
-
-  return text
-    .toLowerCase()
-    .trim()
-    .replace(/\./g, '')
-    .replace(/\s+/g, '-')
-    .replace(/&/g, '-and-')
-    .replace(/[^\w가-힣\-]/g, '');
 }
 
 function createHeading(level) {
