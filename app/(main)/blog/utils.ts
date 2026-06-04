@@ -123,8 +123,22 @@ export function formatDate(date: string, includeRelative = false) {
   return `${fullDate} (${formattedDate})`;
 }
 
-export function slugify(text: string): string {
-  return text
+export function slugify(text: unknown): string {
+  let str = '';
+
+  if (typeof text === 'string') {
+    str = text;
+  } else if (Array.isArray(text)) {
+    str = text
+      .map((s) =>
+        typeof s === 'string' ? s : ((s as any)?.props?.children ?? ''),
+      )
+      .join('');
+  } else if (text && typeof text === 'object') {
+    str = (text as any)?.props?.children ?? '';
+  }
+
+  return str
     .replace(/`[^`]*`/g, (match) => match.slice(1, -1))
     .toLowerCase()
     .trim()

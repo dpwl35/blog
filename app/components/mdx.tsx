@@ -70,7 +70,18 @@ function RoundedImage(props) {
 
 function createHeading(level) {
   const Heading = ({ children }) => {
-    const slug = slugify(children);
+    const text =
+      typeof children === 'string'
+        ? children
+        : Array.isArray(children)
+          ? children
+              .map((c) =>
+                typeof c === 'string' ? c : (c?.props?.children ?? ''),
+              )
+              .join('')
+          : (children?.props?.children ?? '');
+
+    const slug = slugify(text);
     return React.createElement(`h${level}`, { id: slug }, children);
   };
 
