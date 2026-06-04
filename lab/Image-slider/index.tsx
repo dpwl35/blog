@@ -29,15 +29,9 @@ export default function Page() {
         ))}
       </ul>
       <div className='tab-content'>
-        <div style={{ display: activeTab === 0 ? 'block' : 'none' }}>
-          <Slider01 />
-        </div>
-        <div style={{ display: activeTab === 1 ? 'block' : 'none' }}>
-          <Slider02 />
-        </div>
-        <div style={{ display: activeTab === 2 ? 'block' : 'none' }}>
-          <Slider03 />
-        </div>
+        {activeTab === 0 && <Slider01 />}
+        {activeTab === 1 && <Slider02 />}
+        {activeTab === 2 && <Slider03 />}
       </div>
     </div>
   );
