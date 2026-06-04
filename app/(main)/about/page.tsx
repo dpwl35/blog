@@ -4,11 +4,10 @@ export default function AboutPage() {
       <div className='about'>
         <div className='about-intro'>
           <p>안녕하세요!</p>
-
           <p>
-            견고한 마크업으로 정보와 가치를 전달합니다. 다양한 직군과 원활하게
-            소통하고 협업하는 것을 중요하게 생각하며, 더 나은 방식을 끊임없이
-            탐구하고 있습니다.
+            견고한 마크업으로 정보와 가치를 전달합니다. <br /> 다양한 직군과
+            원활하게 소통하고 협업하는 것을 중요하게 생각하며, <br />더 나은
+            방식을 끊임없이 탐구하고 있습니다.
           </p>
         </div>
         <ul className='about-career'>

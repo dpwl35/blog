@@ -156,6 +156,7 @@ footer {
       @include mixin.flex-layout(column, nowrap);
 
       gap: var(--spacing-small);
+      padding-top: var(--spacing-xxxlarge);
 
       p {
         font: var(--body-3-regular);
