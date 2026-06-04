@@ -1,8 +1,8 @@
-import { Header } from "../components/header";
-import Footer from "../components/footer";
-import MainWrapper from "../components/main-wrapper";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Header } from '../components/header';
+import Footer from '../components/footer';
+import MainWrapper from '../components/main-wrapper';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export default function MainLayout({
   children,
@@ -10,7 +10,7 @@ export default function MainLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="wrap">
+    <div className='wrap'>
       <Header />
       <MainWrapper>
         {children}

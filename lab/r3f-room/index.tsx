@@ -1,20 +1,21 @@
-"use client";
+'use client';
 
-import * as THREE from "three";
-import { Canvas, useFrame } from "@react-three/fiber";
+import * as THREE from 'three';
+import { Canvas, useFrame } from '@react-three/fiber';
 import {
   OrbitControls,
   useGLTF,
   Environment,
   Html,
   useHelper,
-  Loader,
-} from "@react-three/drei";
-import { Suspense, useEffect, useMemo, useRef, useState } from "react";
-import smokeVertexShader from "./shaders/vertex.glsl";
-import smokeFragmentShader from "./shaders/fragment.glsl";
+} from '@react-three/drei';
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import smokeVertexShader from './shaders/vertex.glsl';
+import smokeFragmentShader from './shaders/fragment.glsl';
+import { useProgress } from '@react-three/drei';
+import Loading from 'app/components/loading';
 
-export { metadata } from "./metadata";
+export { metadata } from './metadata';
 
 const glassMaterial = new THREE.MeshPhysicalMaterial({
   transmission: 0.5,
@@ -29,7 +30,7 @@ const glassMaterial = new THREE.MeshPhysicalMaterial({
   clearcoatRoughness: 0,
 });
 const waxMaterial = new THREE.MeshPhysicalMaterial({
-  color: new THREE.Color("#fff4e6"),
+  color: new THREE.Color('#fff4e6'),
   roughness: 0.8,
   metalness: 0,
 });
@@ -37,7 +38,7 @@ const waxMaterial = new THREE.MeshPhysicalMaterial({
 const Smoke = () => {
   // 퍼린 노이즈 텍스처 (public/shaders/perlin.png 필요)
   const perlinTexture = useMemo(() => {
-    const texture = new THREE.TextureLoader().load("/shaders/perlin.png");
+    const texture = new THREE.TextureLoader().load('/shaders/perlin.png');
     texture.wrapS = THREE.RepeatWrapping;
     texture.wrapT = THREE.RepeatWrapping;
     return texture;
@@ -83,7 +84,7 @@ const Smoke = () => {
 };
 
 const Scene = ({ isNight }: { isNight: boolean }) => {
-  const { scene } = useGLTF("/models/room.glb");
+  const { scene } = useGLTF('/models/room.glb');
 
   useEffect(() => {
     scene.traverse((child: any) => {
@@ -93,21 +94,21 @@ const Scene = ({ isNight }: { isNight: boolean }) => {
 
         const name = child.name.toLowerCase();
 
-        if (name === "candle") {
+        if (name === 'candle') {
           child.material = glassMaterial;
         }
 
-        if (name.includes("candle001")) {
+        if (name.includes('candle001')) {
           child.material = waxMaterial;
         }
 
-        if (name.includes("lamp1") || name.includes("cylinder002")) {
+        if (name.includes('lamp1') || name.includes('cylinder002')) {
           child.material = child.material.clone();
-          child.material.emissive = new THREE.Color("#ffffff");
+          child.material.emissive = new THREE.Color('#ffffff');
           child.material.emissiveIntensity = isNight ? 2 : 0;
         }
 
-        if (name.includes("floor")) {
+        if (name.includes('floor')) {
           child.receiveShadow = true;
         }
       }
@@ -116,7 +117,16 @@ const Scene = ({ isNight }: { isNight: boolean }) => {
 
   return <primitive object={scene} />;
 };
-useGLTF.preload("/models/room.glb");
+useGLTF.preload('/models/room.glb');
+
+function Loader() {
+  const { progress } = useProgress();
+  return (
+    <Html fullscreen>
+      <Loading progress={Math.round(progress)} />
+    </Html>
+  );
+}
 
 const Light = ({ isNight }: { isNight: boolean }) => {
   // const pointLightRef = useRef<any>(null);
@@ -141,7 +151,7 @@ const Light = ({ isNight }: { isNight: boolean }) => {
             distance={15}
             decay={1}
             castShadow
-            color={"#ffffff"}
+            color={'#ffffff'}
             shadow-bias={-0.005}
             shadow-mapSize-width={1024}
             shadow-mapSize-height={1024}
@@ -153,14 +163,14 @@ const Light = ({ isNight }: { isNight: boolean }) => {
             distance={7}
             decay={2}
             castShadow
-            color={"#ffffff"}
+            color={'#ffffff'}
             shadow-bias={-0.005}
             shadow-mapSize-width={1024}
             shadow-mapSize-height={1024}
           />
           <spotLight
             //ref={spotLightRef}
-            color="#ffffff" // 조명 색상
+            color='#ffffff' // 조명 색상
             intensity={80} // 조명 세기
             position={[-2.3, 5.5, 0.1]}
             distance={5} // 조명이 영향을 미치는 거리 (기본값: 0, 무한한 거리)
@@ -198,7 +208,7 @@ export default function Room({
         camera={{ position: [20, 20, 20], fov: 20 }}
         gl={{
           antialias: true, // 안티엘리어싱 활성화 (기본값)
-          powerPreference: "high-performance", // GPU 사용 최적화
+          powerPreference: 'high-performance', // GPU 사용 최적화
           alpha: transparent,
         }}
         onCreated={({ gl }) => {
@@ -207,30 +217,13 @@ export default function Room({
         }}
       >
         {!transparent && (
-          <color attach="background" args={[isNight ? "#000000" : "#ffffff"]} />
+          <color attach='background' args={[isNight ? '#000000' : '#ffffff']} />
         )}
 
-        {!isNight && <Environment preset="city" />}
+        {!isNight && <Environment preset='city' />}
 
         <Light isNight={isNight} />
-        <Suspense
-          fallback={
-            <Html center>
-              <div
-                style={{
-                  padding: "10px 14px",
-                  borderRadius: 10,
-                  background: "rgba(0, 0, 0, 0.45)",
-                  color: "#fff",
-                  fontSize: 13,
-                  pointerEvents: "none",
-                }}
-              >
-                loading room...
-              </div>
-            </Html>
-          }
-        >
+        <Suspense fallback={<Loader />}>
           <Scene isNight={isNight} />
         </Suspense>
         <Smoke />
@@ -249,25 +242,23 @@ export default function Room({
         <button
           onClick={() => setIsNight((prev) => !prev)}
           style={{
-            position: "absolute",
-            top: "10%",
-            left: "50%",
-            transform: "translateX(-50%)",
-            padding: "8px 12px",
-            background: "#333",
-            color: "#fff",
-            border: "none",
-            borderRadius: "6px",
-            cursor: "pointer",
-            whiteSpace: "nowrap",
+            position: 'absolute',
+            top: '10%',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            padding: '8px 12px',
+            background: '#333',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '6px',
+            cursor: 'pointer',
+            whiteSpace: 'nowrap',
             zIndex: 10,
           }}
         >
-          {isNight ? "☀️ 낮으로" : "🌙 밤으로"}
+          {isNight ? '☀️ 낮으로' : '🌙 밤으로'}
         </button>
       )}
-      <Loader />
-      <Loader />
     </>
   );
 }

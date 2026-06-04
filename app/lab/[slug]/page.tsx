@@ -1,5 +1,6 @@
-import dynamic from "next/dynamic";
-import type { Metadata } from "next";
+import dynamic from 'next/dynamic';
+import type { Metadata } from 'next';
+import Loading from 'app/components/loading';
 
 export async function generateMetadata({
   params,
@@ -13,11 +14,11 @@ export async function generateMetadata({
 export default function Page({ params }: { params: { slug: string } }) {
   const Post = dynamic(() => import(`../../../lab/${params.slug}/index`), {
     ssr: false,
-    loading: () => <div>loading...</div>,
+    loading: () => null,
   });
 
   return (
-    <div className="wrap-lab">
+    <div className='wrap-lab'>
       <Post />
     </div>
   );

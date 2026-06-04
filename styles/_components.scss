@@ -15,3 +15,47 @@
     stroke: var(--color-text);
   }
 }
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 100vh;
+
+  &-bar {
+    overflow: hidden;
+    width: 200px;
+    height: 3px;
+    background-color: var(--color-surface);
+  }
+
+  &-fill {
+    height: 100%;
+    background: var(--color-accent);
+    transition: width 0.3s ease;
+
+    &--indeterminate {
+      width: 60% !important;
+      animation: loading-progress 1.5s ease-in-out infinite;
+    }
+  }
+
+  &-text {
+    color: var(--color-text-muted);
+    font: var(--body-4-regular);
+    letter-spacing: 0.08em;
+  }
+}
+
+@keyframes loading-progress {
+  0% {
+    margin-left: -60%;
+  }
+
+  100% {
+    margin-left: 100%;
+  }
+}
