@@ -26,13 +26,63 @@ function slugify(str: string) {
 ```
 Heading 태그 안의 텍스트가 **영문일 땐** `a` 태그의 `href`가 정상적으로 생성되는데, **한글일 땐 잘리는 현상**이 발생했다.  문제를 찾아보니, mdx.tsx에서 `slug` 생성 시 사용한 **정규식이 한글을 제외**하고 있었던 게 원인이었다. 정규식을 수정해서 **한글도 포함**되도록 처리했고, 현재는 정상적으로 동작한다.
 
-<br />
+
 
 
 ### 목차 자동 생성하기
 기존에는 MDX의 Heading 태그 안에 `<a>` 태그가 자동으로 생성되어 앵커 기능을 처리하고 있었다. heading태그 안에 a태그를 자동으로 생성할 필요는 없기 때문에 이 부분을 제거해주고 `utils.ts`에 `getHeadingsFromContent()` 함수를 만들어 `getBlogPosts()` 함수 내에서 heading 정보를 함께 반환하도록 처리했다. 이제 페이지 렌더링 시 `post.headings`를 `<Toc />`에 넘겨주면 본문 구조에 맞는 목차가 자동으로 생성된다.
-<br />
 
+
+## SEO 구조화 데이터 추가하기
+
+검색엔진이 페이지 내용을 더 잘 이해할 수 있도록 JSON-LD 형식의 구조화 데이터를 추가했다.
+
+### JSON-LD란?
+
+JSON-LD(JavaScript Object Notation for Linked Data)는 구조화 데이터를 표현하는 방식 중 하나로, `<script type="application/ld+json">` 태그 안에 작성한다. 구글은 이 데이터를 읽어서 검색 결과에 리치 스니펫을 표시하거나 페이지 내용을 더 정확하게 파악하는 데 활용한다. 사용자 눈에는 보이지 않고 크롤러만 읽는다.
+
+### 블로그 상세 페이지 — BlogPosting
+
+포스트 상세 페이지(`/blog/[slug]`)에는 `BlogPosting` 스키마를 적용했다. 제목, 작성일, 설명, 작성자 정보를 포함한다.
+
+```tsx
+<script
+  type="application/ld+json"
+  suppressHydrationWarning
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: post.metadata.title,
+      datePublished: post.metadata.publishedAt,
+      description: post.metadata.summary,
+      author: {
+        '@type': 'Person',
+        name: 'dpwl35',
+      },
+    }),
+  }}
+/>
+```
+
+### 블로그 목록 페이지 — ItemList
+
+목록 페이지(`/blog`)에는 `ItemList` 스키마를 추가했다. 각 포스트의 제목과 URL을 리스트 형태로 구조화한다.
+
+```tsx
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  itemListElement: posts.map((post, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    url: `${baseUrl}/blog/${post.slug}`,
+    name: post.metadata.title,
+  })),
+};
+```
+
+`BlogPosting`은 단일 콘텐츠에 대한 상세 정보를 담고, `ItemList`는 여러 항목을 순서 있는 목록으로 표현한다는 점에서 용도가 다르다.
 
 ---
 
