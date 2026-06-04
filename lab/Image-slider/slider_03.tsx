@@ -1,8 +1,8 @@
-import "./style.scss";
-import * as THREE from "three";
-import gsap from "gsap";
-import { SplitText } from "gsap/SplitText";
-import { useEffect, useRef } from "react";
+import './style.scss';
+import * as THREE from 'three';
+import gsap from 'gsap';
+import { SplitText } from 'gsap/SplitText';
+import { useEffect, useRef } from 'react';
 
 const vertexShader = `
   varying vec2 vUv;
@@ -84,39 +84,39 @@ const fragmentShader = `
 
 const slides = [
   {
-    title: "@pam_ebola",
+    title: '@pam_ebola',
     description:
-      "Scattered blueprints and tangled wire sketches rest inside a worn red folder, quietly documenting the slow process of turning raw nature into sculptural form.",
+      'Scattered blueprints and tangled wire sketches rest inside a worn red folder, quietly documenting the slow process of turning raw nature into sculptural form.',
     image:
-      "https://cdn.cosmos.so/f0082070-a77f-4512-8df4-55cf9e6939d6?format=jpeg",
+      'https://cdn.cosmos.so/f0082070-a77f-4512-8df4-55cf9e6939d6?format=jpeg',
   },
   {
-    title: "@desescribir",
+    title: '@desescribir',
     description:
-      "Six zines spread across grey, each speaking a different visual language.",
+      'Six zines spread across grey, each speaking a different visual language.',
     image:
-      "https://cdn.cosmos.so/eb5f87be-704b-4608-b048-9220dd696443?format=jpeg",
+      'https://cdn.cosmos.so/eb5f87be-704b-4608-b048-9220dd696443?format=jpeg',
   },
   {
-    title: "@revuefaire",
+    title: '@revuefaire',
     description:
-      "A densely layered editorial spread pairs black and white exhibition photographs with typeset text, while a signed letter from Julien Tavelli rests quietly on the opposing page.",
+      'A densely layered editorial spread pairs black and white exhibition photographs with typeset text, while a signed letter from Julien Tavelli rests quietly on the opposing page.',
     image:
-      "https://cdn.cosmos.so/6c784b55-ba3c-45fa-99e8-5552f631ee43?format=jpeg",
+      'https://cdn.cosmos.so/6c784b55-ba3c-45fa-99e8-5552f631ee43?format=jpeg',
   },
   {
-    title: "studiofeixen",
+    title: 'studiofeixen',
     description:
-      "Scattered thumbnail photographs fill both pages — everyday objects on the left, dark skies and empty garages on the right.",
+      'Scattered thumbnail photographs fill both pages — everyday objects on the left, dark skies and empty garages on the right.',
     image:
-      "https://cdn.cosmos.so/479284a3-7b26-4f7c-8b5d-32d9592d3942?format=jpeg",
+      'https://cdn.cosmos.so/479284a3-7b26-4f7c-8b5d-32d9592d3942?format=jpeg',
   },
   {
-    title: "URL signature expired",
+    title: 'URL signature expired',
     description:
-      "A dense Dutch editorial spread layers columns of text with geometric grid patterns and a deep blue footer, holding the quiet complexity of an independent art journal.",
+      'A dense Dutch editorial spread layers columns of text with geometric grid patterns and a deep blue footer, holding the quiet complexity of an independent art journal.',
     image:
-      "https://cdn.cosmos.so/9bdeaccd-16c7-4d58-9889-9102b120bf2f?format=jpeg",
+      'https://cdn.cosmos.so/9bdeaccd-16c7-4d58-9889-9102b120bf2f?format=jpeg',
   },
 ];
 
@@ -129,7 +129,7 @@ const rippleConfig = {
   crossfadeWidth: 0.05,
   duration: 3.0,
   endValue: 1.0,
-  ease: "power2.out",
+  ease: 'power2.out',
 };
 
 function initThree(slider: HTMLElement, textures: THREE.Texture[]) {
@@ -171,41 +171,45 @@ function initThree(slider: HTMLElement, textures: THREE.Texture[]) {
 
 async function loadTextures(slideList: { image: string }[]) {
   const loader = new THREE.TextureLoader();
-  const textures: THREE.Texture[] = [];
 
-  for (const slide of slideList) {
-    const texture = await new Promise<THREE.Texture>((resolve) =>
-      loader.load(slide.image, resolve),
-    );
+  const textures = await Promise.all(
+    slideList.map(
+      (slide) =>
+        new Promise<THREE.Texture>((resolve) =>
+          loader.load(slide.image, resolve),
+        ),
+    ),
+  );
+
+  textures.forEach((texture) => {
     texture.minFilter = THREE.LinearFilter;
     texture.magFilter = THREE.LinearFilter;
     texture.wrapS = THREE.ClampToEdgeWrapping;
     texture.wrapT = THREE.ClampToEdgeWrapping;
-    textures.push(texture);
-  }
+  });
 
   return textures;
 }
 
 function splitTitle(container: Element) {
-  const el = container.querySelector(".slider03-title p");
+  const el = container.querySelector('.slider03-title p');
   if (!el) return null;
   return SplitText.create(el, {
-    type: "words, chars",
-    mask: "chars",
-    wordsClass: "word",
-    charsClass: "char",
+    type: 'words, chars',
+    mask: 'chars',
+    wordsClass: 'word',
+    charsClass: 'char',
   });
 }
 
 function splitDescription(container: Element) {
-  const paragraphs = container.querySelectorAll(".slider03-description p");
+  const paragraphs = container.querySelectorAll('.slider03-description p');
   const allLines: Element[] = [];
   paragraphs.forEach((p) => {
     const split = SplitText.create(p, {
-      type: "lines",
-      mask: "lines",
-      linesClass: "line",
+      type: 'lines',
+      mask: 'lines',
+      linesClass: 'line',
     });
     allLines.push(...split.lines);
   });
@@ -213,9 +217,9 @@ function splitDescription(container: Element) {
 }
 
 function buildSlideContent(slide: (typeof slides)[0]) {
-  const el = document.createElement("div");
-  el.className = "slider03-content";
-  el.style.opacity = "0";
+  const el = document.createElement('div');
+  el.className = 'slider03-content';
+  el.style.opacity = '0';
   el.innerHTML = `
     <div class="slider03-title"><p>${slide.title}</p></div>
     <div class="slider03-description"><p>${slide.description}</p></div>
@@ -229,15 +233,15 @@ function animateTextOut(container: Element) {
   const tl = gsap.timeline();
   if (titleSplit) {
     tl.to(titleSplit.chars, {
-      y: "-100%",
+      y: '-100%',
       duration: 0.6,
       stagger: 0.02,
-      ease: "power2.inOut",
+      ease: 'power2.inOut',
     });
   }
   tl.to(
     lines,
-    { y: "-100%", duration: 0.6, stagger: 0.02, ease: "power2.inOut" },
+    { y: '-100%', duration: 0.6, stagger: 0.02, ease: 'power2.inOut' },
     0.1,
   );
   return tl;
@@ -247,14 +251,14 @@ function animateTextIn(container: Element) {
   const titleSplit = splitTitle(container);
   const lines = splitDescription(container);
   const chars = titleSplit ? titleSplit.chars : [];
-  gsap.set([chars, lines], { y: "100%" });
+  gsap.set([chars, lines], { y: '100%' });
   gsap.set(container, { opacity: 1 });
   return gsap
     .timeline()
-    .to(chars, { y: "0%", duration: 0.5, stagger: 0.02, ease: "power2.inOut" })
+    .to(chars, { y: '0%', duration: 0.5, stagger: 0.02, ease: 'power2.inOut' })
     .to(
       lines,
-      { y: "0%", duration: 0.5, stagger: 0.05, ease: "power2.out" },
+      { y: '0%', duration: 0.5, stagger: 0.05, ease: 'power2.out' },
       0.1,
     );
 }
@@ -293,28 +297,28 @@ export default function Slider03() {
         rippleConfig.duration = window.innerWidth <= 1000 ? 1.5 : 3.0;
       }
 
-      window.addEventListener("resize", handleResize);
+      window.addEventListener('resize', handleResize);
       handleResize();
 
-      const initialSlide = slider!.querySelector(".slider03-content");
+      const initialSlide = slider!.querySelector('.slider03-content');
       if (initialSlide) {
         const initialTitle = splitTitle(initialSlide);
         const initialLines = splitDescription(initialSlide);
         if (initialTitle) {
           gsap.fromTo(
             initialTitle.chars,
-            { y: "100%" },
-            { y: "0%", duration: 0.8, stagger: 0.025, ease: "power2.out" },
+            { y: '100%' },
+            { y: '0%', duration: 0.8, stagger: 0.025, ease: 'power2.out' },
           );
         }
         gsap.fromTo(
           initialLines,
-          { y: "100%" },
+          { y: '100%' },
           {
-            y: "0%",
+            y: '0%',
             duration: 0.8,
             stagger: 0.025,
-            ease: "power2.out",
+            ease: 'power2.out',
             delay: 0.2,
           },
         );
@@ -331,7 +335,7 @@ export default function Slider03() {
         }
 
         const nextIndex = (currentIndex + 1) % slides.length;
-        const currentSlide = slider!.querySelector(".slider03-content");
+        const currentSlide = slider!.querySelector('.slider03-content');
         if (!currentSlide) return;
 
         uniforms.uTexCurrent.value = textures[currentIndex];
@@ -364,9 +368,9 @@ export default function Slider03() {
         });
 
         const exitTimeline = animateTextOut(currentSlide);
-        exitTimeline.eventCallback("onComplete", () => {
+        exitTimeline.eventCallback('onComplete', () => {
           slider!
-            .querySelectorAll(".slider03-content")
+            .querySelectorAll('.slider03-content')
             .forEach((el) => el.remove());
           const nextSlide = buildSlideContent(slides[nextIndex]);
           slider!.appendChild(nextSlide);
@@ -374,7 +378,7 @@ export default function Slider03() {
         });
       }
 
-      slider!.addEventListener("click", transition);
+      slider!.addEventListener('click', transition);
 
       function render() {
         renderer.render(scene, camera);
@@ -383,8 +387,8 @@ export default function Slider03() {
       render();
 
       return () => {
-        window.removeEventListener("resize", handleResize);
-        slider!.removeEventListener("click", transition);
+        window.removeEventListener('resize', handleResize);
+        slider!.removeEventListener('click', transition);
         renderer.dispose();
       };
     }
@@ -393,12 +397,12 @@ export default function Slider03() {
   }, []);
 
   return (
-    <div className="slider03" ref={sliderRef}>
-      <div className="slider03-content">
-        <div className="slider03-title">
+    <div className='slider03' ref={sliderRef}>
+      <div className='slider03-content'>
+        <div className='slider03-title'>
           <p>Blackwater '91</p>
         </div>
-        <div className="slider03-description">
+        <div className='slider03-description'>
           <p>
             A densely layered editorial spread pairs black and white exhibition
             photographs with typeset text, while a signed letter from Julien
