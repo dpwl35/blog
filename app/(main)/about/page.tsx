@@ -10,6 +10,27 @@ export default function AboutPage() {
             방식을 끊임없이 탐구하고 있습니다.
           </p>
         </div>
+        <div className='about-skills'>
+          <p className='about-skills-title'>SKILL</p>
+          <div className='about-skills-item'>
+            <span>HTML5</span>
+            <span>CSS3</span>
+            <span>JavaScript</span>
+            <span>jQuery</span>
+            <span>Vue.js</span>
+            <span>Next.js</span>
+            <span>React</span>
+            <span>SCSS</span>
+            <span>Styled-Components</span>
+            <span>Three.js / R3F</span>
+            <span>GSAP</span>
+            <span>Figma</span>
+            <span>Adobe Photoshop</span>
+            <span>Adobe Illustrator</span>
+            <span>반응형웹</span>
+            <span>크로스브라우징</span>
+          </div>
+        </div>
         <ul className='about-career'>
           <li className='about-career-item'>
             <p className='about-career-title'>WORK EXPERIENCE</p>

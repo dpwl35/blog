@@ -433,7 +433,7 @@
     @include mixin.flex-alignment(space-between, center);
 
     opacity: 1;
-    align-items: start;
+    align-items: flex-start;
     gap: 8px;
     width: 100%;
     filter: blur(0);

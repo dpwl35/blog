@@ -159,7 +159,31 @@ footer {
       padding-top: var(--spacing-xxxlarge);
 
       p {
-        font: var(--body-3-regular);
+        font: var(--body-4-regular);
+      }
+    }
+
+    &-skills {
+      margin: var(--spacing-xxxlarge) 0;
+
+      &-title {
+        margin-bottom: var(--spacing-large);
+        font: var(--body-4-bold);
+      }
+
+      &-item {
+        @include mixin.flex-layout(row, wrap);
+
+        gap: var(--spacing-xsmall);
+
+        span {
+          padding: 2px 4px;
+          height: auto;
+          border: 1px solid var(--color-border);
+          border-radius: var(--radius-small);
+          color: var(--color-text-muted);
+          font-size: 13px;
+        }
       }
     }
 
