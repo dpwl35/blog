@@ -35,6 +35,7 @@ export const metadata: Metadata = {
     siteName: 'dpwl35.blog',
     locale: 'ko_KR',
     type: 'website',
+    images: [{ url: '/images/og.png' }],
   },
   robots: {
     index: true,
