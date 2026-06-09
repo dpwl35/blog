@@ -436,6 +436,16 @@
     transform-origin: 50% 50% 0;
     transition: border-color 0.2s ease-in-out;
     cursor: default;
+
+    .toc-container-area {
+      display: none;
+    }
+
+    &.active {
+      .toc-container-area {
+        display: flex;
+      }
+    }
   }
 
   &-title {

@@ -16,6 +16,7 @@ type TocProps = {
 
 export function Toc({ headings, title }: TocProps) {
   const [isOpen, setIsOpen] = useState(true);
+  const [isActive, setIsActive] = useState(true);
   const [progress, setProgress] = useState(0);
   const listRef = useRef<HTMLDivElement>(null);
   const arrowRef = useRef<SVGSVGElement>(null);
@@ -47,7 +48,7 @@ export function Toc({ headings, title }: TocProps) {
         duration: 0.3,
         ease: 'power2.inOut',
         onComplete: () => {
-          list.style.display = 'none';
+          setIsActive(false);
         },
       });
       gsap.to(arrowRef.current, {
@@ -56,6 +57,7 @@ export function Toc({ headings, title }: TocProps) {
         ease: 'power2.inOut',
       });
     } else {
+      setIsActive(true);
       list.style.display = 'block';
       gsap.to(list, {
         height: 'auto',
@@ -94,9 +96,6 @@ export function Toc({ headings, title }: TocProps) {
               opacity: 0,
               duration: 0.3,
               ease: 'power2.inOut',
-              onComplete: () => {
-                if (listRef.current) listRef.current.style.display = 'none';
-              },
             });
             gsap.to(arrowRef.current, {
               rotate: 180,
@@ -105,6 +104,7 @@ export function Toc({ headings, title }: TocProps) {
             });
             isOpenRef.current = false;
             setIsOpen(false);
+            setIsActive(false);
 
             gsap.to(navRef.current, {
               opacity: 0,
@@ -138,6 +138,7 @@ export function Toc({ headings, title }: TocProps) {
           gsap.set(arrowRef.current, { rotate: 180 });
           isOpenRef.current = false;
           setIsOpen(false);
+          setIsActive(false);
 
           gsap.to(navRef.current, {
             opacity: 1,
@@ -157,7 +158,7 @@ export function Toc({ headings, title }: TocProps) {
 
   return (
     <nav ref={navRef} className='toc' style={{ opacity: 0 }}>
-      <div className='toc-wrap'>
+      <div className={`toc-wrap ${isActive ? 'active' : ''}`}>
         <div className='toc-title' onClick={toggle}>
           <div className='toc-title-left'>
             <div className='toc-title-icon'>
