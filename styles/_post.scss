@@ -202,7 +202,7 @@
 
 .post {
   position: relative;
-  padding: var(--spacing-large) 0 var(--spacing-xxxlarge);
+  padding: var(--spacing-large) 0 120px;
   width: 100%;
   border-bottom: 1px solid var(--color-border);
 
@@ -321,6 +321,7 @@
   }
 
   table {
+    margin-bottom: var(--spacing-medium);
     border: 1px solid var(--color-border);
     border-spacing: 0;
 
@@ -340,10 +341,15 @@
 
     td {
       border-right: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
 
       &:last-of-type {
         border-right: none;
       }
+    }
+
+    tr:last-of-type td {
+      border-bottom: none;
     }
   }
 
@@ -373,8 +379,12 @@
     border: 1px solid var(--color-border);
     border-radius: var(--radius-medium);
 
+    [data-rehype-pretty-code-title] {
+      padding: 2px var(--spacing-medium);
+    }
+
     code {
-      padding: var(--spacing-medium);
+      padding: var(--spacing-medium) 0;
     }
 
     pre {
