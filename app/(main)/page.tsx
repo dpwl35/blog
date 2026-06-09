@@ -34,7 +34,7 @@ export default async function MainPage() {
           </ul>
         </div>
         <div className='main-feed-area'>
-          <p className='main-feed-title'>AECHIVE : 작업물 모음</p>
+          <p className='main-feed-title'>ARCHIVE : 작업물 모음</p>
           <ul className='main-feed-iist'>
             {labItems.map((item) => (
               <li key={item.slug} className='main-feed-item'>
