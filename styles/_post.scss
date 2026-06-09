@@ -399,7 +399,8 @@
     }
 
     pre [data-line] {
-      padding: 0 1rem;
+      padding: 0 var(--spacing-medium);
+      line-height: 1.3;
     }
   }
 
