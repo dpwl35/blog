@@ -254,6 +254,7 @@ export default function MainEvent() {
           src='/images/main/main.svg'
           id='source'
           alt='have a good day'
+          fetchPriority='high'
         />
       </div>
     </section>

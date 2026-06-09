@@ -1,4 +1,4 @@
-@mixin font-face($family, $weight, $file, $format: 'woff') {
+@mixin font-face($family, $weight, $file, $format: 'woff2') {
   @font-face {
     font-style: normal;
     font-weight: $weight;
