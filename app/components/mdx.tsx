@@ -13,6 +13,7 @@ import {
 } from '../components/animationDemos';
 import ArrowIcon from './arrowIcon';
 import { slugify } from 'app/(main)/blog/utils';
+import remarkGfm from 'remark-gfm';
 
 function Table({ data }) {
   let headers = data.headers.map((header, index) => (
@@ -113,6 +114,7 @@ export function CustomMDX(props) {
       components={{ ...components, ...(props.components || {}) }}
       options={{
         mdxOptions: {
+          remarkPlugins: [remarkGfm],
           rehypePlugins: [
             [
               rehypePrettyCode,
