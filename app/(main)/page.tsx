@@ -16,6 +16,7 @@ export default async function MainPage() {
 
   return (
     <div className='main-content'>
+      <h1 className='sr-only'>dpwl35 포트폴리오 블로그</h1>
       <MainEvent />
       <div className='main-feed'>
         <div className='main-feed-area'>
