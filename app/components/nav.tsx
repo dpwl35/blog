@@ -2,6 +2,9 @@ import Link from 'next/link';
 import ArrowIcon from './arrowIcon';
 
 const navItems = {
+  '/': {
+    name: 'HOME',
+  },
   '/blog': {
     name: 'BLOG',
   },
@@ -14,9 +17,6 @@ export function Navbar() {
   return (
     <div className='category'>
       <nav className='category-area' id='nav'>
-        <Link className='category-item' href='/'>
-          <h1>HOME</h1>
-        </Link>
         {Object.entries(navItems).map(([path, { name }]) => {
           return (
             <Link key={path} href={path} className='category-item'>

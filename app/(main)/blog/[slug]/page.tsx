@@ -3,6 +3,8 @@ import { CustomMDX } from 'app/components/mdx';
 import { formatDate, getBlogPosts } from 'app/(main)/blog/utils';
 import { baseUrl } from 'app/sitemap';
 import { Toc } from 'app/components/toc';
+import Link from 'next/link';
+import ArrowIcon from 'app/components/arrowIcon';
 
 export function generateStaticParams() {
   let posts = getBlogPosts();
@@ -53,11 +55,20 @@ export function generateMetadata({ params }) {
 }
 
 export default function Blog({ params }) {
-  let post = getBlogPosts().find((post) => post.slug === params.slug);
+  const posts = getBlogPosts().sort(
+    (a, b) =>
+      new Date(b.metadata.publishedAt).getTime() -
+      new Date(a.metadata.publishedAt).getTime(),
+  );
+
+  const currentIndex = posts.findIndex((p) => p.slug === params.slug);
+  let post = posts[currentIndex];
   // const count = 100;
-  if (!post) {
-    notFound();
-  }
+
+  const prevPost = posts[currentIndex + 1] ?? null; // 날짜 오래된 것
+  const nextPost = posts[currentIndex - 1] ?? null; // 날짜 최신 것
+
+  if (!post) notFound();
 
   return (
     <div className='post'>
@@ -99,6 +110,42 @@ export default function Blog({ params }) {
       <article className='post-body'>
         <CustomMDX source={post.content} />
       </article>
+
+      <nav className='post-nav'>
+        {prevPost ? (
+          <Link href={`/blog/${prevPost.slug}`} className='post-nav-prev'>
+            <span>
+              <ArrowIcon />
+              prev
+            </span>
+            <p>{prevPost.metadata.title}</p>
+          </Link>
+        ) : (
+          <div className='post-nav-prev'>
+            <span>
+              <ArrowIcon />
+              prev
+            </span>
+            <p>-</p>
+          </div>
+        )}
+        {nextPost ? (
+          <Link href={`/blog/${nextPost.slug}`} className='post-nav-next'>
+            <span>
+              next <ArrowIcon />
+            </span>
+
+            <p>{nextPost.metadata.title}</p>
+          </Link>
+        ) : (
+          <div className='post-nav-next'>
+            <span>
+              next <ArrowIcon />
+            </span>
+            <p>-</p>
+          </div>
+        )}
+      </nav>
     </div>
   );
 }
