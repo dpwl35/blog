@@ -46,6 +46,7 @@
   --spacing-xlarge: 25px;
   --spacing-xxlarge: 30px;
   --spacing-xxxlarge: 60px;
+  --spacing-section: 120px;
 
   // ─────────────────────────────────────────
   // border-radius
@@ -94,12 +95,13 @@
   --body-3-regular: var(--weight-400) var(--body-3);
   --body-4-bold: var(--weight-700) var(--body-4);
   --body-4-regular: var(--weight-400) var(--body-4);
-  --post-heading: var(--weight-600) 1.44rem / 1.2 var(--family);
-  --post-body: var(--weight-400) 1rem / 1.75 var(--family);
 
   // ─────────────────────────────────────────
-  // etc
+  // custom typography
   // ─────────────────────────────────────────
+  --post-heading1: var(--heading-2-bold);
+  --post-heading2: var(--heading-3-bold);
+  --post-body: var(--body-3-regular);
   --gallery-title-font-size: 1.5rem;
   --gallery-title-font-family: 'jetbrainsmono', monospace;
 }
@@ -112,9 +114,9 @@
     --body-2: 16px / 1.375 var(--family);
     --body-3: 14px / 1.4286 var(--family);
     --body-4: 13px / 1.5385 var(--family);
-    --post-heading: var(--weight-600) 1.266rem / 1.2 var(--family);
-    --post-body: var(--weight-400) 0.873rem / 1.4286 var(--family);
+    --post-body: var(--body-3-regular);
     --gallery-title-font-size: 1rem;
+    --spacing-section: 60px;
   }
 }
 

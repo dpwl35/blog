@@ -33,6 +33,10 @@ $breakpoint-large: 1200px; // 큰 데스크탑
     @media (min-width: #{$breakpoint-large + 1}) {
       @content;
     }
+  } @else if $breakpoint == mobile {
+    @media (max-width: #{$breakpoint-small}) {
+      @content;
+    }
   }
 }
 
