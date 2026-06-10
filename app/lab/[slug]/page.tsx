@@ -1,20 +1,13 @@
 import dynamic from 'next/dynamic';
-import type { Metadata } from 'next';
 import Loading from 'app/components/loading';
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string };
-}): Promise<Metadata> {
+export default async function Page({ params }: { params: { slug: string } }) {
   const mod = await import(`../../../lab/${params.slug}/metadata`);
-  return mod.metadata ?? { title: params.slug };
-}
+  const hasInternalLoader = mod.metadata?.hasInternalLoader ?? false;
 
-export default function Page({ params }: { params: { slug: string } }) {
   const Post = dynamic(() => import(`../../../lab/${params.slug}/index`), {
     ssr: false,
-    loading: () => null,
+    loading: hasInternalLoader ? () => null : () => <Loading />,
   });
 
   return (

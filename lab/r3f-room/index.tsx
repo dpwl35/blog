@@ -12,7 +12,7 @@ import {
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import smokeVertexShader from './shaders/vertex.glsl';
 import smokeFragmentShader from './shaders/fragment.glsl';
-import { useProgress } from '@react-three/drei';
+
 import Loading from 'app/components/loading';
 
 export { metadata } from './metadata';
@@ -83,10 +83,17 @@ const Smoke = () => {
   );
 };
 
-const Scene = ({ isNight }: { isNight: boolean }) => {
+const Scene = ({
+  isNight,
+  onLoaded,
+}: {
+  isNight: boolean;
+  onLoaded: () => void;
+}) => {
   const { scene } = useGLTF('/models/room.glb');
 
   useEffect(() => {
+    onLoaded();
     scene.traverse((child: any) => {
       if (child.isMesh) {
         child.castShadow = true;
@@ -118,15 +125,6 @@ const Scene = ({ isNight }: { isNight: boolean }) => {
   return <primitive object={scene} />;
 };
 useGLTF.preload('/models/room.glb');
-
-function Loader() {
-  const { progress } = useProgress();
-  return (
-    <Html fullscreen>
-      <Loading progress={Math.round(progress)} />
-    </Html>
-  );
-}
 
 const Light = ({ isNight }: { isNight: boolean }) => {
   // const pointLightRef = useRef<any>(null);
@@ -200,9 +198,11 @@ export default function Room({
   transparent?: boolean;
 }) {
   const [isNight, setIsNight] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
   return (
     <>
+      {!loaded && <Loading />}
       <Canvas
         shadows={{ type: THREE.PCFSoftShadowMap }}
         camera={{ position: [20, 20, 20], fov: 20 }}
@@ -223,8 +223,8 @@ export default function Room({
         {!isNight && <Environment preset='city' />}
 
         <Light isNight={isNight} />
-        <Suspense fallback={<Loader />}>
-          <Scene isNight={isNight} />
+        <Suspense fallback={null}>
+          <Scene isNight={isNight} onLoaded={() => setLoaded(true)} />
         </Suspense>
         <Smoke />
         {/* <OrbitControls

@@ -9,4 +9,5 @@ export const metadata: LabMetadata = {
   tags: ['R3F', 'GLB', 'GLSL', 'Three.js'],
   postUrl: '/blog/r3f-room',
   year: '2026',
+  hasInternalLoader: true,
 };

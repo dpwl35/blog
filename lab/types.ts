@@ -6,4 +6,5 @@ export type LabMetadata = {
   tags?: string[];
   year?: string;
   postUrl?: string;
+  hasInternalLoader?: boolean;
 };
