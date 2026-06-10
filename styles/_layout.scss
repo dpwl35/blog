@@ -129,6 +129,7 @@ footer {
   @include mixin.flex-alignment(center, center);
 
   gap: 10px;
+  padding-top: var(--spacing-xxlarge);
   padding-bottom: var(--spacing-xxlarge);
   color: var(--color-text-muted);
   font-size: 12px;
