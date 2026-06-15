@@ -5,12 +5,20 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 
+// const images = [
+//   'https://images.unsplash.com/photo-1756999547323-3dbb49e3dbf7?w=800',
+//   'https://images.unsplash.com/photo-1752509929361-4471bdb102cf?w=800',
+//   'https://plus.unsplash.com/premium_photo-1675506444720-9f2bb1cd4a07?w=800',
+//   'https://images.unsplash.com/photo-1697898783638-d1e81c7ebab1?w=800',
+//   'https://images.unsplash.com/photo-1714548851157-8187fda8e617?w=800',
+// ];
+
 const images = [
-  'https://images.unsplash.com/photo-1756999547323-3dbb49e3dbf7?w=800',
-  'https://images.unsplash.com/photo-1752509929361-4471bdb102cf?w=800',
-  'https://plus.unsplash.com/premium_photo-1675506444720-9f2bb1cd4a07?w=800',
-  'https://images.unsplash.com/photo-1697898783638-d1e81c7ebab1?w=800',
-  'https://images.unsplash.com/photo-1714548851157-8187fda8e617?w=800',
+  '/images/lab/scroll-animation/01.jfif',
+  '/images/lab/scroll-animation/02.jfif',
+  '/images/lab/scroll-animation/03.jfif',
+  '/images/lab/scroll-animation/04.jfif',
+  '/images/lab/scroll-animation/05.jfif',
 ];
 
 export default function Scroll02() {

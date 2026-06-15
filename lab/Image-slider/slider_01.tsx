@@ -1,38 +1,60 @@
-"use client";
+'use client';
 
-import "./style.scss";
-import { useEffect } from "react";
-import * as THREE from "three";
+import './style.scss';
+import { useEffect } from 'react';
+import * as THREE from 'three';
 
 export default function Slider01() {
   useEffect(() => {
     const slides = [
       {
-        name: "Barozzi Veiga",
-        image:
-          "https://cdn.cosmos.so/ca15a9de-9592-4e8d-9989-f7af1dc0da43?format=jpeg",
+        name: 'Barozzi Veiga',
+        image: '/images/lab/Image-slider/slider01-01.jfif',
       },
       {
-        name: "Inge Schuster",
-        image:
-          "https://cdn.cosmos.so/7ab8df08-145a-4a39-b846-b7762e3de3a1?format=jpeg",
+        name: 'Inge Schuster',
+        image: '/images/lab/Image-slider/slider01-02.jfif',
       },
       {
-        name: "Stephen Lenthall",
-        image:
-          "https://cdn.cosmos.so/7434ef34-e8fb-4456-9a46-21f63f12ee3a?format=jpeg",
+        name: 'Stephen Lenthall',
+        image: '/images/lab/Image-slider/slider01-03.jfif',
       },
       {
-        name: "Nicholas Alan Cope",
-        image:
-          "https://cdn.cosmos.so/48c9717f-0100-4e9d-8e6b-a993a1debc57?format=jpeg",
+        name: 'Nicholas Alan Cope',
+        image: '/images/lab/Image-slider/slider01-04.jfif',
       },
       {
-        name: "Source unknown",
-        image:
-          "https://cdn.cosmos.so/af860a51-e7bd-4fd1-a7b5-246b2b932b0e?format=jpeg",
+        name: 'Source unknown',
+        image: '/images/lab/Image-slider/slider01-05.jfif',
       },
     ];
+    // const slides = [
+    //   {
+    //     name: "Barozzi Veiga",
+    //     image:
+    //       "https://cdn.cosmos.so/ca15a9de-9592-4e8d-9989-f7af1dc0da43?format=jpeg",
+    //   },
+    //   {
+    //     name: "Inge Schuster",
+    //     image:
+    //       "https://cdn.cosmos.so/7ab8df08-145a-4a39-b846-b7762e3de3a1?format=jpeg",
+    //   },
+    //   {
+    //     name: "Stephen Lenthall",
+    //     image:
+    //       "https://cdn.cosmos.so/7434ef34-e8fb-4456-9a46-21f63f12ee3a?format=jpeg",
+    //   },
+    //   {
+    //     name: "Nicholas Alan Cope",
+    //     image:
+    //       "https://cdn.cosmos.so/48c9717f-0100-4e9d-8e6b-a993a1debc57?format=jpeg",
+    //   },
+    //   {
+    //     name: "Source unknown",
+    //     image:
+    //       "https://cdn.cosmos.so/af860a51-e7bd-4fd1-a7b5-246b2b932b0e?format=jpeg",
+    //   },
+    // ];
 
     //슬라이드 제어판
     const config = {
@@ -54,9 +76,9 @@ export default function Slider01() {
     };
 
     //캔버스 설정 + GPU 제한
-    const canvas = document.getElementById("canvas") as HTMLCanvasElement;
-    const titleElement = document.getElementById("slider01-title")!;
-    const counterElement = document.getElementById("slider01-count")!;
+    const canvas = document.getElementById('canvas') as HTMLCanvasElement;
+    const titleElement = document.getElementById('slider01-title')!;
+    const counterElement = document.getElementById('slider01-count')!;
 
     const renderer = new THREE.WebGLRenderer({
       canvas,
@@ -82,7 +104,7 @@ export default function Slider01() {
       ((value % range) + range) % range;
 
     //슬라이드 번호 표시
-    const zeroPad = (n: number) => String(n).padStart(2, "0");
+    const zeroPad = (n: number) => String(n).padStart(2, '0');
 
     //슬라이드 크기 제어
     const totalSlides = slides.length;
@@ -249,7 +271,7 @@ export default function Slider01() {
       dragStartY = e.clientY;
       dragDelta = 0;
       scrollMomentum = 0;
-      canvas.style.cursor = "grabbing";
+      canvas.style.cursor = 'grabbing';
     };
 
     const onMouseMove = (e: MouseEvent) => {
@@ -265,7 +287,7 @@ export default function Slider01() {
     const onMouseUp = () => {
       if (!isDragging) return;
       isDragging = false;
-      canvas.style.cursor = "grab";
+      canvas.style.cursor = 'grab';
       if (Math.abs(dragDelta) > 2) {
         scrollMomentum = -dragDelta * config.dragMomentum;
         addDistortionBurst(Math.abs(dragDelta) * 0.005);
@@ -280,16 +302,16 @@ export default function Slider01() {
       renderer.setSize(window.innerWidth, window.innerHeight);
     };
 
-    window.addEventListener("wheel", onWheel, { passive: false });
-    window.addEventListener("touchstart", onTouchStart, { passive: false });
-    window.addEventListener("touchmove", onTouchMove, { passive: false });
-    window.addEventListener("touchend", onTouchEnd);
-    window.addEventListener("mousedown", onMouseDown);
-    window.addEventListener("mousemove", onMouseMove);
-    window.addEventListener("mouseup", onMouseUp);
-    window.addEventListener("resize", onResize);
+    window.addEventListener('wheel', onWheel, { passive: false });
+    window.addEventListener('touchstart', onTouchStart, { passive: false });
+    window.addEventListener('touchmove', onTouchMove, { passive: false });
+    window.addEventListener('touchend', onTouchEnd);
+    window.addEventListener('mousedown', onMouseDown);
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
+    window.addEventListener('resize', onResize);
 
-    canvas.style.cursor = "grab";
+    canvas.style.cursor = 'grab';
 
     function animate(time: number) {
       animationId = requestAnimationFrame(animate);
@@ -377,25 +399,25 @@ export default function Slider01() {
 
     return () => {
       cancelAnimationFrame(animationId);
-      window.removeEventListener("wheel", onWheel);
-      window.removeEventListener("touchstart", onTouchStart);
-      window.removeEventListener("touchmove", onTouchMove);
-      window.removeEventListener("touchend", onTouchEnd);
-      window.removeEventListener("mousedown", onMouseDown);
-      window.removeEventListener("mousemove", onMouseMove);
-      window.removeEventListener("mouseup", onMouseUp);
-      window.removeEventListener("resize", onResize);
+      window.removeEventListener('wheel', onWheel);
+      window.removeEventListener('touchstart', onTouchStart);
+      window.removeEventListener('touchmove', onTouchMove);
+      window.removeEventListener('touchend', onTouchEnd);
+      window.removeEventListener('mousedown', onMouseDown);
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onMouseUp);
+      window.removeEventListener('resize', onResize);
       renderer.dispose();
     };
   }, []);
 
   return (
-    <div className="slider01">
-      <div className="slider01-info">
-        <p id="slider01-title">Slide Name</p>
-        <p id="slider01-count">00</p>
+    <div className='slider01'>
+      <div className='slider01-info'>
+        <p id='slider01-title'>Slide Name</p>
+        <p id='slider01-count'>00</p>
       </div>
-      <canvas id="canvas" className="slider01-canvas"></canvas>
+      <canvas id='canvas' className='slider01-canvas'></canvas>
     </div>
   );
 }

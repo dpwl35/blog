@@ -21,8 +21,7 @@ const contents = [
       'There is a quiet conversation between form and light that happens when we stop to look closely. Shapes that seem simple at first reveal layers of depth, color, and intention. These are not accidents — they are the result of careful observation and deliberate craft.',
     subText:
       'Color does not exist in isolation. It breathes, shifts, and responds to everything around it — a dialogue between surface and source.',
-    image:
-      'https://cdn.cosmos.so/b8119159-58e1-4224-a09e-d0329cf3269a?format=jpeg',
+    image: '/images/lab/Image-slider/slider02-01.jfif',
     reverse: false,
   },
   {
@@ -33,8 +32,7 @@ const contents = [
       'Every surface holds a memory. The way light falls across a material tells us something about how it was made, where it has been, and what it has endured. To look closely at texture is to read a language older than words.',
     subText:
       'What the eye perceives as simple is rarely so. Beneath every surface lies a history of pressure, time, and transformation.',
-    image:
-      'https://cdn.cosmos.so/57cb4ac4-0100-40af-ac5c-6842cd1e7a12?format=jpeg',
+    image: '/images/lab/Image-slider/slider02-02.jfif',
     reverse: true,
   },
   {
@@ -45,11 +43,49 @@ const contents = [
       'Art asks us to look beyond what is immediately visible — to find meaning in abstraction, emotion in geometry, and narrative in color. It does not demand understanding. It only asks for presence, curiosity, and a willingness to be moved.',
     subText:
       'The most honest images are those that resist easy explanation. They ask questions rather than provide answers.',
-    image:
-      'https://cdn.cosmos.so/825ab382-7ac0-4e55-8a64-af98927e6979?format=jpeg',
+    image: '/images/lab/Image-slider/slider02-03.jfif',
     reverse: false,
   },
 ];
+
+// const contents = [
+//   {
+//     id: 1,
+//     category: 'MATERIAL',
+//     title: 'Form and Light',
+//     mainText:
+//       'There is a quiet conversation between form and light that happens when we stop to look closely. Shapes that seem simple at first reveal layers of depth, color, and intention. These are not accidents — they are the result of careful observation and deliberate craft.',
+//     subText:
+//       'Color does not exist in isolation. It breathes, shifts, and responds to everything around it — a dialogue between surface and source.',
+//     image:
+//       'https://cdn.cosmos.so/b8119159-58e1-4224-a09e-d0329cf3269a?format=jpeg',
+//     reverse: false,
+//   },
+//   {
+//     id: 2,
+//     category: 'TEXTURE',
+//     title: 'Surface Stories',
+//     mainText:
+//       'Every surface holds a memory. The way light falls across a material tells us something about how it was made, where it has been, and what it has endured. To look closely at texture is to read a language older than words.',
+//     subText:
+//       'What the eye perceives as simple is rarely so. Beneath every surface lies a history of pressure, time, and transformation.',
+//     image:
+//       'https://cdn.cosmos.so/57cb4ac4-0100-40af-ac5c-6842cd1e7a12?format=jpeg',
+//     reverse: true,
+//   },
+//   {
+//     id: 3,
+//     category: 'VISION',
+//     title: 'Beyond the Visible',
+//     mainText:
+//       'Art asks us to look beyond what is immediately visible — to find meaning in abstraction, emotion in geometry, and narrative in color. It does not demand understanding. It only asks for presence, curiosity, and a willingness to be moved.',
+//     subText:
+//       'The most honest images are those that resist easy explanation. They ask questions rather than provide answers.',
+//     image:
+//       'https://cdn.cosmos.so/825ab382-7ac0-4e55-8a64-af98927e6979?format=jpeg',
+//     reverse: false,
+//   },
+// ];
 
 export default function Slider02() {
   useEffect(() => {

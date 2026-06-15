@@ -143,9 +143,13 @@ export default function Scroll01() {
       <section className='hero'>
         <div className='hero-img'>
           <img
-            src='https://cdn.cosmos.so/27003141-eef9-47ac-b150-392dcd4b4375?format=webp'
+            src='/images/lab/scroll-animation/scroll01.gif'
             alt='hero filler'
           />
+          {/* <img
+            src='https://cdn.cosmos.so/27003141-eef9-47ac-b150-392dcd4b4375?format=webp'
+            alt='hero filler'
+          /> */}
         </div>
       </section>
 
@@ -162,11 +166,23 @@ export default function Scroll01() {
       <section className='services'>
         <div className='services-header'>
           <img
-            src='https://cdn.cosmos.so/a31f0363-e091-4165-83ca-992f0d98113e?format=webp'
+            src='/images/lab/scroll-animation/services.webp'
             alt='services'
           />
         </div>
         <div className='services-header'>
+          <img
+            src='/images/lab/scroll-animation/services.webp'
+            alt='services'
+          />
+        </div>
+        <div className='services-header'>
+          <img
+            src='/images/lab/scroll-animation/services.webp'
+            alt='services'
+          />
+        </div>
+        {/* <div className='services-header'>
           <img
             src='https://cdn.cosmos.so/a31f0363-e091-4165-83ca-992f0d98113e?format=webp'
             alt='services'
@@ -178,6 +194,12 @@ export default function Scroll01() {
             alt='services'
           />
         </div>
+        <div className='services-header'>
+          <img
+            src='https://cdn.cosmos.so/a31f0363-e091-4165-83ca-992f0d98113e?format=webp'
+            alt='services'
+          />
+        </div> */}
       </section>
 
       <section className='services-copy'>
@@ -191,9 +213,13 @@ export default function Scroll01() {
       <section className='outro'>
         <div className='outro-img'>
           <img
-            src='https://cdn.cosmos.so/3b55d9ed-92fb-4390-a972-fe96980638ee?format=webp'
+            src='/images/lab/scroll-animation/outro.gif'
             alt='outro filler'
           />
+          {/* <img
+            src='https://cdn.cosmos.so/3b55d9ed-92fb-4390-a972-fe96980638ee?format=webp'
+            alt='outro filler'
+          /> */}
         </div>
       </section>
     </div>

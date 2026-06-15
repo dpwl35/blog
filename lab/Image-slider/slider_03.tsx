@@ -87,38 +87,71 @@ const slides = [
     title: '@pam_ebola',
     description:
       'Scattered blueprints and tangled wire sketches rest inside a worn red folder, quietly documenting the slow process of turning raw nature into sculptural form.',
-    image:
-      'https://cdn.cosmos.so/f0082070-a77f-4512-8df4-55cf9e6939d6?format=jpeg',
+    image: '/images/lab/Image-slider/slider03-01.jfif',
   },
   {
     title: '@desescribir',
     description:
       'Six zines spread across grey, each speaking a different visual language.',
-    image:
-      'https://cdn.cosmos.so/eb5f87be-704b-4608-b048-9220dd696443?format=jpeg',
+    image: '/images/lab/Image-slider/slider03-02.jfif',
   },
   {
     title: '@revuefaire',
     description:
       'A densely layered editorial spread pairs black and white exhibition photographs with typeset text, while a signed letter from Julien Tavelli rests quietly on the opposing page.',
-    image:
-      'https://cdn.cosmos.so/6c784b55-ba3c-45fa-99e8-5552f631ee43?format=jpeg',
+    image: '/images/lab/Image-slider/slider03-03.jfif',
   },
   {
     title: 'studiofeixen',
     description:
       'Scattered thumbnail photographs fill both pages — everyday objects on the left, dark skies and empty garages on the right.',
-    image:
-      'https://cdn.cosmos.so/479284a3-7b26-4f7c-8b5d-32d9592d3942?format=jpeg',
+    image: '/images/lab/Image-slider/slider03-04.jfif',
   },
   {
     title: 'URL signature expired',
     description:
       'A dense Dutch editorial spread layers columns of text with geometric grid patterns and a deep blue footer, holding the quiet complexity of an independent art journal.',
-    image:
-      'https://cdn.cosmos.so/9bdeaccd-16c7-4d58-9889-9102b120bf2f?format=jpeg',
+    image: '/images/lab/Image-slider/slider03-05.jfif',
   },
 ];
+
+// const slides = [
+//   {
+//     title: '@pam_ebola',
+//     description:
+//       'Scattered blueprints and tangled wire sketches rest inside a worn red folder, quietly documenting the slow process of turning raw nature into sculptural form.',
+//     image:
+//       'https://cdn.cosmos.so/f0082070-a77f-4512-8df4-55cf9e6939d6?format=jpeg',
+//   },
+//   {
+//     title: '@desescribir',
+//     description:
+//       'Six zines spread across grey, each speaking a different visual language.',
+//     image:
+//       'https://cdn.cosmos.so/eb5f87be-704b-4608-b048-9220dd696443?format=jpeg',
+//   },
+//   {
+//     title: '@revuefaire',
+//     description:
+//       'A densely layered editorial spread pairs black and white exhibition photographs with typeset text, while a signed letter from Julien Tavelli rests quietly on the opposing page.',
+//     image:
+//       'https://cdn.cosmos.so/6c784b55-ba3c-45fa-99e8-5552f631ee43?format=jpeg',
+//   },
+//   {
+//     title: 'studiofeixen',
+//     description:
+//       'Scattered thumbnail photographs fill both pages — everyday objects on the left, dark skies and empty garages on the right.',
+//     image:
+//       'https://cdn.cosmos.so/479284a3-7b26-4f7c-8b5d-32d9592d3942?format=jpeg',
+//   },
+//   {
+//     title: 'URL signature expired',
+//     description:
+//       'A dense Dutch editorial spread layers columns of text with geometric grid patterns and a deep blue footer, holding the quiet complexity of an independent art journal.',
+//     image:
+//       'https://cdn.cosmos.so/9bdeaccd-16c7-4d58-9889-9102b120bf2f?format=jpeg',
+//   },
+// ];
 
 const rippleConfig = {
   waveFreq: 25.0,
