@@ -4,7 +4,7 @@ export type LabMetadata = {
   description?: string;
   image?: string;
   tags?: string[];
-  year?: string;
+  date?: string;
   postUrl?: string;
   hasInternalLoader?: boolean;
 };

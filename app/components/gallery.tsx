@@ -10,6 +10,7 @@ export default function GalleryItem({
   postUrl,
   year,
   subtitle,
+  externalUrl,
 }: {
   slug: string;
   title: string;
@@ -18,6 +19,7 @@ export default function GalleryItem({
   postUrl: string | null;
   year: string | null;
   subtitle: string | null;
+  externalUrl: string | null;
 }) {
   const [active, setActive] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -30,6 +32,7 @@ export default function GalleryItem({
     window.addEventListener('resize', check);
     return () => window.removeEventListener('resize', check);
   }, []);
+
   useEffect(() => {
     if (imgRef.current?.complete) {
       setImgLoaded(true);
@@ -49,7 +52,11 @@ export default function GalleryItem({
         <div className='post-item-description'>
           <p className='post-item-year'>{year}</p>
           <div className='post-item-link'>
-            <a href={`/lab/${slug}`} target='_blank' rel='noopener noreferrer'>
+            <a
+              href={externalUrl ?? `/lab/${slug}`}
+              target='_blank'
+              rel='noopener noreferrer'
+            >
               View Project
             </a>
             {postUrl && <a href={postUrl}>Read More</a>}
