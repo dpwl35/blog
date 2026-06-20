@@ -8,6 +8,6 @@ export const metadata: LabMetadata = {
   image: 'images/thumbnails/room-thumbnail.jpg',
   tags: ['R3F', 'GLB', 'GLSL', 'Three.js'],
   postUrl: '/blog/r3f-room',
-  year: '2026',
+  date: '2026-01-01',
   hasInternalLoader: true,
 };

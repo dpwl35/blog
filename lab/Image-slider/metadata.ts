@@ -8,5 +8,5 @@ export const metadata: LabMetadata = {
   image: 'images/thumbnails/Image-slider-thumbnail.jpg',
   tags: ['Gsap', 'Three.js'],
   postUrl: '',
-  year: '2026',
+  date: '2026-03-03',
 };
