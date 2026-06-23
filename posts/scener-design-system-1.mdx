@@ -1,0 +1,153 @@
+---
+title: "SCENE;er 디자인 시스템 만들기 (1)"
+publishedAt: "2026-06-23"
+summary: "Storybook으로 디자인 시스템을 처음부터 만들면서 겪은 토큰 설계, 다크/라이트 테마 구조, 그리고 셀 수 없이 겪은 삽질의 기록"
+---
+
+
+<div className="dark-logo-wrapper">
+  <img src="https://scener-design-system.vercel.app/logo-02.svg" alt="SCENE;er 로고" />
+</div>
+
+## 1. SCENE;er
+![SCENE;er 컴포넌트 디자인](/images/posts/scener-design-system/01.jpg)
+
+[Figma — SCENE;er 컴포넌트 디자인](https://www.figma.com/design/C41ZzXzFtaGBC2UOCX5Dzm/Untitled?node-id=2-1084&t=wHFKxo4OneAvUc5T-1)
+
+가상 서비스로 뭘 만들지 고민하다가, 전시·공연·팝업·영화를 장르 구분 없이 발견하고, 자신만의 씬을 기록하고 나누는 문화 플랫폼 컨셉으로 정했다. 이름은 **SCENE;er(씬어)**. "씬어"는 영화 속 주인공이나 현장의 사람들을 가리키는 말처럼, 자신만의 씬을 만들어가는 사람들을 의미한다. 이름의 세미콜론은 워드마크 안에서 시각적 포인트로 쓰기로 했다.
+
+기술 스택은 React + TypeScript + Vite + SCSS + Storybook 10이다. 평소 작업 스타일(SCSS 토큰 체계, BEM 비슷한 클래스 네이밍)을 그대로 가져가기로 했고, Storybook 안에는 컴포넌트뿐 아니라 토큰 문서와 퍼블리싱 가이드까지 함께 작성할 계획이다.
+
+지금은 Storybook 안에서 컴포넌트를 확인하는 단계지만, 최종적으로는 이 디자인 시스템을 별도의 npm 패키지로 빌드해서, 다른 프로젝트에서 `import { Button } from 'scener-design-system'`처럼 바로 가져다 쓸 수 있는 라이브러리로 만들어 보려고 한다.
+
+## 2. Storybook 환경 세팅
+
+Vite + React + TypeScript 프로젝트를 새로 만들고, Storybook을 설치했다.
+
+```bash
+npm create vite@latest scener-design-system -- --template react-ts
+cd scener-design-system
+npm install
+
+npx storybook@latest init --type react --yes
+```
+
+### 겪은 에러
+
+- `@storybook/addon-viewport`를 설치하려다가, Storybook 9 이후로 이 패키지가 사라지고 코어에 내장됐다는 걸 알게 됐다. import 경로를 `storybook/viewport`로 바꾸고 나서야 해결.
+- `tsconfig.node.json`이 `.storybook` 폴더를 인식 범위(`include`)에 안 넣고 있어서, `preview.tsx`에서 `vite/client` 타입이나 `.scss` import를 인식하지 못하는 에러가 계속 났다. `include`에 `.storybook/**/*.ts`를 추가하고, `types`에 `vite/client`를 명시해서 해결했다.
+
+```json
+// tsconfig.node.json
+{
+  "compilerOptions": {
+    "types": ["node", "vite/client"]
+  },
+  "include": ["vite.config.ts", ".storybook/**/*.ts", ".storybook/**/*.tsx"]
+}
+```
+
+## 3. GitHub + Vercel 배포
+
+Vercel에 처음 배포했을 때, 빌드는 성공했는데 화면에 Storybook이 아니라 그냥 빈 페이지가 떴다. Vercel이 기본값으로 Vite 일반 빌드(`vite build`, 결과물 `dist`)를 실행하고 있어서였다. Storybook은 `npm run build-storybook`으로 빌드해야 하고, 결과물 폴더명도 `storybook-static`으로 다르다.
+
+Vercel 대시보드 설정으로 두 번 시도했는데 캐시 문제로 계속 옛 설정으로 빌드됐다. 결국 `vercel.json`을 프로젝트 루트에 만들어서 고정했다.
+
+```json
+{
+  "buildCommand": "npm run build-storybook",
+  "outputDirectory": "storybook-static"
+}
+```
+
+이 파일이 대시보드 설정보다 우선 적용되면서 비로소 제대로 배포됐다.
+
+## 4. 디자인 토큰 설계 — Primitive와 Semantic
+
+토큰은 2단계 구조로 나눴다.
+
+- **Primitive**: 실제 값(px, hex)을 담는 원시 레이어. 의미가 없다.
+- **Semantic**: primitive를 용도에 맞게 재매핑한 레이어. 컴포넌트는 항상 이 레이어만 참조한다.
+
+```scss
+// _primitives.scss — 원시 값
+--lime-300: #c8ff3d;
+--gray-1: #1c1c1c;
+
+// _semantic.scss — 의미 부여
+--color-brand-primary: var(--lime-300);
+--color-background-base: var(--gray-1);
+```
+
+이렇게 분리하면 나중에 컬러를 바꿀 때 semantic 레이어 한 줄만 고치면 되고, 그 변수를 참조하는 모든 컴포넌트가 자동으로 따라간다.
+
+### Primitive — 의미를 가질 필요가 없다
+
+Primitive 레이어는 Figma의 공식 디자인 토큰 가이드를 참고했다. 핵심은 primitive가 아직 의미를 가질 필요가 없다는 것이다. `--lime-300`이라는 이름은 "이게 라임색의 300단계 톤"이라는 사실만 말할 뿐, 그 색이 브랜드 컬러로 쓰일지 경고 컬러로 쓰일지는 모르는 상태로 둬도 된다. 그 쓰임을 정하는 게 semantic 레이어의 역할이고, primitive는 그 전 단계의 재료 창고일 뿐이다.
+
+그래서 SCENE;er의 primitive 토큰도 의미를 담지 않고 값을 그대로 드러내는 이름으로 지었다. 컬러는 `--lime-300`, `--gray-1`처럼 색상명+단계로, 폰트 사이즈는 `--font-size-15`처럼 px값을 그대로, spacing은 `--space-4`처럼 역시 px값을 그대로 이름에 담았다.
+
+### Semantic — 분류, 속성, 변형
+
+Semantic 레이어는 **분류-속성-변형** 순서로 이름을 조합했다. 배경 관련 토큰은 `--color-background-`라는 분류 뒤에 변형을 붙이는 식이다.
+
+```scss
+--color-background-base: var(--gray-1);       // 가장 어두운 기본 배경
+--color-background-elevated: var(--gray-2);   // 카드 등 한 단계 떠 있는 표면
+--color-background-inset: var(--gray-3);       // 카드 안의 패널 등 한 단계 더 떠 있는 표면
+```
+
+`elevated`와 `inset`은 Material Design의 Tonal Elevation 개념에서 가져왔다. 핵심은 그림자가 아니라 표면의 밝기 차이로 깊이감을 표현한다는 것, elevation이 높을수록(더 위에 떠 있을수록) 표면이 더 밝아진다는 것이다. 배경(base) 위에 카드(elevated)가 떠 있고, 그 카드 안에 또 패널(inset)이 떠 있는 식으로 단계를 쌓았다.
+
+텍스트와 보더도 같은 패턴으로 정리했다.
+
+```scss
+--color-text-primary: var(--gray-9);
+--color-text-secondary: var(--gray-7);
+--color-text-tertiary: var(--gray-5);
+
+--color-border-default: var(--gray-3);
+--color-border-strong: var(--gray-4);
+```
+
+타이포그래피는 분류 뒤에 역할 이름과 속성을 붙였다. Display(1단계), Heading(H1~H3), Body(1~4단계)로 역할을 나누고, 각 역할마다 size·weight·line-height를 따로 뒀다.
+
+```scss
+--text-h1-size: var(--font-size-26);
+--text-h1-weight: var(--font-weight-bold);
+--text-h1-line-height: 1.3;
+
+--text-body-1-size: var(--font-size-15);
+--text-body-1-weight: var(--font-weight-regular);
+--text-body-1-line-height: 1.5;
+```
+
+Heading과 Body는 역할 안에서 순서가 명확해서 숫자(H1, H2, Body 1, Body 2)로 단계를 표현했다. 반면 Spacing과 Radius는 절대적인 크기 단계를 나타내기 때문에, 숫자보다 사이즈 이름(`xsmall`, `small`, `medium`)이 더 직관적이라고 판단해서 다르게 갔다.
+
+```scss
+--spacing-small: var(--space-32);
+--spacing-medium: var(--space-40);
+
+--radius-sm: var(--radius-6);
+--radius-md: var(--radius-10);
+```
+
+### 컬러
+
+메인 컬러는 라임(`#C8FF3D`)으로 정했다. 다크 베이스 위에 비비드한 라임을 올렸을 때 대비가 가장 잘 살아서다. 전시·공연·팝업·영화 4개 카테고리에는 각각 퍼플, 핑크, 오렌지, 블루를 매핑했다. 각 컬러는 50~600까지 7단계 스케일을 가진다.
+
+### Spacing과 Radius
+
+Spacing은 4px부터 120px까지 13단계, primitive는 px값을 그대로 이름에 쓰고(`--space-4`, `--space-120`), semantic은 티셔츠 사이즈 이름(`--spacing-6xsmall`~`--spacing-4xlarge`)을 썼다. Radius도 같은 패턴(`--radius-6` → `--radius-sm`)을 따랐다.
+
+
+
+
+## 6. 다음 내용
+
+다음 편에는 실제 컴포넌트를 설계하면서 겪은 일들을 쓸 예정이다. Button을 category(시각적 무게감)와 variant(의미) 두 축으로 나눈 구조, Material Design의 State Layer 개념을 가져와본 시도, 그리고 클래스명 대신 data 속성을 쓰기로 한 이유까지.
+
+
+현재까지 작업된 Storybook은 아래 링크에서 확인할 수 있다.
+
+[scener-design-system.vercel.app](https://scener-design-system.vercel.app/)
