@@ -10,6 +10,10 @@ import {
   BlurDemo,
   ListHoverDemo,
   ScrollAnimationDemo,
+  HeightAnimationDemo,
+  ProximityScaleDemo,
+  NumberPopInDemo,
+  TextRevealDemo,
 } from '../components/animationDemos';
 import ArrowIcon from './arrowIcon';
 import { slugify } from 'app/(main)/blog/utils';
@@ -106,6 +110,10 @@ let components = {
   BlurDemo,
   ListHoverDemo,
   ScrollAnimationDemo,
+  HeightAnimationDemo,
+  ProximityScaleDemo,
+  NumberPopInDemo,
+  TextRevealDemo,
 };
 export function CustomMDX(props) {
   return (

@@ -267,3 +267,242 @@ export function ScrollAnimationDemo() {
     </div>
   );
 }
+
+export function HeightAnimationDemo() {
+  const [openAuto, setOpenAuto] = useState(false);
+  const [openGrid, setOpenGrid] = useState(false);
+
+  return (
+    <div className='demo-wrapper'>
+      <div className='demo-row'>
+        <div className='demo-item'>
+          <span className='demo-label'>height: auto</span>
+          <div className='height-card'>
+            <p className='height-card-title'>Brand Refresh Request</p>
+            <p className='height-card-sub'>Planning next steps...</p>
+            <div
+              className='height-body no-grid'
+              style={{ height: openAuto ? 'auto' : 0 }}
+            >
+              <p>
+                1. Review the current website structure
+                <br />
+                2. Suggest a cleaner page flow
+                <br />
+                3. Improve homepage sections
+              </p>
+            </div>
+          </div>
+          <button className='ctrl-btn' onClick={() => setOpenAuto((v) => !v)}>
+            toggle
+          </button>
+        </div>
+
+        <div className='demo-item'>
+          <span className='demo-label'>grid-template-rows: 0fr → 1fr</span>
+          <div className='height-card'>
+            <p className='height-card-title'>Brand Refresh Request</p>
+            <p className='height-card-sub'>Planning next steps...</p>
+            <div
+              className='height-body with-grid'
+              style={{ gridTemplateRows: openGrid ? '1fr' : '0fr' }}
+            >
+              <div className='height-body-inner'>
+                <p>
+                  1. Review the current website structure
+                  <br />
+                  2. Suggest a cleaner page flow
+                  <br />
+                  3. Improve homepage sections
+                </p>
+              </div>
+            </div>
+          </div>
+          <button className='ctrl-btn' onClick={() => setOpenGrid((v) => !v)}>
+            toggle
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ===========================
+// 7. Proximity Scale Demo
+// ===========================
+
+export function ProximityScaleDemo() {
+  const proximityRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const dock = proximityRef.current;
+    if (!dock) return;
+
+    const BASE = 48;
+    const MAX_GROW = 24;
+
+    const handlePointerMove = (e: PointerEvent) => {
+      const items = dock.querySelectorAll<HTMLElement>('.dock-item');
+      items.forEach((el) => {
+        const r = el.getBoundingClientRect();
+        const t = Math.max(
+          0,
+          1 - Math.abs(e.clientX - r.x - r.width / 2) / 120,
+        );
+        const size = BASE + t * MAX_GROW;
+        el.style.width = `${size}px`;
+        el.style.height = `${size}px`;
+        el.style.opacity = `${1 - t * 0.4}`;
+      });
+    };
+
+    const handlePointerLeave = () => {
+      const items = dock.querySelectorAll<HTMLElement>('.dock-item');
+      items.forEach((el) => {
+        el.style.width = `${BASE}px`;
+        el.style.height = `${BASE}px`;
+        el.style.opacity = '1';
+      });
+    };
+
+    dock.addEventListener('pointermove', handlePointerMove);
+    dock.addEventListener('pointerleave', handlePointerLeave);
+    return () => {
+      dock.removeEventListener('pointermove', handlePointerMove);
+      dock.removeEventListener('pointerleave', handlePointerLeave);
+    };
+  }, []);
+
+  return (
+    <div className='demo-wrapper'>
+      <div className='demo-row'>
+        <div className='demo-item'>
+          <span className='demo-label'>Using proximity</span>
+          <div className='dock-outer'>
+            <div className='dock-outer-inner'>
+              <div className='dock' ref={proximityRef}>
+                {[0, 1, 2, 3].map((i) => (
+                  <div key={i} className='dock-item' />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <div className='demo-row'>
+        <div className='demo-item'>
+          <span className='demo-label'>Direct scaling</span>
+          <div className='dock-outer'>
+            <div className='dock-outer-inner'>
+              <div className='dock'>
+                {[0, 1, 2, 3].map((i) => (
+                  <div
+                    key={i}
+                    className='dock-item'
+                    onPointerEnter={(e) => {
+                      const el = e.currentTarget;
+                      el.style.width = '72px';
+                      el.style.height = '72px';
+                    }}
+                    onPointerLeave={(e) => {
+                      const el = e.currentTarget;
+                      el.style.width = '48px';
+                      el.style.height = '48px';
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ===========================
+// 8. Number Pop-in Demo
+// ===========================
+export function NumberPopInDemo({ value = '123' }: { value?: string }) {
+  const [playing, setPlaying] = useState(true);
+
+  const replay = () => {
+    setPlaying(false);
+    requestAnimationFrame(() => requestAnimationFrame(() => setPlaying(true)));
+  };
+
+  return (
+    <div className='demo-wrapper'>
+      <div className='demo-row'>
+        <div className='demo-item'>
+          <span className={'num-pop-group' + (playing ? ' playing' : '')}>
+            {value.split('').map((ch, i) => (
+              <span
+                key={i}
+                className='num-pop-digit'
+                data-stagger={i > 0 ? i : undefined}
+              >
+                {ch}
+              </span>
+            ))}
+          </span>
+          <button type='button' className='ctrl-btn' onClick={replay}>
+            ▶ 재생
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ===========================
+// 9. Text Reveal Demo
+// ===========================
+export function TextRevealDemo({
+  primary = '새로운 업데이트',
+  secondary = '더 빨라진 반응 속도',
+}: {
+  primary?: string;
+  secondary?: string;
+}) {
+  const [shown, setShown] = useState(false);
+  const [hiding, setHiding] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const onAnimate = () => {
+    if (shown) {
+      setShown(false);
+      setHiding(true);
+      if (timerRef.current) clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(() => setHiding(false), 200);
+    } else {
+      if (timerRef.current) clearTimeout(timerRef.current);
+      setHiding(false);
+      requestAnimationFrame(() => setShown(true));
+    }
+  };
+
+  const cls =
+    'text-reveal-wrap' + (shown ? ' shown' : '') + (hiding ? ' hiding' : '');
+
+  return (
+    <div className='demo-wrapper'>
+      <div className='demo-row'>
+        <div className='demo-item'>
+          <div className={cls}>
+            <strong className='text-reveal-line text-reveal-line-1'>
+              {primary}
+            </strong>
+            <span className='text-reveal-line text-reveal-line-2'>
+              {secondary}
+            </span>
+          </div>
+          <button type='button' className='ctrl-btn' onClick={onAnimate}>
+            ▶ 재생
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}

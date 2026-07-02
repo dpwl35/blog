@@ -505,3 +505,186 @@
     transform: scale(1);
   }
 }
+
+// ===========================
+// 6. Height Animation Demo
+// ===========================
+.height-card {
+  overflow: hidden;
+  padding: 14px 16px;
+  width: 220px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-medium);
+  background: var(--color-white);
+}
+
+.height-card-title {
+  margin: 0 0 4px;
+  color: var(--color-text);
+  font: var(--body-3-bold);
+}
+
+.height-card-sub {
+  margin: 0 0 10px;
+  color: var(--color-text-muted);
+  font: var(--body-4-regular);
+}
+
+.height-body {
+  &.no-grid {
+    overflow: hidden;
+    transition: height 0.4s ease;
+  }
+
+  &.with-grid {
+    display: grid;
+    overflow: hidden;
+    transition: grid-template-rows 0.4s ease;
+  }
+
+  p {
+    margin: 0;
+    color: var(--color-text-muted);
+    font: var(--body-4-regular);
+  }
+}
+
+.height-body-inner {
+  overflow: hidden;
+}
+
+// ===========================
+// 7. Proximity Scale Demo
+// ===========================
+.dock-outer {
+  padding: 10px;
+  width: 312px;
+  max-width: 312px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-large);
+  background-color: #fff;
+
+  &-inner {
+    overflow: hidden;
+    width: 100%;
+  }
+}
+
+.dock {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 12px;
+  width: auto;
+  height: 100px;
+}
+
+.dock-item {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-medium);
+  background: #c7c7c7;
+  transition:
+    width 0.15s ease-out,
+    height 0.15s ease-out,
+    opacity 0.15s ease-out;
+}
+
+// ===========================
+// 8. Number Pop-in Demo
+// ===========================
+.num-pop-group {
+  --digit-dur: 500ms;
+  --digit-distance: 8px;
+  --digit-stagger: 70ms;
+  --digit-blur: 2px;
+  --digit-ease: cubic-bezier(0.34, 1.45, 0.64, 1);
+
+  display: inline-flex;
+  align-items: baseline;
+  margin-bottom: 16px;
+  color: var(--color-text);
+  font: var(--body-1-bold);
+}
+
+.num-pop-digit {
+  display: inline-block;
+  will-change: transform, opacity, filter;
+}
+
+.num-pop-group.playing .num-pop-digit {
+  animation: num-pop-in var(--digit-dur) var(--digit-ease) both;
+}
+
+.num-pop-group.playing .num-pop-digit[data-stagger='1'] {
+  animation-delay: var(--digit-stagger);
+}
+
+.num-pop-group.playing .num-pop-digit[data-stagger='2'] {
+  animation-delay: calc(var(--digit-stagger) * 2);
+}
+
+@keyframes num-pop-in {
+  0% {
+    opacity: 0;
+    filter: blur(var(--digit-blur));
+    transform: translateY(8px);
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+// ===========================
+// 9. Text Reveal Demo
+// ===========================
+.text-reveal-wrap {
+  --stagger-dur: 500ms;
+  --stagger-distance: 12px;
+  --stagger-stagger: 40ms;
+  --stagger-blur: 3px;
+  --stagger-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.text-reveal-line {
+  display: block;
+  opacity: 0;
+  filter: blur(var(--stagger-blur));
+  color: var(--color-text);
+  font: var(--body-2-regular);
+  transform: translateY(var(--stagger-distance));
+  transition:
+    opacity var(--stagger-dur) var(--stagger-ease),
+    transform var(--stagger-dur) var(--stagger-ease),
+    filter var(--stagger-dur) var(--stagger-ease);
+  will-change: transform, opacity, filter;
+}
+
+.text-reveal-line-2 {
+  color: var(--color-text-muted);
+  transition-delay: var(--stagger-stagger);
+}
+
+.text-reveal-wrap.shown .text-reveal-line {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(0);
+}
+
+.text-reveal-wrap.hiding .text-reveal-line {
+  opacity: 0;
+  filter: blur(0);
+  transform: translateY(0);
+  transition:
+    opacity 200ms ease,
+    transform 0s linear,
+    filter 0s linear;
+  transition-delay: 0s;
+}
